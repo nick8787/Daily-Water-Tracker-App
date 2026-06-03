@@ -1,0 +1,1 @@
+sh ./scripts/configure_envs.sh {flavor} {firebase_project_id} {android_package_name} {ios_bundle_id} {web_app_id}

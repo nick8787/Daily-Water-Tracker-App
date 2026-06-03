@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <!-- Тот самый градиент: снизу (y1=1) синий, сверху (y2=0) светло-голубой -->
+    <linearGradient id="statsGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#0062FF" />  <!-- Насыщенный синий низ -->
+      <stop offset="100%" stop-color="#42A5F5" /> <!-- Нежно-голубой верх -->
+    </linearGradient>
+  </defs>
+
+  <g fill="none" stroke="url(#statsGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Левый (маленький) столбик -->
+    <rect x="4" y="14" width="4" height="6" rx="1" />
+
+    <!-- Средний столбик -->
+    <rect x="10" y="9" width="4" height="11" rx="1" />
+
+    <!-- Правый (высокий) столбик -->
+    <rect x="16" y="4" width="4" height="16" rx="1" />
+  </g>
+</svg>

@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "dailywatertracker-app-dev",
+    "dev": "dailywatertracker-app-dev",
+    "prod": "dailywatertracker-app-prod"
+  }
+}

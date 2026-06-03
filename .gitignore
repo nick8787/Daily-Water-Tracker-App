@@ -1,0 +1,76 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+.fvm/flutter_sdk
+assets/config_development.json
+assets/config_production.json
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Web related
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Firebase Android config
+/android/app/src/dev/google-services.json
+/android/app/src/beta/google-services.json
+/android/app/src/prod/google-services.json
+/android/**/google-services.json
+**/google-services.json
+
+# Firebase IOS config
+/ios/config/dev/GoogleService-Info.plist
+/ios/config/beta/GoogleService-Info.plist
+/ios/config/prod/GoogleService-Info.plist
+/ios/Runner/GoogleService-Info.plist
+/ios/**/GoogleService-Info.plist
+**/GoogleService-Info.plist
+
+# Codemagic CI (fetch-signing-files output; never commit)
+/ios/ci/_cm_signing_profiles/
+/ios/ci/.crashlytics/
+
+# Firebase Flutter config
+# (options are generated; keep them in VCS if you use them)
+
+# FVM Version Cache
+.fvm/

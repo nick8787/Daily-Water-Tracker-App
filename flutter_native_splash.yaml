@@ -1,0 +1,10 @@
+flutter_native_splash:
+  # Use a full-screen background for cold start (iOS LaunchScreen),
+  # and keep the wordmark separate for the Flutter Hero transition.
+  background_image: assets/splash/ios/launch_background_full.png
+  # Use a high-res wordmark for cold start (native iOS LaunchScreen).
+  image: assets/splash/wordmark_full.png
+  ios: true
+  ios_content_mode: center
+  android: false
+  web: false

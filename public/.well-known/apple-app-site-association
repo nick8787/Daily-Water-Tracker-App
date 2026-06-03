@@ -1,0 +1,22 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": [
+          "5Y74WSDB5B.com.dailywatertracker.app"
+        ],
+        "components": [
+          {
+            "/": "/share",
+            "comment": "Share progress: /share?ml=2500"
+          },
+          {
+            "/": "/share/*"
+          }
+        ]
+      }
+    ]
+  }
+}
+

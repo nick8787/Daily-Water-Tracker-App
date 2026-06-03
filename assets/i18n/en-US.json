@@ -1,0 +1,558 @@
+{
+  "app": {
+    "title": "Daily Water Tracker"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "loading": "Loading…",
+    "error": "Error",
+    "retry": "Retry",
+    "em_dash": "—",
+    "ml": "ml",
+    "coming_soon": {
+      "title": "Coming soon",
+      "body": "{feature} is not available yet."
+    },
+    "user_default": "User"
+  },
+  "nav": {
+    "statistics": "Statistics",
+    "account": "Account"
+  },
+  "loader": {
+    "signing_in": "Signing in…",
+    "creating_account": "Creating account…",
+    "saving": "Saving…",
+    "timeout": "Request timed out. Please try again.",
+    "preparing_share": "Preparing share link…",
+    "deleting_account": "Deleting account…",
+    "updating_photo": "Updating profile photo…",
+    "loading_statistics": "Loading statistics…"
+  },
+  "auth": {
+    "sign_in": {
+      "title": "Sign In",
+      "subtitle": "Please sign in to continue"
+    },
+    "sign_up": {
+      "title": "Sign Up",
+      "subtitle": "Create an account to continue"
+    },
+    "field": {
+      "email": "Email",
+      "email_hint": "name@example.com",
+      "password": "Password",
+      "confirm_password": "Confirm password"
+    },
+    "button": {
+      "sign_in": "Sign In",
+      "create_account": "Create account"
+    },
+    "divider": {
+      "or": "or"
+    },
+    "link": {
+      "no_account": "Don't have an account?",
+      "sign_up": "Sign Up",
+      "have_account": "Already have an account?"
+    },
+    "social": {
+      "google": "Continue with Google",
+      "facebook": "Continue with Facebook",
+      "apple": "Continue with Apple"
+    },
+    "validation": {
+      "email_required": "Email is required.",
+      "email_invalid": "Enter a valid email.",
+      "password_required": "Password is required.",
+      "password_min_length": "At least 6 characters.",
+      "confirm_password_required": "Confirm your password.",
+      "passwords_mismatch": "Passwords do not match."
+    },
+    "error": {
+      "generic": "Something went wrong. Please try again.",
+      "sign_in_cancelled": "Sign-in cancelled.",
+      "invalid_email": "Invalid email format.",
+      "invalid_credentials": "Invalid email or password.",
+      "account_disabled": "Your account is disabled.",
+      "too_many_requests": "Too many attempts. Try again later.",
+      "network": "Network error. Check your connection.",
+      "email_in_use": "This email is already in use.",
+      "weak_password": "Password is too weak.",
+      "signup_not_allowed": "Email/password sign up is not enabled.",
+      "credential_conflict": "This email is already used with another sign-in method.",
+      "facebook_failed": "Facebook sign-in failed. Please try again.",
+      "apple_ios_only": "Apple Sign-In is only available on iOS.",
+      "google_misconfigured": "Google Sign-In misconfigured: missing ID token. Recheck SHA-1/SHA-256 and downloaded config files.",
+      "apple_misconfigured": "Apple Sign-In misconfigured: missing identity token. Ensure Sign in with Apple capability is enabled and Apple provider is configured in Firebase.",
+      "google_api_10": "Google Sign-In misconfigured (ApiException: 10). Check SHA-1/SHA-256 in Firebase + google-services.json.",
+      "google_emulator": "Google sign-in failed. On emulator, ensure Google Play services and a Google account are available.",
+      "google_failed": "Google sign-in failed: {error}",
+      "facebook_failed_dynamic": "Facebook sign-in failed: {error}",
+      "apple_failed_dynamic": "Apple sign-in failed: {error}",
+      "auth_failed": "Authentication failed.",
+      "signup_failed": "Sign up failed."
+    }
+  },
+  "drink_type": {
+    "water": "Water",
+    "coffee": "Coffee",
+    "green_tea": "Green tea",
+    "milk": "Milk"
+  },
+  "home": {
+    "empty": {
+      "today": "No drinks added\ntoday",
+      "other_day": "No drinks added\nfor this day"
+    },
+    "progress": {
+      "done": "done",
+      "of_goal": "of {goal} ml"
+    },
+    "today_drinks": {
+      "title": "Today's drinks:"
+    },
+    "toggle": {
+      "overall_volume": "Overall volume",
+      "todays_drinks": "Today's drinks"
+    },
+    "tooltip": {
+      "info": "Info",
+      "previous_day": "Previous day",
+      "next_day": "Next day"
+    },
+    "semantics": {
+      "selected_day": "Selected day {weekday} {date}",
+      "choose_date": "Choose date"
+    },
+    "row": {
+      "coefficient": "coefficient {value}",
+      "volume_ml": "{volume} ml"
+    },
+    "sheet": {
+      "add": {
+        "title": "Add drink"
+      },
+      "edit": {
+        "title": "Edit drink"
+      },
+      "hydration_coefficient": "Hydration coefficient ×{coeff}",
+      "quick_presets": "Quick presets",
+      "manual_entry": "Manual entry",
+      "hint_volume": "e.g. 175",
+      "preset_ml": "{value} ml",
+      "button": {
+        "add": "Add",
+        "save_changes": "Save changes",
+        "delete_entry": "Delete entry"
+      },
+      "nudge_ml": "+{amount}"
+    },
+    "error": {
+      "invalid_amount": "Enter a valid amount in milliliters.",
+      "amount_too_large": "Amount too large (max {max} ml).",
+      "add_failed_code": "Unable to add record: {code}",
+      "add_failed": "Unable to add record. Try again."
+    },
+    "success": {
+      "added_title": "{drink} added!",
+      "added_message": "{ml} ml × {coeff} coeff = {effective} ml added to your goal."
+    },
+    "dialog": {
+      "delete": {
+        "title": "Delete entry?",
+        "message": "This drink will be removed from your log for this day. This cannot be undone."
+      }
+    },
+    "snackbar": {
+      "save_failed": "Could not save changes",
+      "delete_failed": "Could not delete"
+    }
+  },
+  "hydration_info": {
+    "title": "Hydration index",
+    "subtitle": "How your drink counts toward the goal",
+    "formula": {
+      "volume": "Volume",
+      "coefficient": "Coefficient",
+      "hydration": "Hydration"
+    },
+    "example": "Example: 300 ml × 0.8 = 240 ml counted toward your daily target.",
+    "defaults_title": "Default coefficients",
+    "body": "Plain water hydrates at full strength (1.0). Other drinks use a coefficient so your progress ring reflects effective hydration, not just volume."
+  },
+  "account": {
+    "title": "Account",
+    "tooltip": {
+      "debug": "Debug"
+    },
+    "menu": {
+      "my_profile": "My Profile",
+      "preferences": "Daily goal / preferences",
+      "history": "History",
+      "notifications": "Notifications",
+      "share_progress": "Share today's progress",
+      "login_security": "Login & security",
+      "privacy_policy": "Privacy policy",
+      "dark_theme": "Use dark theme",
+      "more": "More",
+      "achievements": "Achievements"
+    },
+    "photo": {
+      "sheet_title": "Profile photo",
+      "gallery": "Choose from gallery",
+      "camera": "Take a photo",
+      "remove": "Remove photo"
+    },
+    "button": {
+      "delete": "Delete",
+      "log_out": "Log out"
+    },
+    "dialog": {
+      "logout": {
+        "title": "Log out?",
+        "message": "You will need to sign in again to access your data.",
+        "confirm": "Log out"
+      },
+      "delete": {
+        "title": "Delete account?",
+        "message": "This permanently deletes your profile, history, and stored photos. This cannot be undone.",
+        "confirm": "Delete account"
+      }
+    },
+    "snackbar": {
+      "nothing_to_share": {
+        "title": "Nothing to share",
+        "message": "No drinks logged for today yet."
+      },
+      "share_failed": "Unable to share progress. Try again.",
+      "sign_out_failed": "Could not sign out. Please try again.",
+      "delete_failed": "Could not delete your account. Please try again."
+    },
+    "success": {
+      "title": "Success",
+      "photo_updated": "Profile photo updated successfully",
+      "photo_removed": "Profile photo removed successfully"
+    },
+    "error": {
+      "not_authenticated": "User not authenticated",
+      "photo_upload": "Failed to upload photo. Please try again later.",
+      "photo_remove": "Failed to remove photo. Please try again later."
+    },
+    "overlay": {
+      "signing_out": "Signing out…"
+    },
+    "deletion": {
+      "not_signed_in": "You are not signed in.",
+      "recent_login": "For security, sign in again and retry deleting your account."
+    }
+  },
+  "profile": {
+    "title": "My Profile",
+    "avatar": {
+      "fallback": "Profile"
+    },
+    "section": {
+      "personal": "Personal details",
+      "physical": "Physical parameters",
+      "stats": "Profile stats"
+    },
+    "field": {
+      "full_name": "Full name",
+      "email": "Email",
+      "weight": "Weight (kg)",
+      "gender": "Gender"
+    },
+    "validation": {
+      "required": "Required field",
+      "weight_invalid": "Invalid",
+      "weight_positive": "> 0",
+      "weight_too_large": "Too large"
+    },
+    "tip": {
+      "auto_goal": "Tip: later we can calculate daily goal as ~30 ml per 1 kg."
+    },
+    "gender": {
+      "select": "Select",
+      "male": "Male",
+      "female": "Female",
+      "other": "Other"
+    },
+    "stats": {
+      "member_since": "Member since",
+      "total_days": "Total days"
+    },
+    "button": {
+      "save": "Save"
+    },
+    "snackbar": {
+      "saved": {
+        "title": "Saved",
+        "message": "Profile details saved."
+      }
+    },
+    "error": {
+      "save_failed": "Failed to save profile. Please try again.",
+      "upload_photo": "Failed to upload photo."
+    }
+  },
+  "preferences": {
+    "title": "Daily goal",
+    "section": {
+      "goal": "Daily hydration goal",
+      "presets": "Drink presets",
+      "reminders": "Reminders"
+    },
+    "goal": {
+      "hint": "Drag to set your target intake",
+      "auto_toggle": "Calculate based on my weight (~{mlPerKg} ml per kg)",
+      "auto_hint": "Goal follows your profile weight. Turn off to adjust manually.",
+      "value_ml": "{value} ml"
+    },
+    "presets": {
+      "hint": "Configure your quick-add buttons"
+    },
+    "reminders": {
+      "hint": "Stay on track with hydration reminders",
+      "interval_label": "Reminder interval",
+      "off": "Off",
+      "every_1h": "Every 1 hour",
+      "every_2h": "Every 2 hours",
+      "every_3h": "Every 3 hours",
+      "every_4h": "Every 4 hours",
+      "debug_3min": "Every 3 minutes (DEBUG)",
+      "quiet_hours": "Quiet hours (Do not disturb)",
+      "from": "From",
+      "to": "To"
+    },
+    "button": {
+      "save": "Save"
+    },
+    "snackbar": {
+      "title": "Preferences",
+      "saved": {
+        "title": "Saved",
+        "message": "Preferences saved."
+      },
+      "set_weight_first": "Please set your weight in My Profile first."
+    },
+    "error": {
+      "save_failed": "Could not save preferences. Try again."
+    },
+    "info": {
+      "goal": {
+        "title": "Daily hydration goal",
+        "why_title": "Why it matters",
+        "why_body": "Staying hydrated supports energy, focus, and overall wellbeing. Your daily goal is a friendly target to help you build a consistent habit — not a medical prescription.",
+        "auto_title": "Auto-calculate from weight",
+        "auto_prefix": "When enabled, we estimate your goal as ",
+        "auto_formula": "body weight (kg) × 35 ml",
+        "auto_suffix": ", then round to the nearest 50 ml so it fits the slider nicely. This follows a common guideline many apps use as a starting point.",
+        "control_bold": "You're in control: ",
+        "control_body": "turn auto-calculate off anytime and nudge the slider until the number feels right for you."
+      },
+      "presets": {
+        "title": "Drink presets",
+        "quick_title": "Quick-add buttons",
+        "quick_body": "Presets are your three favorite volumes for logging water fast — the same chips you see when you add a drink from the home flow.",
+        "tune_prefix": "Tune them to ",
+        "tune_bold": "your real cups and bottles",
+        "tune_suffix": ". For example, set one preset to 250 ml for your tea mug, or 750 ml for your gym bottle — then logging is one tap instead of typing every time.",
+        "tip": "Tip: pick round numbers you actually pour in real life. Small tweaks here make your day-to-day tracking feel effortless."
+      },
+      "reminders": {
+        "title": "Reminders",
+        "gentle_title": "Gentle nudges, not nagging",
+        "gentle_body": "Reminders help you spread sips across the day so you don't play catch-up at bedtime. Pick an interval that matches your routine, or turn them off whenever you need a quiet day.",
+        "quiet_title": "Quiet hours (Do not disturb)",
+        "quiet_body": "Set a window when the app should stay silent — for example overnight while you sleep. Outside those hours, reminders can resume on your chosen interval.",
+        "quiet_note": "Quiet hours only apply when reminders are turned on. If you pick \"Off\", we won't send interval reminders at all."
+      }
+    }
+  },
+  "statistics": {
+    "title": "Statistics",
+    "error": {
+      "load_failed": "Could not load statistics. Pull to try again."
+    },
+    "weekly_activity": {
+      "title": "Weekly Activity"
+    },
+    "chart": {
+      "goal_label": "GOAL",
+      "goal_reached": "Goal reached! 🎉",
+      "ml_left": "{remain} ml left"
+    },
+    "footer": {
+      "no_goal": "Set a daily goal in preferences to see your progress against each day.",
+      "default": "Each bar is one day — tap for details. Keep your rhythm going."
+    },
+    "breakdown": {
+      "title": "Intake Breakdown",
+      "caption": "Last 7 days · effective hydration",
+      "empty": "Log drinks to see how your intake splits across types."
+    },
+    "period": {
+      "last_7_days": "Last 7 days"
+    },
+    "insights": {
+      "title": "Weekly Insights",
+      "best_day": "Best day",
+      "best_day_subtitle": "Most hydration logged",
+      "streak": "Current streak",
+      "streak_zero": "0 days",
+      "streak_days_one": "1 day 🔥",
+      "streak_days_other": "{count} days 🔥",
+      "no_goal": "Set a daily goal to track streaks",
+      "start_streak": "Hit your goal to start",
+      "goal_met_today": "Goal met, counting today"
+    }
+  },
+  "history": {
+    "title": "History",
+    "button": {
+      "go_back": "Go back"
+    },
+    "day": {
+      "today": "Today",
+      "yesterday": "Yesterday"
+    },
+    "error": {
+      "load_failed": "Could not load your drink history."
+    },
+    "empty": {
+      "title": "No drinks logged yet",
+      "body": "Start sipping — every glass counts.\nYour hydration story will appear here."
+    }
+  },
+  "app_update": {
+    "title": "App update required",
+    "message": "Please update the app to the latest version",
+    "button": {
+      "android": "Instant update",
+      "ios": "Update app"
+    }
+  },
+  "debug": {
+    "title": "Debug",
+    "section": {
+      "device_id": "DEVICE ID",
+      "subscriptions": "SUBSCRIPTIONS",
+      "reminders": "REMINDERS STATUS"
+    },
+    "locale": {
+      "en": "EN",
+      "uk": "UK",
+      "sys": "SYS"
+    },
+    "fcm": {
+      "title": "FCM Token",
+      "no_token": "No token generated",
+      "copied": {
+        "title": "Copied",
+        "message": "FCM Token copied to clipboard"
+      }
+    },
+    "topic": {
+      "title": "Topic: reminder",
+      "subscribed": "Subscribed",
+      "not_subscribed": "Not subscribed"
+    },
+    "reminders": {
+      "next": "Next Reminder",
+      "none": "None",
+      "updating": "Updating…",
+      "countdown": "in {minutes}m {seconds}s",
+      "reset": "Reset & reschedule",
+      "test_button": "Test push now (instant)",
+      "refreshed": "Schedule refreshed from now.",
+      "test_title": "Test push",
+      "test_sent": "Sent.",
+      "test_failed": "Test push failed: {error}"
+    }
+  },
+  "notifications": {
+    "dialog": {
+      "title": "Turn on notifications",
+      "body": "Hydration reminders need notification permission. You can enable it in system settings.",
+      "not_now": "Not now",
+      "open_settings": "Open Settings"
+    }
+  },
+  "main_nav": {
+    "coming_soon": {
+      "add_drink": "Add drink"
+    }
+  },
+  "deep_link": {
+    "shared": {
+      "title": "Shared progress",
+      "message": "Your friend drank {ml} ml today! Keep it up!"
+    }
+  },
+  "language": {
+    "english": "English",
+    "ukrainian": "Ukrainian"
+  },
+  "reminder": {
+    "msg_01": {
+      "title": "Your body is a temple! 🏛️",
+      "body": "And it needs a little water right now. Take a sip! 💧"
+    },
+    "msg_02": {
+      "title": "Focus boost! ⚡",
+      "body": "Feeling tired? Dehydration might be the reason. Drink some water! 🥤"
+    },
+    "msg_03": {
+      "title": "Water break! ⏲️",
+      "body": "Time to step away from the screen and hydrate 🌊"
+    },
+    "msg_04": {
+      "title": "Tiny sip, big win ⭐",
+      "body": "Even a small glass counts. Your future self will thank you 🥛"
+    },
+    "msg_05": {
+      "title": "Hydration checkpoint 📍",
+      "body": "Quick check: when did you last drink water? Now is a great moment ✅"
+    },
+    "msg_06": {
+      "title": "Glow-up fuel ✨",
+      "body": "Water helps your skin and energy. Pour yourself a glass! 🔋"
+    },
+    "msg_07": {
+      "title": "Desk-to-kitchen stroll 🚶‍♂️",
+      "body": "Stretch your legs and refill your bottle — two birds, one sip 🚰"
+    },
+    "msg_08": {
+      "title": "Brain fog patrol 🧠",
+      "body": "A splash of water can sharpen your thinking. Try it! 💡"
+    },
+    "msg_09": {
+      "title": "Cheers to you! 🥂",
+      "body": "You are building a healthy habit. Here is your friendly nudge to sip 😊"
+    },
+    "msg_10": {
+      "title": "Plant mode: watered 🌿",
+      "body": "You water your plants — you deserve the same care. Hydrate! 🚿"
+    },
+    "msg_11": {
+      "title": "Power hour sip 💪",
+      "body": "Keep momentum going with a refreshing drink of water ⛲"
+    },
+    "msg_12": {
+      "title": "Kind reminder 💙",
+      "body": "No pressure — just a gentle invite to drink water if you have not in a while 🌊"
+    }
+  },
+  "achievements": {
+    "first_drop": {
+      "title": "First Drop",
+      "desc": "Logged your very first glass of water!"
+    },
+    "marathon": {
+      "title": "Hydration Marathon",
+      "desc": "Met your daily goal 3 days in a row."
+    }
+  }
+}

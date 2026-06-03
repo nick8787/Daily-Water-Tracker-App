@@ -1,0 +1,28 @@
+include: package:lint/strict.yaml # For production apps
+
+analyzer:
+  plugins:
+    - dart_code_metrics
+
+  exclude:
+    - "build/**"
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**.g.dart"
+    - "**/firebase_options.dart"
+
+  language:
+    strict-casts: false
+    strict-inference: true
+    strict-raw-types: true
+
+linter:
+  rules:
+    always_use_package_imports: false
+    avoid_dynamic_calls: false
+    eol_at_end_of_file: false
+    sort_pub_dependencies: false
+
+formatter:
+  trailing_commas: preserve
+  page_width: 120

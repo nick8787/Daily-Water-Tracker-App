@@ -1,0 +1,128 @@
+import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:daily_water_tracker/common/assets.dart';
+import 'package:daily_water_tracker/common/router.dart';
+import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
+import 'package:daily_water_tracker/features/account/widgets/account_menu_card.dart';
+import 'package:daily_water_tracker/features/account/widgets/account_menu_divider.dart';
+import 'package:daily_water_tracker/features/account/widgets/account_menu_item.dart';
+import 'package:daily_water_tracker/features/home/cubit/home_cubit.dart';
+import 'package:daily_water_tracker/features/theme/theme.dart';
+import 'package:go_router/go_router.dart';
+
+class AccountMenuSection extends StatelessWidget {
+  const AccountMenuSection({
+    super.key,
+    required this.onNotificationsToggle,
+    required this.onShareProgress,
+    required this.onComingSoon,
+  });
+
+  final void Function(BuildContext context, bool value) onNotificationsToggle;
+  final Future<void> Function(BuildContext context) onShareProgress;
+  final void Function(BuildContext context, String feature) onComingSoon;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeBloc>().state.themeMode == ThemeMode.dark;
+
+    return AccountMenuCard(
+      children: [
+        AccountMenuItem(
+          leadingAsset: icUserProfile,
+          title: LocaleKeys.account_menu_my_profile.tr(),
+          onTap: () => context.push(profileRoute),
+        ),
+        const AccountMenuDivider(),
+        AccountMenuItem(
+          leadingAsset: icUserPreferences,
+          title: LocaleKeys.account_menu_preferences.tr(),
+          onTap: () => context.push(preferencesRoute),
+        ),
+        const AccountMenuDivider(),
+        AccountMenuItem(
+          leadingAsset: icUserHistory,
+          title: LocaleKeys.account_menu_history.tr(),
+          onTap: () =>
+              context.push(historyRoute, extra: context.read<HomeCubit>()),
+        ),
+        const AccountMenuDivider(),
+        AccountMenuItem(
+          leadingIcon: Icons.archive,
+          title: LocaleKeys.account_menu_achievements.tr(),
+          onTap: () => context.push(achievementsRoute),
+        ),
+        const AccountMenuDivider(),
+        AccountMenuItem(
+          leadingAsset: icAccountNotifications,
+          title: LocaleKeys.account_menu_notifications.tr(),
+          showChevron: false,
+          enabled: !context
+              .select<AccountCubit, bool>(
+                (c) => c.state.isNotificationPermissionBusy,
+              ),
+          trailing: Builder(
+            builder: (context) {
+              final acc = context.watch<AccountCubit>().state;
+              final busy = acc.isNotificationPermissionBusy;
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (busy)
+                    const Padding(
+                      padding: EdgeInsets.only(right: 8),
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CupertinoActivityIndicator(),
+                      ),
+                    ),
+                  CupertinoSwitch(
+                    value: acc.isNotificationsEnabled,
+                    activeTrackColor: brandBlue,
+                    onChanged: busy
+                        ? null
+                        : (v) => onNotificationsToggle(context, v),
+                  ),
+                ],
+              );
+            },
+          ),
+          onTap: () {
+            final acc = context.read<AccountCubit>().state;
+            if (acc.isNotificationPermissionBusy) return;
+            onNotificationsToggle(context, !acc.isNotificationsEnabled);
+          },
+        ),
+        const AccountMenuDivider(),
+        AccountMenuItem(
+          leadingAsset: icShareMyProgress,
+          title: LocaleKeys.account_menu_share_progress.tr(),
+          onTap: () => onShareProgress(context),
+        ),
+        const AccountMenuDivider(),
+        AccountMenuItem(
+          leadingIcon: Icons.dark_mode_outlined,
+          title: LocaleKeys.account_menu_dark_theme.tr(),
+          showChevron: false,
+          trailing: CupertinoSwitch(
+            value: isDark,
+            activeTrackColor: brandBlue,
+            onChanged: (_) => context.read<ThemeBloc>().switchTheme(),
+          ),
+          onTap: () => context.read<ThemeBloc>().switchTheme(),
+        ),
+        const AccountMenuDivider(),
+        AccountMenuItem(
+          leadingIcon: Icons.more_horiz,
+          title: LocaleKeys.account_menu_more.tr(),
+          onTap: () => context.push(settingsMoreRoute),
+        ),
+      ],
+    );
+  }
+}
