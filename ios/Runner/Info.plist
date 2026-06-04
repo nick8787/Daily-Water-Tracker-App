@@ -37,24 +37,24 @@
 				<key>CFBundleURLSchemes</key>
 				<array>
 					<!-- DEV Firebase iOS client (REVERSED_CLIENT_ID); keep both so dev & prod builds work from one Info.plist -->
-					<string>com.googleusercontent.apps.770094282712-62mcm5vc882eaiakm53vp0eat4c6voqb</string>
+					<string>com.googleusercontent.apps.194002919052-ocjnabf7vhek7f2n18g15vhi1s5psrlm</string>
 					<!-- PROD Firebase iOS client -->
-					<string>com.googleusercontent.apps.940055301437-2505shj1mlqoe4mip0jhs1hnug313g5e</string>
+					<string>com.googleusercontent.apps.506781937368-7lo293sbdiufuru77a4arc5hukv2u6hs</string>
 				</array>
 			</dict>
 			<dict>
 				<key>CFBundleURLSchemes</key>
 				<array>
-					<string>fb1007327461723111</string>
+					<string>fb989105177152033</string>
 				</array>
 			</dict>
 		</array>
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>FacebookAppID</key>
-		<string>1007327461723111</string>
+		<string>989105177152033</string>
 		<key>FacebookClientToken</key>
-		<string>1069089b57f938ec32e791a5c9923ded</string>
+		<string>fcbaef2df36172baf680044a23c1bd9a</string>
 		<key>FacebookDisplayName</key>
 		<string>Daily Water Tracker</string>
 		<key>Flavor</key>

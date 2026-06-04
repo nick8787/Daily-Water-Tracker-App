@@ -50,19 +50,22 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA5SkmEyWudRpGZSc3SaelqZlCjnssjhgE',
-    appId: '1:940055301437:android:2a4b7e88a79b2726140954',
-    messagingSenderId: '940055301437',
-    projectId: 'daily-water-tracker-prod',
-    storageBucket: 'daily-water-tracker-prod.firebasestorage.app',
+    apiKey: 'AIzaSyAFINLbi3isX703H20NFIjIohCXozIunUU',
+    appId: '1:506781937368:android:25194ab45069eec2deb1ad',
+    messagingSenderId: '506781937368',
+    projectId: 'dailywatertracker-app-prod',
+    storageBucket: 'dailywatertracker-app-prod.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCfLpNoDlpzx0mXlFEO5GBbxjOF-zBnPPk',
-    appId: '1:940055301437:ios:770f031869c93580140954',
-    messagingSenderId: '940055301437',
-    projectId: 'daily-water-tracker-prod',
-    storageBucket: 'daily-water-tracker-prod.firebasestorage.app',
-    iosBundleId: 'com.extrawest.shchypailo.dailywatertracker',
+    apiKey: 'AIzaSyB8Mxvg25pL7BSyTH-BodkrTeaqm_-o_Ck',
+    appId: '1:506781937368:ios:897f3856e0da421ddeb1ad',
+    messagingSenderId: '506781937368',
+    projectId: 'dailywatertracker-app-prod',
+    storageBucket: 'dailywatertracker-app-prod.firebasestorage.app',
+    androidClientId: '506781937368-js014ai30sqq1r2ej8a9ri6gjc8pcpu8.apps.googleusercontent.com',
+    iosClientId: '506781937368-7lo293sbdiufuru77a4arc5hukv2u6hs.apps.googleusercontent.com',
+    iosBundleId: 'com.dailywatertracker.app',
   );
+
 }
