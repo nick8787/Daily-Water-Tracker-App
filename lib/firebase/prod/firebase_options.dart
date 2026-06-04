@@ -59,13 +59,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB8Mxvg25pL7BSyTH-BodkrTeaqm_-o_Ck',
-    appId: '1:506781937368:ios:897f3856e0da421ddeb1ad',
+    appId: '1:506781937368:ios:c139bdcf76bd5775deb1ad',
     messagingSenderId: '506781937368',
     projectId: 'dailywatertracker-app-prod',
     storageBucket: 'dailywatertracker-app-prod.firebasestorage.app',
     androidClientId: '506781937368-js014ai30sqq1r2ej8a9ri6gjc8pcpu8.apps.googleusercontent.com',
-    iosClientId: '506781937368-7lo293sbdiufuru77a4arc5hukv2u6hs.apps.googleusercontent.com',
-    iosBundleId: 'com.dailywatertracker.app',
+    iosClientId: '506781937368-m4q7n7u4l92di5ru78qcgtq6125b961f.apps.googleusercontent.com',
+    iosBundleId: 'com.dailywatertracker.app.prod',
   );
 
 }

@@ -39,7 +39,7 @@
 					<!-- DEV Firebase iOS client (REVERSED_CLIENT_ID); keep both so dev & prod builds work from one Info.plist -->
 					<string>com.googleusercontent.apps.194002919052-ocjnabf7vhek7f2n18g15vhi1s5psrlm</string>
 					<!-- PROD Firebase iOS client -->
-					<string>com.googleusercontent.apps.506781937368-7lo293sbdiufuru77a4arc5hukv2u6hs</string>
+					<string>com.googleusercontent.apps.506781937368-m4q7n7u4l92di5ru78qcgtq6125b961f</string>
 				</array>
 			</dict>
 			<dict>

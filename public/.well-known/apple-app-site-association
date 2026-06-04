@@ -4,7 +4,8 @@
     "details": [
       {
         "appIDs": [
-          "5Y74WSDB5B.com.dailywatertracker.app"
+          "5Y74WSDB5B.com.dailywatertracker.app.dev",
+          "5Y74WSDB5B.com.dailywatertracker.app.prod"
         ],
         "components": [
           {
