@@ -16,6 +16,42 @@ import 'package:daily_water_tracker/features/statistics/screens/statistics_scree
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
 
+class _AnimatedMainTabs extends StatelessWidget {
+  const _AnimatedMainTabs({required this.selectedTab});
+
+  final MainTab selectedTab;
+
+  static const Duration _fadeDuration = Duration(milliseconds: 220);
+  static const Curve _fadeCurve = Curves.easeInOutCubic;
+
+  static const List<Widget> _tabs = [
+    StatisticsScreen(embedInMainShell: true),
+    HomeTabScreen(),
+    AccountScreen(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        for (var i = 0; i < _tabs.length; i++)
+          Positioned.fill(
+            child: IgnorePointer(
+              ignoring: selectedTab.index != i,
+              child: AnimatedOpacity(
+                opacity: selectedTab.index == i ? 1 : 0,
+                duration: _fadeDuration,
+                curve: _fadeCurve,
+                child: _tabs[i],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
@@ -54,14 +90,7 @@ class HomeScreen extends StatelessWidget {
                       bottom: false,
                       child: Stack(
                         children: [
-                          IndexedStack(
-                            index: state.tab.index,
-                            children: const [
-                              StatisticsScreen(embedInMainShell: true),
-                              HomeTabScreen(),
-                              AccountScreen(),
-                            ],
-                          ),
+                          _AnimatedMainTabs(selectedTab: state.tab),
                           Positioned(
                             left: 0,
                             right: 0,
