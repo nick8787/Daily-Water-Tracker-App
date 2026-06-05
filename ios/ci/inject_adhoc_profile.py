@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-Codemagic: after `app-store-connect fetch-signing-files`, find the Ad Hoc
-.mobileprovision for the dev bundle id and pin PROVISIONING_PROFILE_SPECIFIER
-into Runner's Release-dev / Profile-dev Xcode configs.
+Codemagic: after `app-store-connect fetch-signing-files`, pin the fetched
+.mobileprovision into Runner's Release-dev / Profile-dev Xcode configs.
 
 `xcode-project use-profiles` often skips non-standard configuration names
-(e.g. Release-dev), which causes: "Runner requires a provisioning profile".
+(e.g. Release-dev), which causes signing failures on CI.
+
+Set CM_PROFILE_KIND=development (default) or adhoc.
 """
 
 from __future__ import annotations
@@ -32,7 +33,6 @@ def _profile_search_roots() -> list[Path]:
             Path.home() / "Library/Developer/Xcode/UserData/Provisioning Profiles",
         ]
     )
-    # Dedupe while preserving order
     seen: set[str] = set()
     out: list[Path] = []
     for r in roots:
@@ -56,7 +56,6 @@ def _iter_mobileprovisions() -> list[Path]:
                     seen_paths.add(k)
                     found.append(p)
 
-    # CI sometimes leaves profiles only under the clone; shallow search.
     repo_ios = Path(__file__).resolve().parents[1]
     for p in repo_ios.rglob("*.mobileprovision"):
         if ".symlinks" in p.parts or "Pods/" in p.parts:
@@ -95,6 +94,11 @@ def _is_ad_hoc(pl: dict) -> bool:
     return True
 
 
+def _is_development(pl: dict) -> bool:
+    ent = pl.get("Entitlements") or {}
+    return ent.get("get-task-allow", False) is True
+
+
 def _bundle_from_application_identifier(appid: str) -> str | None:
     appid = appid.strip()
     if not appid:
@@ -120,7 +124,10 @@ def _matches_bundle(pl: dict, bundle: str) -> bool:
     return appid.endswith("." + bundle)
 
 
-def find_ad_hoc_profile_name() -> str:
+def find_profile(profile_kind: str) -> tuple[str, str]:
+    matcher = _is_development if profile_kind == "development" else _is_ad_hoc
+    label = "Development" if profile_kind == "development" else "Ad Hoc"
+
     candidates: list[tuple[Path, dict]] = []
     for path in _iter_mobileprovisions():
         pl = _decode_provision(path)
@@ -128,52 +135,80 @@ def find_ad_hoc_profile_name() -> str:
             continue
         if not _matches_bundle(pl, BUNDLE_ID):
             continue
-        if not _is_ad_hoc(pl):
+        if not matcher(pl):
             continue
         candidates.append((path, pl))
 
     if not candidates:
         roots = _profile_search_roots()
         print(
-            f"No Ad Hoc .mobileprovision found for {BUNDLE_ID}.\n"
+            f"No {label} .mobileprovision found for {BUNDLE_ID}.\n"
             f"Searched: {', '.join(str(r) for r in roots)} + ios/ tree.\n"
-            "If fetch-signing-files failed, verify APP_STORE_CONNECT_* env vars and API key role (App Manager+).\n"
-            "For --create, add CERTIFICATE_PRIVATE_KEY in Codemagic when Apple must mint a new distribution certificate.",
+            "If fetch-signing-files failed, verify codemagic_api_key and App ID capabilities.",
             file=sys.stderr,
         )
         sys.exit(1)
 
-    def sort_key(item: tuple[Path, dict]):
-        pl = item[1]
-        return pl.get("CreationDate") or pl.get("Name") or ""
-
-    candidates.sort(key=sort_key, reverse=True)
+    candidates.sort(
+        key=lambda item: item[1].get("CreationDate") or item[1].get("Name") or "",
+        reverse=True,
+    )
     best_path, best_pl = candidates[0]
     name = best_pl.get("Name")
     if not name or not isinstance(name, str):
         print(f"Profile at {best_path} has no Name field", file=sys.stderr)
         sys.exit(1)
-    print(f"Using provisioning profile: {name!r} ({best_path.name})")
-    return name
+    profile_uuid = best_path.stem
+    print(f"Using {label.lower()} profile: {name!r} ({profile_uuid})")
+    return profile_uuid, name
 
 
 def pbxproj_escape_value(s: str) -> str:
     return s.replace("\\", "\\\\").replace('"', '\\"')
 
 
-def inject(pbx: str, profile_name: str) -> str:
+def inject_development(pbx: str, profile_uuid: str) -> str:
+    needle = (
+        '\t\t\t\tCODE_SIGN_STYLE = Manual;\n'
+        '\t\t\t\t"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";\n'
+    )
+    repl = (
+        '\t\t\t\tCODE_SIGN_STYLE = Manual;\n'
+        f'\t\t\t\tPROVISIONING_PROFILE = "{pbxproj_escape_value(profile_uuid)}";\n'
+        '\t\t\t\t"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";\n'
+    )
+    if needle not in pbx:
+        if "PROVISIONING_PROFILE" in pbx and "Release-dev" in pbx:
+            print("PROVISIONING_PROFILE already present; skipping inject.")
+            return pbx
+        print(
+            "Expected Manual+iPhone Developer block not found in project.pbxproj",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+    count = pbx.count(needle)
+    if count != 2:
+        print(
+            f"Expected exactly 2 Manual+iPhone Developer blocks (Release-dev + Profile-dev), found {count}",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+    return pbx.replace(needle, repl)
+
+
+def inject_ad_hoc(pbx: str, profile_uuid: str) -> str:
     needle = (
         '\t\t\t\tCODE_SIGN_STYLE = Manual;\n'
         '\t\t\t\t"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";\n'
     )
     repl = (
         '\t\t\t\tCODE_SIGN_STYLE = Manual;\n'
-        f'\t\t\t\tPROVISIONING_PROFILE_SPECIFIER = "{pbxproj_escape_value(profile_name)}";\n'
+        f'\t\t\t\tPROVISIONING_PROFILE = "{pbxproj_escape_value(profile_uuid)}";\n'
         '\t\t\t\t"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";\n'
     )
     if needle not in pbx:
-        if "PROVISIONING_PROFILE_SPECIFIER" in pbx and "Release-dev" in pbx:
-            print("PROVISIONING_PROFILE_SPECIFIER already present; skipping inject.")
+        if "PROVISIONING_PROFILE" in pbx and "Release-dev" in pbx:
+            print("PROVISIONING_PROFILE already present; skipping inject.")
             return pbx
         print(
             "Expected Manual+iPhone Distribution block not found in project.pbxproj",
@@ -191,9 +226,17 @@ def inject(pbx: str, profile_name: str) -> str:
 
 
 def main() -> None:
-    name = find_ad_hoc_profile_name()
+    profile_kind = os.environ.get("CM_PROFILE_KIND", "development").strip().lower()
+    if profile_kind not in {"development", "adhoc"}:
+        print(f"Unsupported CM_PROFILE_KIND={profile_kind!r}", file=sys.stderr)
+        sys.exit(1)
+
+    profile_uuid, _ = find_profile(profile_kind)
     text = PBXPROJ.read_text(encoding="utf-8")
-    new_text = inject(text, name)
+    if profile_kind == "development":
+        new_text = inject_development(text, profile_uuid)
+    else:
+        new_text = inject_ad_hoc(text, profile_uuid)
     PBXPROJ.write_text(new_text, encoding="utf-8")
     print(f"Updated {PBXPROJ}")
 

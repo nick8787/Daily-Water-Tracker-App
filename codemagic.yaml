@@ -89,6 +89,7 @@ workflows:
             --create
           keychain add-certificates
           xcode-project use-profiles
+          CM_PROFILE_KIND=development python3 ios/ci/inject_adhoc_profile.py
 
       - name: Build Android Release (DEV Flavor)
         script: |
