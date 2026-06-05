@@ -1,8 +1,7 @@
 workflows:
-  # 1. DEVELOPMENT WORKFLOW (Android + iOS)
   dev-workflow:
     name: Development Workflow
-    instance_type: mac_mini_m1
+    instance_type: mac_mini_m2
     integrations:
       app_store_connect: codemagic_api_key
     environment:
@@ -18,6 +17,8 @@ workflows:
       branch_patterns:
         - pattern: master
           include: true
+        - pattern: dev
+          include: true
     scripts:
       - name: Tool versions
         script: |
@@ -26,10 +27,8 @@ workflows:
 
       - name: Decode Firebase configs (DEV)
         script: |
-          mkdir -p android/app/src/dev
+          mkdir -p android/app/src/dev ios/config/dev
           echo "$ANDROID_FIREBASE_SECRET_DEV" | tr -d '\n\r ' | base64 --decode > android/app/src/dev/google-services.json
-          
-          mkdir -p ios/config/dev
           echo "$IOS_FIREBASE_SECRET_DEV" | tr -d '\n\r ' | base64 --decode > ios/config/dev/GoogleService-Info.plist
 
       - name: Decode app credentials config (DEV)
@@ -42,26 +41,7 @@ workflows:
           echo "$CREDENTIALS_DEV_BASE64" | tr -d '\n\r ' | base64 --decode > assets/config_development.json
 
       - name: Extract Firebase App IDs (DEV)
-        script: |
-          python3 - <<'PY'
-          import json, plistlib, os
-          
-          # Android
-          with open("android/app/src/dev/google-services.json", "r", encoding="utf-8") as f:
-              data = json.load(f)
-          android_app_id = data["client"][0]["client_info"]["mobilesdk_app_id"]
-          
-          # iOS
-          with open("ios/config/dev/GoogleService-Info.plist", "rb") as f:
-              pl = plistlib.load(f)
-          ios_app_id = pl["GOOGLE_APP_ID"]
-          
-          cm_env = os.environ.get("CM_ENV")
-          if cm_env:
-              with open(cm_env, "a", encoding="utf-8") as f:
-                  f.write(f"FIREBASE_APP_ID_ANDROID={android_app_id}\n")
-                  f.write(f"FIREBASE_APP_ID_IOS={ios_app_id}\n")
-          PY
+        script: python3 scripts/ci/extract_firebase_app_ids.py dev
 
       - name: Set up Android keystore
         script: |
@@ -73,29 +53,11 @@ workflows:
           storeFile=/tmp/upload-keystore.jks
           EOF
 
-      - name: Prepare iOS Project & Inject Bundle ID
-        script: |
-          flutter pub get
-          find . -name "Podfile" -execdir pod install \;
-          
-          sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
-          sed -i '' 's/ProvisioningStyle = Automatic;/ProvisioningStyle = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
+      - name: Prepare iOS dependencies
+        script: bash ios/ci/prepare_ios_project.sh
 
-      - name: Set up iOS signing profiles (Development)
-        script: |
-          set -euo pipefail
-          if [ -z "${CERTIFICATE_PRIVATE_KEY:-}" ]; then
-            echo "CERTIFICATE_PRIVATE_KEY is missing (Codemagic group: common)." >&2
-            echo "Required for app-store-connect fetch-signing-files --create." >&2
-            exit 1
-          fi
-          keychain initialize
-          app-store-connect fetch-signing-files "com.dailywatertracker.app.dev" \
-            --type IOS_APP_DEVELOPMENT \
-            --create
-          keychain add-certificates
-          xcode-project use-profiles
-          CM_PROFILE_KIND=development python3 ios/ci/inject_adhoc_profile.py
+      - name: Set up iOS code signing (Development)
+        script: bash ios/ci/setup_codemagic_signing.sh com.dailywatertracker.app.dev development
 
       - name: Build Android Release (DEV Flavor)
         script: |
@@ -110,12 +72,7 @@ workflows:
             --export-method development
 
       - name: Upload debug symbols (dSYM) to Firebase
-        script: |
-          if [ -f ios/ci/upload_crashlytics_dsyms.sh ]; then
-            bash ios/ci/upload_crashlytics_dsyms.sh ios/config/dev/GoogleService-Info.plist
-          else
-            echo "Skip dSYM upload - script not found"
-          fi
+        script: bash ios/ci/upload_crashlytics_dsyms.sh ios/config/dev/GoogleService-Info.plist
 
     artifacts:
       - build/app/outputs/flutter-apk/app-dev-release.apk
@@ -132,7 +89,7 @@ workflows:
             npx --yes firebase-tools@latest appdistribution:distribute "build/app/outputs/flutter-apk/app-dev-release.apk" \
               --app "$FIREBASE_APP_ID_ANDROID" \
               --groups "internal-testers" \
-              --release-notes "$(jq -r '.[0].text' release_notes.json)" \
+              --release-notes "$(bash scripts/ci/release_notes_text.sh)" \
               --token "$FIREBASE_TOKEN"
 
         - name: Publish iOS to Firebase App Distribution
@@ -145,13 +102,12 @@ workflows:
             npx --yes firebase-tools@latest appdistribution:distribute "$IPA_PATH" \
               --app "$FIREBASE_APP_ID_IOS" \
               --groups "internal-testers" \
-              --release-notes "$(jq -r '.[0].text' release_notes.json)" \
+              --release-notes "$(bash scripts/ci/release_notes_text.sh)" \
               --token "$FIREBASE_TOKEN"
 
-  # 2. PRODUCTION WORKFLOW (Android + iOS)
   prod-workflow:
     name: Production Workflow
-    instance_type: mac_mini_m1
+    instance_type: mac_mini_m2
     integrations:
       app_store_connect: codemagic_api_key
     environment:
@@ -167,6 +123,10 @@ workflows:
       branch_patterns:
         - pattern: production
           include: true
+        - pattern: master
+          include: true
+        - pattern: dev
+          include: true
     scripts:
       - name: Tool versions
         script: |
@@ -175,10 +135,8 @@ workflows:
 
       - name: Decode Firebase configs (PROD)
         script: |
-          mkdir -p android/app/src/prod
+          mkdir -p android/app/src/prod ios/config/prod
           echo "$ANDROID_FIREBASE_SECRET_PROD" | tr -d '\n\r ' | base64 --decode > android/app/src/prod/google-services.json
-          
-          mkdir -p ios/config/prod
           echo "$IOS_FIREBASE_SECRET_PROD" | tr -d '\n\r ' | base64 --decode > ios/config/prod/GoogleService-Info.plist
 
       - name: Decode app credentials config (PROD)
@@ -190,18 +148,8 @@ workflows:
           mkdir -p assets
           echo "$CREDENTIALS_PROD_BASE64" | tr -d '\n\r ' | base64 --decode > assets/config_production.json
 
-      - name: Extract Firebase App ID (ANDROID PROD)
-        script: |
-          python3 - <<'PY'
-          import json, os
-          with open("android/app/src/prod/google-services.json", "r", encoding="utf-8") as f:
-              data = json.load(f)
-          app_id = data["client"][0]["client_info"]["mobilesdk_app_id"]
-          cm_env = os.environ.get("CM_ENV")
-          if cm_env:
-              with open(cm_env, "a", encoding="utf-8") as f:
-                  f.write(f"FIREBASE_APP_ID_ANDROID_PROD={app_id}\n")
-          PY
+      - name: Extract Firebase App IDs (PROD)
+        script: python3 scripts/ci/extract_firebase_app_ids.py prod
 
       - name: Set up Android keystore
         script: |
@@ -213,40 +161,16 @@ workflows:
           storeFile=/tmp/upload-keystore.jks
           EOF
 
-      - name: Prepare iOS Project & Fix Signing (PROD)
-        script: |
-          flutter pub get
-          find . -name "Podfile" -execdir pod install \;
-          
-          sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
-          sed -i '' 's/ProvisioningStyle = Automatic;/ProvisioningStyle = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
-          sed -i '' 's/PROVISIONING_PROFILE_SPECIFIER = ".*";//g' ios/Runner.xcodeproj/project.pbxproj
+      - name: Prepare iOS dependencies
+        script: bash ios/ci/prepare_ios_project.sh
 
-      - name: Set up iOS signing profiles (App Store)
-        script: |
-          set -euo pipefail
-          if [ -z "${CERTIFICATE_PRIVATE_KEY:-}" ]; then
-            echo "CERTIFICATE_PRIVATE_KEY is missing (Codemagic group: common)." >&2
-            exit 1
-          fi
-          keychain initialize
-          app-store-connect fetch-signing-files "com.dailywatertracker.app.prod" \
-            --type IOS_APP_STORE \
-            --create
-          keychain add-certificates
-          xcode-project use-profiles
-          CM_BUNDLE_ID=com.dailywatertracker.app.prod \
-            CM_PROFILE_KIND=appstore \
-            python3 ios/ci/inject_adhoc_profile.py
+      - name: Set up iOS code signing (App Store)
+        script: bash ios/ci/setup_codemagic_signing.sh com.dailywatertracker.app.prod appstore
 
       - name: Build Android Release (Bundle & APK)
         script: |
-          # Use the tag that triggered the build (e.g., "1.2.0" or "v1.2.0")
-          # If CM_TAG is empty (manual build), fallback to the latest git tag
           APP_VERSION=${CM_TAG:-$(git describe --tags $(git rev-list --tags --max-count=1))}
-          # Strip 'v' prefix if present
           APP_VERSION=${APP_VERSION#v}
-          
           flutter build appbundle --release --flavor prod --build-name=$APP_VERSION --build-number=$BUILD_NUMBER
           flutter build apk --release --flavor prod --build-name=$APP_VERSION --build-number=$BUILD_NUMBER
 
@@ -254,13 +178,10 @@ workflows:
         script: |
           APP_VERSION=${CM_TAG:-$(git describe --tags $(git rev-list --tags --max-count=1))}
           APP_VERSION=${APP_VERSION#v}
-          
           flutter build ipa --release --flavor prod --build-name=$APP_VERSION --build-number=$BUILD_NUMBER --export-method app-store
 
       - name: Upload debug symbols (dSYM) to Firebase
-        script: |
-          set -euo pipefail
-          bash ios/ci/upload_crashlytics_dsyms.sh ios/config/prod/GoogleService-Info.plist
+        script: bash ios/ci/upload_crashlytics_dsyms.sh ios/config/prod/GoogleService-Info.plist
 
     artifacts:
       - build/app/outputs/bundle/prodRelease/*.aab
@@ -278,10 +199,8 @@ workflows:
       scripts:
         - name: Publish Android to Firebase App Distribution
           script: |
-            APP_VERSION=${CM_TAG:-$(git describe --tags $(git rev-list --tags --max-count=1))}
-            
             npx --yes firebase-tools@latest appdistribution:distribute "build/app/outputs/flutter-apk/app-prod-release.apk" \
               --app "$FIREBASE_APP_ID_ANDROID_PROD" \
               --groups "internal-testers" \
-              --release-notes "$(jq -r '.[0].text' release_notes.json)" \
+              --release-notes "$(bash scripts/ci/release_notes_text.sh)" \
               --token "$FIREBASE_TOKEN"

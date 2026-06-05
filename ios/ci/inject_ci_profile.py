@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
-Codemagic: after `app-store-connect fetch-signing-files`, pin the fetched
-.mobileprovision into Runner flavor Xcode configs.
+Pin the fetched .mobileprovision UUID into flavor Xcode configs (Release-dev,
+Release-prod, Profile-dev, Profile-prod).
 
-`xcode-project use-profiles` often skips non-standard configuration names
-(e.g. Release-dev, Release-prod), which causes signing failures on CI.
+Called by ios/ci/setup_codemagic_signing.sh after fetch-signing-files.
 
 Environment:
   CM_BUNDLE_ID     — default com.dailywatertracker.app.dev

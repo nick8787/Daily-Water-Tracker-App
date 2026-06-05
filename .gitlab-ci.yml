@@ -1,0 +1,20 @@
+# Pipelines only on merge requests.
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+stages:
+  - lint
+
+analyze_code:
+  stage: lint
+  image: instrumentisto/flutter:3.41.6
+  before_script:
+    - echo -e "machine gitlab.com\nlogin gitlab-ci-token\npassword ${CI_JOB_TOKEN}" > ~/.netrc
+    - flutter --version
+  script:
+    - flutter pub get
+    - mkdir -p lib/firebase/dev lib/firebase/prod
+    - cp -rf lib/firebase/dummy/firebase_options.dart lib/firebase/dev/ || true
+    - cp -rf lib/firebase/dummy/firebase_options.dart lib/firebase/prod/ || true
+    - flutter analyze --fatal-warnings --no-fatal-infos
