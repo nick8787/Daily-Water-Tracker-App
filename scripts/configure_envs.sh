@@ -11,7 +11,6 @@ FLAVOR=$1
 FIREBASE_PROJECT_ID=$2
 ANDROID_PACKAGE_NAME=$3
 IOS_BUNDLE_ID=$4
-WEB_APP_ID=$5
 
 if [ "$CI" = true ] ;
 then
@@ -34,9 +33,7 @@ flutterfire configure \
 --out=lib/firebase/$FLAVOR/firebase_options.dart \
 --platforms=ios,android \
 --android-package-name=$ANDROID_PACKAGE_NAME \
---ios-bundle-id=$IOS_BUNDLE_ID \
-# Uncomment once web is needed.
-#--web-app-id=$WEB_APP_ID \
+--ios-bundle-id=$IOS_BUNDLE_ID
 
 if [ "$CI" = true ] ;
 then
@@ -47,10 +44,5 @@ fi
 mv android/app/google-services.json android/app/src/$FLAVOR/google-services.json
 mv ios/Runner/GoogleService-Info.plist ios/config/$FLAVOR/GoogleService-Info.plist
 mv ios/firebase_app_id_file.json ios/config/$FLAVOR/firebase_app_id_file.json
-
-
-
-# Check if $WEB_APP_ID is set and copy WEB Files from {$FLAVOR} folder to main '/web' folder
-[ -n "$WEB_APP_ID" ] &&  cp -rf ./webenv/$FLAVOR/* web/
 
 echo "Setup finished"
