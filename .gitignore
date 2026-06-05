@@ -37,8 +37,6 @@ assets/config_production.json
 .pub/
 /build/
 
-# Web related
-
 # Symbolication related
 app.*.symbols
 

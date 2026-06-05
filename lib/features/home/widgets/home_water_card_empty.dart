@@ -19,7 +19,7 @@ class HomeWaterCardEmpty extends StatelessWidget {
         final h = c.maxHeight;
 
         final glassW = (h * 0.50).clamp(185.0, 235.0);
-        final glassTop = (h * 0.26).clamp(60.0, 100.0);
+        final glassTop = (h * 0.32).clamp(72.0, 112.0);
         final textTop = (h * 0.735).clamp(270.0, h - 84.0);
 
         return Stack(

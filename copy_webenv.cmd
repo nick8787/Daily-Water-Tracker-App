@@ -1,1 +1,0 @@
-xcopy webenv\%1  web\ /E/Y

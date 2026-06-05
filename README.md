@@ -62,7 +62,7 @@ A Flutter app for tracking daily water intake. Backed by Firebase, with real-tim
 │   ├── firebase/             Firebase services and models
 │   ├── network/              Dio client, interceptors, WebSocket
 │   └── main.dart             Entry point - DI, Firebase init, EasyLocalization
-├── scripts/                  Codegen, l10n, Firebase Hosting helpers
+├── scripts/                  Codegen, l10n, icons, Firebase/env setup helpers
 ├── codemagic.yaml            CI/CD pipelines (dev + prod)
 └── pubspec.yaml
 ```
@@ -119,13 +119,6 @@ flutter run --flavor dev
 flutter run --flavor prod
 ```
 
-For web (single artifact, flavor goes through dart-define):
-
-```shell
-flutter run --dart-define FLAVOR=dev
-flutter run --dart-define FLAVOR=prod
-```
-
 ## ⚙️ Development
 
 ### Generate models, assets, etc.
@@ -143,8 +136,7 @@ sh ./scripts/generate_l10n.sh
 ### Generate launcher icons
 
 ```shell
-flutter pub run flutter_launcher_icons -f flutter_launcher_icons-dev.yaml
-flutter pub run flutter_launcher_icons -f flutter_launcher_icons-prod.yaml
+sh ./scripts/generate_android_icons.sh
 ```
 
 ### Deploy `.well-known/assetlinks.json` (App Links)

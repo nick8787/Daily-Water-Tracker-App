@@ -234,6 +234,7 @@ class AccountCubit extends Cubit<AccountState> {
 
       if (osGranted) {
         await _firestoreRepository.updateUserProfile(notificationsEnabled: true);
+        await _messagingRepository.syncTokenNow();
         await _reminderScheduler.rescheduleReminders();
         await _messagingRepository.syncReminderTopicWithPreferences();
         await _recomputeNotifications(null);

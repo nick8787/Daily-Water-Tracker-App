@@ -22,7 +22,6 @@ move_icons_from_main_to() {
   mkdir -p "$target_res"
   rm -rf "$target_res"/mipmap-* "$target_res"/mipmap-anydpi-v26 "$target_res"/drawable/ic_launcher* 2>/dev/null || true
 
-  # Move all generated icon resources.
   if ls "$main_res"/mipmap-* >/dev/null 2>&1; then
     mv "$main_res"/mipmap-* "$target_res"/
   fi
@@ -51,7 +50,6 @@ clean_generated_from_main
 dart run flutter_launcher_icons --file flutter_launcher_icons-prod.yaml
 move_icons_from_main_to "$prod_res"
 
-# Generate again for main default (so a non-flavored build still has icons).
 clean_generated_from_main
 dart run flutter_launcher_icons --file flutter_launcher_icons-prod.yaml
 
@@ -59,4 +57,3 @@ echo "Generating DEV icons..."
 generate_for flutter_launcher_icons-dev.yaml "$dev_res"
 
 echo "Done. DEV/PROD icons generated."
-

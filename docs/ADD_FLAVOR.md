@@ -27,13 +27,9 @@ Change the app bundle identifier to differentiate between schemes. In `Product B
 - cp -rf lib/firebase/dummy/firebase_options.dart lib/firebase/stage/
 ```
 
-5. Duplicate `configure_envs_dev.sh` changing the name and content according to new flavor.
+5. Duplicate `scripts/configure_envs_dev.sh` changing the name and content according to new flavor.
 ```shell
-sh ./scripts/configure_envs.sh {flavor} {firebase_project_id} {android_package_name} {ios_bundle_id} {web_app_id}
+sh scripts/configure_envs.sh {flavor} {firebase_project_id} {android_package_name} {ios_bundle_id}
 ```
-
-## Web
-Open `/webenv` and duplicate `dev` changing the name/content.
-
 
 

@@ -15,11 +15,11 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   ThemeBloc(this._themeBox) : super(ThemeState.initial()) {
     on<SetTheme>((SetTheme event, Emitter<ThemeState> emit) async {
+      emit(state.copyWith(themeMode: event.themeMode));
       await _themeBox.put(
         ThemeBox.themeModeKey,
         EnumToString().parse(event.themeMode),
       );
-      emit(state.copyWith(themeMode: event.themeMode));
     });
 
     on<InitTheme>((InitTheme event, Emitter<ThemeState> emit) async {
