@@ -20,44 +20,57 @@ class AccountMenuSection extends StatelessWidget {
     required this.onNotificationsToggle,
     required this.onShareProgress,
     required this.onComingSoon,
+    this.expandVertically = false,
   });
 
   final void Function(BuildContext context, bool value) onNotificationsToggle;
   final Future<void> Function(BuildContext context) onShareProgress;
   final void Function(BuildContext context, String feature) onComingSoon;
+  final bool expandVertically;
+
+  Widget _menuRow(Widget child) {
+    if (!expandVertically) return child;
+    return Expanded(child: child);
+  }
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemeBloc>().state.themeMode == ThemeMode.dark;
 
     return AccountMenuCard(
+      expandVertically: expandVertically,
       children: [
-        AccountMenuItem(
+        _menuRow(AccountMenuItem(
+          fillVertically: expandVertically,
           leadingAsset: icUserProfile,
           title: LocaleKeys.account_menu_my_profile.tr(),
           onTap: () => context.push(profileRoute),
-        ),
+        )),
         const AccountMenuDivider(),
-        AccountMenuItem(
+        _menuRow(AccountMenuItem(
+          fillVertically: expandVertically,
           leadingAsset: icUserPreferences,
           title: LocaleKeys.account_menu_preferences.tr(),
           onTap: () => context.push(preferencesRoute),
-        ),
+        )),
         const AccountMenuDivider(),
-        AccountMenuItem(
+        _menuRow(AccountMenuItem(
+          fillVertically: expandVertically,
           leadingAsset: icUserHistory,
           title: LocaleKeys.account_menu_history.tr(),
           onTap: () =>
               context.push(historyRoute, extra: context.read<HomeCubit>()),
-        ),
+        )),
         const AccountMenuDivider(),
-        AccountMenuItem(
+        _menuRow(AccountMenuItem(
+          fillVertically: expandVertically,
           leadingIcon: Icons.archive,
           title: LocaleKeys.account_menu_achievements.tr(),
           onTap: () => context.push(achievementsRoute),
-        ),
+        )),
         const AccountMenuDivider(),
-        AccountMenuItem(
+        _menuRow(AccountMenuItem(
+          fillVertically: expandVertically,
           leadingAsset: icAccountNotifications,
           title: LocaleKeys.account_menu_notifications.tr(),
           showChevron: false,
@@ -97,15 +110,17 @@ class AccountMenuSection extends StatelessWidget {
             if (acc.isNotificationPermissionBusy) return;
             onNotificationsToggle(context, !acc.isNotificationsEnabled);
           },
-        ),
+        )),
         const AccountMenuDivider(),
-        AccountMenuItem(
+        _menuRow(AccountMenuItem(
+          fillVertically: expandVertically,
           leadingAsset: icShareMyProgress,
           title: LocaleKeys.account_menu_share_progress.tr(),
           onTap: () => onShareProgress(context),
-        ),
+        )),
         const AccountMenuDivider(),
-        AccountMenuItem(
+        _menuRow(AccountMenuItem(
+          fillVertically: expandVertically,
           leadingIcon: Icons.dark_mode_outlined,
           title: LocaleKeys.account_menu_dark_theme.tr(),
           showChevron: false,
@@ -115,13 +130,14 @@ class AccountMenuSection extends StatelessWidget {
             onChanged: (_) => context.read<ThemeBloc>().switchTheme(),
           ),
           onTap: () => context.read<ThemeBloc>().switchTheme(),
-        ),
+        )),
         const AccountMenuDivider(),
-        AccountMenuItem(
+        _menuRow(AccountMenuItem(
+          fillVertically: expandVertically,
           leadingIcon: Icons.more_horiz,
           title: LocaleKeys.account_menu_more.tr(),
           onTap: () => context.push(settingsMoreRoute),
-        ),
+        )),
       ],
     );
   }
