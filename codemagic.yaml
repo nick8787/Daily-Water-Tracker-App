@@ -83,6 +83,12 @@ workflows:
 
       - name: Set up iOS signing profiles (Development)
         script: |
+          set -euo pipefail
+          if [ -z "${CERTIFICATE_PRIVATE_KEY:-}" ]; then
+            echo "CERTIFICATE_PRIVATE_KEY is missing (Codemagic group: common)." >&2
+            echo "Required for app-store-connect fetch-signing-files --create." >&2
+            exit 1
+          fi
           keychain initialize
           app-store-connect fetch-signing-files "com.dailywatertracker.app.dev" \
             --type IOS_APP_DEVELOPMENT \
