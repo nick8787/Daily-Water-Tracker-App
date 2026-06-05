@@ -317,7 +317,9 @@ class FirestoreRepository {
     final dayDocId = _dayDocId(calendarDay);
 
     return days.doc(dayDocId).snapshots().map((snapshot) {
-      final records = _recordsFromDaySnapshot(snapshot.data(), calendarDay);
+      final records = List<WaterRecordModel>.from(
+        _recordsFromDaySnapshot(snapshot.data(), calendarDay),
+      );
       records.sort((a, b) => b.timestamp.compareTo(a.timestamp));
       return records;
     });
@@ -328,7 +330,7 @@ class FirestoreRepository {
     Map<String, dynamic>? data,
     DateTime calendarDay,
   ) {
-    if (data == null || data.isEmpty) return const <WaterRecordModel>[];
+    if (data == null || data.isEmpty) return <WaterRecordModel>[];
 
     final records = <WaterRecordModel>[];
     data.forEach((key, value) {
