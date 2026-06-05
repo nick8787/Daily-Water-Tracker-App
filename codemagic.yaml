@@ -218,15 +218,26 @@ workflows:
           flutter pub get
           find . -name "Podfile" -execdir pod install \;
           
+          sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
           sed -i '' 's/ProvisioningStyle = Automatic;/ProvisioningStyle = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
           sed -i '' 's/PROVISIONING_PROFILE_SPECIFIER = ".*";//g' ios/Runner.xcodeproj/project.pbxproj
 
       - name: Set up iOS signing profiles (App Store)
         script: |
+          set -euo pipefail
+          if [ -z "${CERTIFICATE_PRIVATE_KEY:-}" ]; then
+            echo "CERTIFICATE_PRIVATE_KEY is missing (Codemagic group: common)." >&2
+            exit 1
+          fi
           keychain initialize
-          app-store-connect fetch-signing-files "com.dailywatertracker.app.prod" --type IOS_APP_STORE --create
+          app-store-connect fetch-signing-files "com.dailywatertracker.app.prod" \
+            --type IOS_APP_STORE \
+            --create
           keychain add-certificates
           xcode-project use-profiles
+          CM_BUNDLE_ID=com.dailywatertracker.app.prod \
+            CM_PROFILE_KIND=appstore \
+            python3 ios/ci/inject_adhoc_profile.py
 
       - name: Build Android Release (Bundle & APK)
         script: |
