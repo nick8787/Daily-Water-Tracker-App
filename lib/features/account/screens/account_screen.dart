@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -198,37 +199,15 @@ class AccountScreenView extends StatelessWidget {
                           Expanded(
                             child: IgnorePointer(
                               ignoring: sessionBusy,
-                              child: ListView(
-                                physics: sessionBusy
-                                    ? const NeverScrollableScrollPhysics()
-                                    : const BouncingScrollPhysics(),
-                                padding: EdgeInsets.fromLTRB(
-                                  20,
-                                  0,
-                                  20,
-                                  AppBottomNavBar.reservedHeight(context),
-                                ),
-                                children: [
-                                  AccountUserInfoSection(
-                                    signingOut: state.isLogoutInProgress,
-                                    logoutFreeze: state.logoutUiFreeze,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  AccountMenuSection(
-                                    onNotificationsToggle:
-                                        _onNotificationsToggle,
-                                    onShareProgress:
-                                        AccountActions.onShareProgressTap,
-                                    onComingSoon: AccountActions.comingSoon,
-                                  ),
-                                  const SizedBox(height: 18),
-                                  AccountLogoutFooter(
-                                    actionsEnabled: !sessionBusy,
-                                    onLogOutPressed: () =>
-                                        _onLogOutPressed(context),
-                                  ),
-                                  const SizedBox(height: 16),
-                                ],
+                              child: _AccountScrollableBody(
+                                scrollEnabled: !sessionBusy,
+                                signingOut: state.isLogoutInProgress,
+                                logoutFreeze: state.logoutUiFreeze,
+                                sessionBusy: sessionBusy,
+                                onNotificationsToggle: _onNotificationsToggle,
+                                onShareProgress: AccountActions.onShareProgressTap,
+                                onComingSoon: AccountActions.comingSoon,
+                                onLogOutPressed: () => _onLogOutPressed(context),
                               ),
                             ),
                           ),
@@ -242,6 +221,186 @@ class AccountScreenView extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+/// Menu card grows on tall screens; fixed gaps keep profile/nav spacing tight.
+class _AccountScrollableBody extends StatelessWidget {
+  const _AccountScrollableBody({
+    required this.scrollEnabled,
+    required this.signingOut,
+    required this.logoutFreeze,
+    required this.sessionBusy,
+    required this.onNotificationsToggle,
+    required this.onShareProgress,
+    required this.onComingSoon,
+    required this.onLogOutPressed,
+  });
+
+  final bool scrollEnabled;
+  final bool signingOut;
+  final AccountLogoutUiFreeze? logoutFreeze;
+  final bool sessionBusy;
+  final void Function(BuildContext context, bool value) onNotificationsToggle;
+  final Future<void> Function(BuildContext context) onShareProgress;
+  final void Function(BuildContext context, String feature) onComingSoon;
+  final VoidCallback onLogOutPressed;
+
+  static const double _horizontalPadding = 20;
+  static const double _sectionGap = 16;
+  static const double _navBarTopGap = 24;
+  static const double _profileEstimate = 132;
+  static const double _logoutEstimate = 44;
+  static const double _minMenuIntrinsic = 468;
+  /// Share of free height given to the menu card; the rest is even edge spacing.
+  static const double _menuExtraGrowthFactor = 0.72;
+
+  static ({double middleHeight, double edgeSpacer}) _resolveExpandedMiddleLayout({
+    required double viewportHeight,
+    required double bottomOffset,
+  }) {
+    final fixedTop = _profileEstimate + _sectionGap;
+    final fixedBottom = _sectionGap + bottomOffset;
+    final middleZoneMax = math.max(
+      0.0,
+      viewportHeight - fixedTop - fixedBottom,
+    );
+    final middleBlockMin =
+        _minMenuIntrinsic +
+        _logoutEstimate +
+        _AccountMenuAndLogoutBlock._menuToLogoutGap;
+    final growthBudget = math.max(0.0, middleZoneMax - middleBlockMin);
+    final appliedGrowth = growthBudget * _menuExtraGrowthFactor;
+    final middleHeight = middleBlockMin + appliedGrowth;
+    final edgeSpacer = math.max(0.0, (middleZoneMax - middleHeight) / 2);
+
+    return (middleHeight: middleHeight, edgeSpacer: edgeSpacer);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bottomOffset =
+            AppBottomNavBar.pillTopOffsetFromOverlayBottom(context) +
+            _navBarTopGap;
+        final chromeHeight =
+            _profileEstimate +
+            _logoutEstimate +
+            _AccountMenuAndLogoutBlock._menuToLogoutGap +
+            _sectionGap * 2 +
+            bottomOffset;
+        final expandVertically =
+            constraints.maxHeight >= chromeHeight + _minMenuIntrinsic;
+        final expandedLayout = expandVertically
+            ? _resolveExpandedMiddleLayout(
+                viewportHeight: constraints.maxHeight,
+                bottomOffset: bottomOffset,
+              )
+            : null;
+        final scrollPhysics = scrollEnabled
+            ? const ClampingScrollPhysics()
+            : const NeverScrollableScrollPhysics();
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: _horizontalPadding),
+          child: SingleChildScrollView(
+            physics: scrollPhysics,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: IntrinsicHeight(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    AccountUserInfoSection(
+                      signingOut: signingOut,
+                      logoutFreeze: logoutFreeze,
+                    ),
+                    const SizedBox(height: _sectionGap),
+                    if (expandVertically) ...[
+                      if (expandedLayout!.edgeSpacer > 0)
+                        SizedBox(height: expandedLayout.edgeSpacer),
+                      SizedBox(
+                        height: expandedLayout.middleHeight,
+                        child: _AccountMenuAndLogoutBlock(
+                          expandVertically: true,
+                          sessionBusy: sessionBusy,
+                          onNotificationsToggle: onNotificationsToggle,
+                          onShareProgress: onShareProgress,
+                          onComingSoon: onComingSoon,
+                          onLogOutPressed: onLogOutPressed,
+                        ),
+                      ),
+                      if (expandedLayout.edgeSpacer > 0)
+                        SizedBox(height: expandedLayout.edgeSpacer),
+                    ] else ...[
+                      _AccountMenuAndLogoutBlock(
+                        expandVertically: false,
+                        sessionBusy: sessionBusy,
+                        onNotificationsToggle: onNotificationsToggle,
+                        onShareProgress: onShareProgress,
+                        onComingSoon: onComingSoon,
+                        onLogOutPressed: onLogOutPressed,
+                      ),
+                      const Spacer(),
+                    ],
+                    const SizedBox(height: _sectionGap),
+                    SizedBox(height: bottomOffset),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Menu card and logout button are laid out as a single visual unit.
+class _AccountMenuAndLogoutBlock extends StatelessWidget {
+  const _AccountMenuAndLogoutBlock({
+    required this.expandVertically,
+    required this.sessionBusy,
+    required this.onNotificationsToggle,
+    required this.onShareProgress,
+    required this.onComingSoon,
+    required this.onLogOutPressed,
+  });
+
+  final bool expandVertically;
+  final bool sessionBusy;
+  final void Function(BuildContext context, bool value) onNotificationsToggle;
+  final Future<void> Function(BuildContext context) onShareProgress;
+  final void Function(BuildContext context, String feature) onComingSoon;
+  final VoidCallback onLogOutPressed;
+
+  static const double _menuToLogoutGap = 16;
+
+  @override
+  Widget build(BuildContext context) {
+    final menu = AccountMenuSection(
+      expandVertically: expandVertically,
+      onNotificationsToggle: onNotificationsToggle,
+      onShareProgress: onShareProgress,
+      onComingSoon: onComingSoon,
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize:
+          expandVertically ? MainAxisSize.max : MainAxisSize.min,
+      children: [
+        if (expandVertically) Expanded(child: menu) else menu,
+        const SizedBox(height: _menuToLogoutGap),
+        AccountLogoutFooter(
+          actionsEnabled: !sessionBusy,
+          onLogOutPressed: onLogOutPressed,
+        ),
+      ],
     );
   }
 }

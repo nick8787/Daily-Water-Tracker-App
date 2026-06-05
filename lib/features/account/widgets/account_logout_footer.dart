@@ -35,7 +35,12 @@ class AccountLogoutFooter extends StatelessWidget {
           filterQuality: FilterQuality.high,
           color: foreground,
         ),
-        label: Text(LocaleKeys.account_button_log_out.tr()),
+        label: Text(
+          LocaleKeys.account_button_log_out.tr(),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: foreground,
+          ),
+        ),
       ),
     );
   }
