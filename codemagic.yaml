@@ -17,8 +17,6 @@ workflows:
       branch_patterns:
         - pattern: master
           include: true
-        - pattern: dev
-          include: true
     scripts:
       - name: Tool versions
         script: |
