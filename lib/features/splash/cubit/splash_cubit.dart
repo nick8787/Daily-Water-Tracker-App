@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
 
@@ -44,6 +46,7 @@ class SplashCubit extends Cubit<SplashState> {
               _networkOpTimeout,
               onTimeout: () => null,
             );
+        unawaited(_messagingRepository.syncTokenNow());
       }
 
       final elapsed = DateTime.now().difference(start);

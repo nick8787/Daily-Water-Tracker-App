@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -107,8 +108,36 @@ class MessagingRepository {
   Future<void> syncTokenNow() async {
     final user = _authService.currentUser;
     if (user == null) return;
-    final token = await _messaging.getToken();
+    final token = await _resolveFcmToken();
     await _persistToken(token);
+  }
+
+  /// On iOS, FCM [getToken] returns null until APNs registration completes.
+  /// Auth provider (Apple / email / Google) does not matter — only timing does.
+  Future<String?> _resolveFcmToken({
+    Duration timeout = const Duration(seconds: 15),
+    Duration pollInterval = const Duration(milliseconds: 500),
+  }) async {
+    final deadline = DateTime.now().add(timeout);
+
+    while (DateTime.now().isBefore(deadline)) {
+      if (!kIsWeb && Platform.isIOS) {
+        final apns = await _messaging.getAPNSToken();
+        if (apns == null) {
+          await Future<void>.delayed(pollInterval);
+          continue;
+        }
+      }
+
+      final token = await _messaging.getToken();
+      if ((token ?? '').trim().isNotEmpty) {
+        return token;
+      }
+
+      await Future<void>.delayed(pollInterval);
+    }
+
+    return _messaging.getToken();
   }
 
   Future<void> _persistToken(String? token) async {
