@@ -457,12 +457,17 @@ abstract class  LocaleKeys {
   static const legal_privacy_policy_contact_email = 'legal.privacy_policy.contact_email';
   static const legal_privacy_policy = 'legal.privacy_policy';
   static const legal = 'legal';
+  static const achievements_loading = 'achievements.loading';
+  static const achievements_error_load_failed = 'achievements.error_load_failed';
   static const achievements_first_drop_title = 'achievements.first_drop.title';
   static const achievements_first_drop_desc = 'achievements.first_drop.desc';
   static const achievements_first_drop = 'achievements.first_drop';
-  static const achievements_marathon_title = 'achievements.marathon.title';
-  static const achievements_marathon_desc = 'achievements.marathon.desc';
-  static const achievements_marathon = 'achievements.marathon';
+  static const achievements_marathon_3_title = 'achievements.marathon_3.title';
+  static const achievements_marathon_3_desc = 'achievements.marathon_3.desc';
+  static const achievements_marathon_3 = 'achievements.marathon_3';
+  static const achievements_volume_10l_title = 'achievements.volume_10l.title';
+  static const achievements_volume_10l_desc = 'achievements.volume_10l.desc';
+  static const achievements_volume_10l = 'achievements.volume_10l';
   static const achievements = 'achievements';
 
 }

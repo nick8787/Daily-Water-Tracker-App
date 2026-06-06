@@ -575,13 +575,19 @@
     }
   },
   "achievements": {
+    "loading": "Loading achievements…",
+    "error_load_failed": "Could not load achievements. Please try again.",
     "first_drop": {
       "title": "First Drop",
       "desc": "Logged your very first glass of water!"
     },
-    "marathon": {
+    "marathon_3": {
       "title": "Hydration Marathon",
       "desc": "Met your daily goal 3 days in a row."
+    },
+    "volume_10l": {
+      "title": "10 Liter Club",
+      "desc": "Drank 10 liters of effective hydration in total."
     }
   }
 }

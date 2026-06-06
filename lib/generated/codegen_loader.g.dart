@@ -591,13 +591,19 @@ class CodegenLoader extends AssetLoader{
     }
   },
   "achievements": {
+    "loading": "Завантажуємо досягнення…",
+    "error_load_failed": "Не вдалося завантажити досягнення. Спробуйте ще раз.",
     "first_drop": {
       "title": "Перша крапля",
       "desc": "Випито найпершу склянку води!"
     },
-    "marathon": {
+    "marathon_3": {
       "title": "Гідратаційний марафон",
       "desc": "Денна ціль виконувалась 3 дні поспіль."
+    },
+    "volume_10l": {
+      "title": "Клуб 10 літрів",
+      "desc": "Випито 10 літрів ефективної гідратації за весь час."
     }
   }
 };
@@ -1178,13 +1184,19 @@ static const Map<String,dynamic> _en_US = {
     }
   },
   "achievements": {
+    "loading": "Loading achievements…",
+    "error_load_failed": "Could not load achievements. Please try again.",
     "first_drop": {
       "title": "First Drop",
       "desc": "Logged your very first glass of water!"
     },
-    "marathon": {
+    "marathon_3": {
       "title": "Hydration Marathon",
       "desc": "Met your daily goal 3 days in a row."
+    },
+    "volume_10l": {
+      "title": "10 Liter Club",
+      "desc": "Drank 10 liters of effective hydration in total."
     }
   }
 };

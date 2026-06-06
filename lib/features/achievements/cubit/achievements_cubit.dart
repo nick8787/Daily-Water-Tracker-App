@@ -1,56 +1,36 @@
-import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:daily_water_tracker/common/constants/hydration_defaults.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
-import '../../../firebase/models/hydration_log_entry.dart';
-import '../../../generated/locale_keys.g.dart';
-import '../models/badge_model.dart';
+import 'package:daily_water_tracker/features/achievements/logic/achievements_calculator.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+
 import 'achievements_state.dart';
 
 class AchievementsCubit extends Cubit<AchievementsState> {
-  final FirestoreRepository _firestoreRepository;
-
   AchievementsCubit({
     required FirestoreRepository firestoreRepository,
-  })  : _firestoreRepository = firestoreRepository,
-        super(AchievementsInitial());
+  }) : _firestoreRepository = firestoreRepository,
+       super(AchievementsInitial());
+
+  final FirestoreRepository _firestoreRepository;
 
   Future<void> loadAchievements() async {
     emit(AchievementsLoading());
 
     try {
-      final history = await _firestoreRepository.fetchHydrationLog();
+      final entries = await _firestoreRepository.fetchHydrationLog();
+      final profile = await _firestoreRepository.getUserProfile();
+      final dailyGoalMl = profile?.dailyGoalMl ?? kDefaultDailyGoalMl;
 
-      final badges = _calculateBadges(history);
+      final badges = AchievementsCalculator.calculate(
+        entries: entries,
+        dailyGoalMl: dailyGoalMl,
+      );
 
       emit(AchievementsLoaded(badges: badges));
-    } catch (e) {
-      emit(const AchievementsFailure('Failed to load achievements'));
+    } catch (_) {
+      emit(const AchievementsFailure(LocaleKeys.achievements_error_load_failed));
     }
-  }
-
-  List<BadgeModel> _calculateBadges(List<HydrationLogEntry> history) {
-
-    // The icon is visible if there is at least one entry in the history
-    final bool hasAnyDrink = history.isNotEmpty;
-
-    final bool isMarathoner = history.length >= 50;
-
-    return [
-      BadgeModel(
-        id: 'first_drop',
-        nameKey: LocaleKeys.achievements_first_drop_title,
-        descriptionKey: LocaleKeys.achievements_first_drop_desc,
-        iconPath: 'assets/images/badges/first_drop.svg',
-        isUnlocked: hasAnyDrink,
-        unlockDate: hasAnyDrink ? history.last.record.timestamp : null,
-      ),
-      BadgeModel(
-        id: 'marathon',
-        nameKey: LocaleKeys.achievements_marathon_title,
-        descriptionKey: LocaleKeys.achievements_marathon_desc,
-        iconPath: 'assets/images/badges/marathon.svg',
-        isUnlocked: isMarathoner,
-      ),
-    ];
   }
 }
