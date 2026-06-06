@@ -22,9 +22,11 @@ final class AchievementsLoaded extends AchievementsState {
 }
 
 final class AchievementsFailure extends AchievementsState {
-  final String message;
-  const AchievementsFailure(this.message);
+  const AchievementsFailure(this.messageKey);
+
+  /// Locale key for a user-facing error (not raw exception text).
+  final String messageKey;
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [messageKey];
 }

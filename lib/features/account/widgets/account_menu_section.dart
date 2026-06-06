@@ -69,7 +69,7 @@ class AccountMenuSection extends StatelessWidget {
         const AccountMenuDivider(),
         _menuRow(AccountMenuItem(
           fillVertically: expandVertically,
-          leadingIcon: Icons.archive,
+          leadingIcon: Icons.emoji_events_outlined,
           title: LocaleKeys.account_menu_achievements.tr(),
           onTap: () => context.push(achievementsRoute),
         )),
