@@ -546,6 +546,34 @@
       "body": "No pressure — just a gentle invite to drink water if you have not in a while 🌊"
     }
   },
+  "legal": {
+    "privacy_policy": {
+      "title": "Privacy policy",
+      "last_updated_label": "Last updated:",
+      "last_updated_date": "June 6, 2026",
+      "intro": "This Privacy Policy describes how we collect, use, and protect your information when you use Daily Water Tracker and related services.\n\nWe use your data to provide hydration tracking, sync your progress across devices, send optional reminders, and improve app reliability — not for unrelated advertising.",
+      "section_collect": "What we collect",
+      "collect_account": "Account details you provide (such as email, display name, and profile photo) when you sign in or edit your profile.",
+      "collect_hydration": "Hydration data you log (drink type, volume, date, and time) and derived statistics such as weekly activity.",
+      "collect_preferences": "App preferences you set, including daily goal, drink presets, theme, and reminder schedule.",
+      "collect_notifications": "Device notification permission status, used only if you enable reminders.",
+      "collect_diagnostics": "Diagnostic and usage data (for example crash reports and anonymous analytics) to maintain security and fix issues.",
+      "section_use": "How we use it",
+      "use_sync": "To store, display, and sync your hydration history and profile across your signed-in devices.",
+      "use_reminders": "To deliver optional hydration reminders you configure in the app.",
+      "use_insights": "To calculate progress, statistics, achievements, and in-app insights.",
+      "use_improve": "To operate the service, prevent abuse, and improve performance and stability.",
+      "section_sharing": "Sharing & service providers",
+      "sharing_processors": "We use trusted infrastructure providers (such as Google Firebase for authentication, cloud storage, and analytics) that process data on our behalf under their own terms and security standards.",
+      "sharing_no_sell": "We do not sell your personal information to third parties.",
+      "section_rights": "Your rights",
+      "rights_delete": "You can delete your account and associated data from the app at any time (see Account → More).",
+      "rights_contact": "You may contact us to ask about your data or request correction where applicable.",
+      "section_contact": "Contact",
+      "contact_body": "If you have questions about this policy, email us at:",
+      "contact_email": "mykola.shchypailo@gmail.com"
+    }
+  },
   "achievements": {
     "first_drop": {
       "title": "First Drop",
