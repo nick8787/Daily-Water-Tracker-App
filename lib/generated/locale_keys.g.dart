@@ -313,6 +313,7 @@ abstract class  LocaleKeys {
   static const statistics_breakdown_title = 'statistics.breakdown.title';
   static const statistics_breakdown_caption = 'statistics.breakdown.caption';
   static const statistics_breakdown_empty = 'statistics.breakdown.empty';
+  static const statistics_breakdown_scroll_hint = 'statistics.breakdown.scroll_hint';
   static const statistics_breakdown = 'statistics.breakdown';
   static const statistics_period_last_7_days = 'statistics.period.last_7_days';
   static const statistics_period = 'statistics.period';

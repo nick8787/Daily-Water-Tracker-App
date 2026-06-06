@@ -78,28 +78,28 @@ class _StatisticsBody extends StatelessWidget {
                         Expanded(
                           child: LayoutBuilder(
                             builder: (context, constraints) {
+                              final contentHeight =
+                                  constraints.maxHeight - bottomPad;
                               return RefreshIndicator(
                                 color: brandBlue,
                                 onRefresh: () =>
                                     context.read<StatisticsCubit>().refresh(),
-                                child: SingleChildScrollView(
+                                child: ListView(
                                   physics: const BouncingScrollPhysics(
                                     parent: AlwaysScrollableScrollPhysics(),
                                   ),
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                      minHeight: constraints.maxHeight,
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.fromLTRB(
-                                        20,
-                                        0,
-                                        20,
-                                        bottomPad,
-                                      ),
+                                  padding: EdgeInsets.fromLTRB(
+                                    20,
+                                    0,
+                                    20,
+                                    bottomPad,
+                                  ),
+                                  children: [
+                                    SizedBox(
+                                      height: contentHeight,
                                       child: _StatisticsContent(state: state),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               );
                             },
@@ -122,6 +122,8 @@ class _StatisticsContent extends StatelessWidget {
   const _StatisticsContent({required this.state});
 
   final StatisticsState state;
+
+  static const double _cardGap = 13;
 
   @override
   Widget build(BuildContext context) {
@@ -151,14 +153,48 @@ class _StatisticsContent extends StatelessWidget {
     if (state is StatisticsLoaded) {
       final loaded = state as StatisticsLoaded;
       final s = loaded.weekData;
+      final rowCount = loaded.intakeBreakdown.length;
+      final breakdownMode =
+          StatisticsIntakeBreakdownCard.layoutModeFor(rowCount);
+
+      final breakdownCard = StatisticsIntakeBreakdownCard(
+        rows: loaded.intakeBreakdown,
+        layoutMode: breakdownMode,
+      );
+
+      final activityCard = StatisticsWeeklyActivityCard(weekData: s);
+      final insightsCard = StatisticsWeeklyInsightsCard(
+        insights: loaded.weeklyInsights,
+      );
+
+      if (breakdownMode == StatisticsBreakdownLayoutMode.balanced) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              flex: 6,
+              child: activityCard,
+            ),
+            const SizedBox(height: _cardGap),
+            Expanded(
+              flex: 4,
+              child: breakdownCard,
+            ),
+            const SizedBox(height: _cardGap),
+            insightsCard,
+          ],
+        );
+      }
+
+      // compact (0–1) or scrollable (3+)
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          StatisticsWeeklyActivityCard(weekData: s),
-          const SizedBox(height: 14),
-          StatisticsIntakeBreakdownCard(rows: loaded.intakeBreakdown),
-          const SizedBox(height: 12),
-          StatisticsWeeklyInsightsCard(insights: loaded.weeklyInsights),
+          Expanded(child: activityCard),
+          const SizedBox(height: _cardGap),
+          breakdownCard,
+          const SizedBox(height: _cardGap),
+          insightsCard,
         ],
       );
     }

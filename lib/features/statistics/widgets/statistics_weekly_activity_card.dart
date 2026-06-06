@@ -35,6 +35,7 @@ class StatisticsWeeklyActivityCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
+      height: double.infinity,
       padding: StatisticsSummaryMetricCard.tilePadding,
       decoration: StatisticsSummaryMetricCard.tileDecoration(context),
       child: Column(
@@ -48,9 +49,7 @@ class StatisticsWeeklyActivityCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            height: 168,
+          Expanded(
             child: WeeklyBarChart(
               dayBars: weekData.dayBars,
               goalMl: weekData.dailyGoalMl,
