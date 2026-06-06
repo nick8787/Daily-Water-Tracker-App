@@ -11,6 +11,7 @@ import 'package:daily_water_tracker/features/account/widgets/account_menu_card.d
 import 'package:daily_water_tracker/features/account/widgets/account_menu_divider.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_menu_item.dart';
 import 'package:daily_water_tracker/features/home/cubit/home_cubit.dart';
+import 'package:daily_water_tracker/features/legal/widgets/privacy_policy_sheet.dart';
 import 'package:daily_water_tracker/features/theme/theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -140,10 +141,7 @@ class AccountMenuSection extends StatelessWidget {
           fillVertically: expandVertically,
           leadingAsset: icPrivacyPolicy,
           title: LocaleKeys.account_menu_privacy_policy.tr(),
-          onTap: () => onComingSoon(
-            context,
-            LocaleKeys.account_menu_privacy_policy.tr(),
-          ),
+          onTap: () => showPrivacyPolicySheet(context),
         )),
         const AccountMenuDivider(),
         _menuRow(AccountMenuItem(

@@ -407,7 +407,8 @@ class CodegenLoader extends AssetLoader{
     "breakdown": {
       "title": "Структура споживання",
       "caption": "Останні 7 днів · ефективна гідратація",
-      "empty": "Додавайте напої, щоб побачити розподіл за типами."
+      "empty": "Додавайте напої, щоб побачити розподіл за типами.",
+      "scroll_hint": "Прокрутіть для більшого"
     },
     "period": {
       "last_7_days": "Останні 7 днів"
@@ -559,6 +560,34 @@ class CodegenLoader extends AssetLoader{
     "msg_12": {
       "title": "Добре нагадування 💙",
       "body": "Без тиску — м'яке запрошення випити води 🌊"
+    }
+  },
+  "legal": {
+    "privacy_policy": {
+      "title": "Політика конфіденційності",
+      "last_updated_label": "Останнє оновлення:",
+      "last_updated_date": "6 червня 2026 р.",
+      "intro": "Ця Політика конфіденційності описує, як ми збираємо, використовуємо та захищаємо вашу інформацію під час користування Daily Water Tracker і пов’язаними сервісами.\n\nМи використовуємо ваші дані для обліку гідратації, синхронізації прогресу між пристроями, необов’язкових нагадувань і покращення стабільності застосунку — не для сторонньої реклами.",
+      "section_collect": "Що ми збираємо",
+      "collect_account": "Дані облікового запису, які ви надаєте (наприклад, email, ім’я та фото профілю) під час входу або редагування профілю.",
+      "collect_hydration": "Дані про гідратацію, які ви вносите (тип напою, об’єм, дата та час), а також похідну статистику, зокрема тижневу активність.",
+      "collect_preferences": "Налаштування застосунку: денна ціль, пресети напоїв, тема та розклад нагадувань.",
+      "collect_notifications": "Статус дозволу на сповіщення — лише якщо ви увімкнули нагадування.",
+      "collect_diagnostics": "Діагностичні та анонімні дані використання (наприклад, звіти про збої та аналітика) для безпеки та виправлення помилок.",
+      "section_use": "Як ми це використовуємо",
+      "use_sync": "Для збереження, відображення та синхронізації історії гідратації й профілю між вашими пристроями.",
+      "use_reminders": "Для необов’язкових нагадувань про воду, які ви налаштовуєте в застосунку.",
+      "use_insights": "Для розрахунку прогресу, статистики, досягнень та підказок у застосунку.",
+      "use_improve": "Для роботи сервісу, запобігання зловживанням і покращення продуктивності та стабільності.",
+      "section_sharing": "Передача даних і постачальники",
+      "sharing_processors": "Ми користуємося надійною інфраструктурою (зокрема Google Firebase для автентифікації, хмарного сховища та аналітики), яка обробляє дані від нашого імені згідно з власними умовами та стандартами безпеки.",
+      "sharing_no_sell": "Ми не продаємо вашу персональну інформацію третім особам.",
+      "section_rights": "Ваші права",
+      "rights_delete": "Ви можете видалити обліковий запис і пов’язані дані в застосунку будь-коли (Обліковий запис → Ще).",
+      "rights_contact": "Ви можете зв’язатися з нами, щоб дізнатися про свої дані або запросити їх виправлення, де це застосовно.",
+      "section_contact": "Контакти",
+      "contact_body": "Якщо у вас є запитання щодо цієї політики, напишіть нам:",
+      "contact_email": "mykola.shchypailo@gmail.com"
     }
   },
   "achievements": {
@@ -965,7 +994,8 @@ static const Map<String,dynamic> _en_US = {
     "breakdown": {
       "title": "Intake Breakdown",
       "caption": "Last 7 days · effective hydration",
-      "empty": "Log drinks to see how your intake splits across types."
+      "empty": "Log drinks to see how your intake splits across types.",
+      "scroll_hint": "Scroll for more"
     },
     "period": {
       "last_7_days": "Last 7 days"
@@ -1117,6 +1147,34 @@ static const Map<String,dynamic> _en_US = {
     "msg_12": {
       "title": "Kind reminder 💙",
       "body": "No pressure — just a gentle invite to drink water if you have not in a while 🌊"
+    }
+  },
+  "legal": {
+    "privacy_policy": {
+      "title": "Privacy policy",
+      "last_updated_label": "Last updated:",
+      "last_updated_date": "June 6, 2026",
+      "intro": "This Privacy Policy describes how we collect, use, and protect your information when you use Daily Water Tracker and related services.\n\nWe use your data to provide hydration tracking, sync your progress across devices, send optional reminders, and improve app reliability — not for unrelated advertising.",
+      "section_collect": "What we collect",
+      "collect_account": "Account details you provide (such as email, display name, and profile photo) when you sign in or edit your profile.",
+      "collect_hydration": "Hydration data you log (drink type, volume, date, and time) and derived statistics such as weekly activity.",
+      "collect_preferences": "App preferences you set, including daily goal, drink presets, theme, and reminder schedule.",
+      "collect_notifications": "Device notification permission status, used only if you enable reminders.",
+      "collect_diagnostics": "Diagnostic and usage data (for example crash reports and anonymous analytics) to maintain security and fix issues.",
+      "section_use": "How we use it",
+      "use_sync": "To store, display, and sync your hydration history and profile across your signed-in devices.",
+      "use_reminders": "To deliver optional hydration reminders you configure in the app.",
+      "use_insights": "To calculate progress, statistics, achievements, and in-app insights.",
+      "use_improve": "To operate the service, prevent abuse, and improve performance and stability.",
+      "section_sharing": "Sharing & service providers",
+      "sharing_processors": "We use trusted infrastructure providers (such as Google Firebase for authentication, cloud storage, and analytics) that process data on our behalf under their own terms and security standards.",
+      "sharing_no_sell": "We do not sell your personal information to third parties.",
+      "section_rights": "Your rights",
+      "rights_delete": "You can delete your account and associated data from the app at any time (see Account → More).",
+      "rights_contact": "You may contact us to ask about your data or request correction where applicable.",
+      "section_contact": "Contact",
+      "contact_body": "If you have questions about this policy, email us at:",
+      "contact_email": "mykola.shchypailo@gmail.com"
     }
   },
   "achievements": {
