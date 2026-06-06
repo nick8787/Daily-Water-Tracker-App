@@ -32,6 +32,7 @@ class StatisticsWeeklyInsightsCard extends StatelessWidget {
       padding: StatisticsSummaryMetricCard.tilePadding,
       decoration: StatisticsSummaryMetricCard.tileDecoration(context),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(LocaleKeys.statistics_insights_title.tr(), style: titleStyle),
@@ -137,6 +138,7 @@ class _InsightTile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(11, 11, 11, 9),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(

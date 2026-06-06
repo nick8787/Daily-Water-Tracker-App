@@ -28,6 +28,10 @@ class WeeklyBarChart extends StatelessWidget {
 
   static const Color _stubGrey = AppPalette.chartStubGrey;
   static const double _barWidth = 18;
+  /// Chart Y-axis extends this far above the goal so the GOAL label fits.
+  static const double _goalHeadroomRatio = 1.22;
+  /// Bars that meet or exceed the goal render only this far above the goal line.
+  static const double _barOverGoalRatio = 1.05;
   static const BorderRadius _radius = BorderRadius.vertical(
     top: Radius.circular(8),
   );
@@ -53,10 +57,15 @@ class WeeklyBarChart extends StatelessWidget {
 
     final maxBarMl = dayBars.map((e) => e.totalMl).fold<int>(0, math.max);
     final actualGoal = goalMl > 0 ? goalMl : 3000;
-    final maxData = math.max(maxBarMl.toDouble(), actualGoal.toDouble());
-    final maxY = math.max(maxData * 1.2, 500.0);
+    final hasGoal = goalMl > 0;
+
+    // Keep Y-axis anchored to the goal — do not stretch when intake exceeds it.
+    final maxY = hasGoal
+        ? math.max(actualGoal * _goalHeadroomRatio, 500.0)
+        : math.max(maxBarMl * 1.2, 500.0);
 
     final stubY = maxY * 0.03;
+    final visualBarCap = actualGoal * _barOverGoalRatio;
 
     return BarChart(
       duration: const Duration(milliseconds: 600),
@@ -96,7 +105,14 @@ class WeeklyBarChart extends StatelessWidget {
         extraLinesData: _buildGoalLine(actualGoal, maxY, theme),
         barGroups: List.generate(
           dayBars.length,
-          (i) => _buildBarGroup(i, dayBars[i], i == todayIdx, stubY),
+          (i) => _buildBarGroup(
+            i,
+            dayBars[i],
+            i == todayIdx,
+            stubY,
+            goalY: hasGoal ? actualGoal.toDouble() : 0,
+            visualBarCap: hasGoal ? visualBarCap : null,
+          ),
         ),
       ),
     );
@@ -115,8 +131,8 @@ class WeeklyBarChart extends StatelessWidget {
         tooltipMargin: 8,
         tooltipBorderRadius: BorderRadius.circular(12),
         getTooltipItem: (group, groupIndex, rod, rodIndex) {
-          final ml = rod.toY.round();
           final day = dayBars[group.x];
+          final ml = day.totalMl;
           final remain = day.goalMl > 0 ? math.max(0, day.goalMl - ml) : 0;
 
           return BarTooltipItem(
@@ -227,9 +243,17 @@ class WeeklyBarChart extends StatelessWidget {
     int index,
     StatisticsDayBar bar,
     bool isToday,
-    double stubY,
-  ) {
+    double stubY, {
+    required double goalY,
+    required double? visualBarCap,
+  }) {
     final ml = bar.totalMl.toDouble();
+    final displayY = _visualBarHeight(
+      ml: ml,
+      stubY: stubY,
+      goalY: goalY,
+      visualBarCap: visualBarCap,
+    );
 
     final opacity = isToday ? 1.0 : 0.75;
 
@@ -261,7 +285,7 @@ class WeeklyBarChart extends StatelessWidget {
       barRods: [
         BarChartRodData(
           fromY: 0,
-          toY: ml,
+          toY: displayY,
           width: _barWidth,
           gradient: gradient,
           borderRadius: _radius,
@@ -269,5 +293,17 @@ class WeeklyBarChart extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  double _visualBarHeight({
+    required double ml,
+    required double stubY,
+    required double goalY,
+    required double? visualBarCap,
+  }) {
+    if (ml <= 0) return stubY;
+    if (goalY <= 0 || visualBarCap == null) return ml;
+    if (ml >= goalY) return visualBarCap;
+    return ml;
   }
 }

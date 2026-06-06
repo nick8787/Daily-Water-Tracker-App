@@ -391,7 +391,8 @@
     "breakdown": {
       "title": "Intake Breakdown",
       "caption": "Last 7 days · effective hydration",
-      "empty": "Log drinks to see how your intake splits across types."
+      "empty": "Log drinks to see how your intake splits across types.",
+      "scroll_hint": "Scroll for more"
     },
     "period": {
       "last_7_days": "Last 7 days"
