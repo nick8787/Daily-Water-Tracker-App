@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/assets.dart';
+import 'package:daily_water_tracker/features/account/account_actions.dart';
+import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
+import 'package:daily_water_tracker/features/account/widgets/account_logout_footer.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_menu_card.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_menu_item.dart';
-import 'package:daily_water_tracker/features/account/account_actions.dart';
 
 import '../../../common/widgets/app_screen_title.dart';
-import '../widgets/account_menu_divider.dart';
 
 class SettingsMoreScreen extends StatelessWidget {
   const SettingsMoreScreen({super.key});
 
+  static const double _logoutTopGap = 16;
+
   @override
   Widget build(BuildContext context) {
+    final sessionBusy = context.select<AccountCubit, bool>(
+      (c) => c.state.isSessionActionInProgress,
+    );
+
     return Scaffold(
-      // AppBar
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -27,20 +34,10 @@ class SettingsMoreScreen extends StatelessWidget {
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 24),
         children: [
-          // ready-made card widget
           AccountMenuCard(
             children: [
-              AccountMenuItem(
-                leadingAsset: icPrivacyPolicy,
-                title: LocaleKeys.account_menu_privacy_policy.tr(),
-                onTap: () => AccountActions.comingSoon(
-                  context,
-                  LocaleKeys.account_menu_privacy_policy.tr(),
-                ),
-              ),
-              const AccountMenuDivider(),
               AccountMenuItem(
                 leadingAsset: icProfileSecurity,
                 title: LocaleKeys.account_menu_login_security.tr(),
@@ -49,8 +46,12 @@ class SettingsMoreScreen extends StatelessWidget {
                   LocaleKeys.account_menu_login_security.tr(),
                 ),
               ),
-              // next item via AccountMenuDivider
             ],
+          ),
+          const SizedBox(height: _logoutTopGap),
+          AccountLogoutFooter(
+            actionsEnabled: !sessionBusy,
+            onLogOutPressed: () => AccountActions.confirmAndLogOut(context),
           ),
         ],
       ),

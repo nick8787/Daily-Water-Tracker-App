@@ -6,9 +6,11 @@ import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
 import 'package:daily_water_tracker/common/services/logger.dart';
+import 'package:daily_water_tracker/common/widgets/app_confirm_dialog.dart';
 import 'package:daily_water_tracker/common/widgets/app_loader.dart';
 import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
 import 'package:daily_water_tracker/features/deep_links/services/water_deep_link_service.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -73,5 +75,25 @@ abstract final class AccountActions {
         namedArgs: {'feature': feature},
       ),
     );
+  }
+
+  static Future<void> confirmAndLogOut(BuildContext context) async {
+    final cubit = context.read<AccountCubit>();
+    if (cubit.state.isSessionActionInProgress) return;
+
+    final confirmed = await showAppConfirmDialog(
+      context: context,
+      title: LocaleKeys.account_dialog_logout_title.tr(),
+      message: LocaleKeys.account_dialog_logout_message.tr(),
+      confirmText: LocaleKeys.account_dialog_logout_confirm.tr(),
+      intent: AppConfirmIntent.affirmative,
+      icon: Icons.logout_rounded,
+    );
+    if (confirmed != true || !context.mounted) return;
+
+    await WidgetsBinding.instance.endOfFrame;
+    if (!context.mounted) return;
+
+    await cubit.logOut();
   }
 }

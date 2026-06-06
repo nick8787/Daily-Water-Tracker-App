@@ -51,15 +51,34 @@ class AppBottomNavBar extends StatelessWidget {
   /// Extra clearance tuned with [HomeTabScreen] (`bottomLayoutFudgePx`).
   static const double mainShellContentBottomFudge = 25;
 
-  /// Bottom inset for main-shell tabs — halfway between legacy nav padding and
-  /// the home card anchor (`gap + pillTop + fudge`).
-  static double mainShellContentBottomInset(BuildContext context) {
-    final homeAligned =
-        mainShellContentBottomGap +
-        pillTopOffsetFromOverlayBottom(context) +
-        mainShellContentBottomFudge;
-    final legacy = reservedHeight(context) + 12;
-    return (homeAligned + legacy) / 2;
+  /// Height (logical px) up to which bottom spacing is already tuned — no bonus.
+  static const double _compactScreenHeightReference = 852;
+
+  /// Pro Max–class height where [mainShellLargeScreenClearanceBonus] reaches its max.
+  static const double _largeScreenHeightReference = 932;
+
+  /// Additional gap below content on tall phones (e.g. iPhone Pro Max).
+  static const double mainShellLargeScreenClearanceBonus = 18;
+
+  /// Visual gap between the bottom of main-shell content and the nav overlay.
+  ///
+  /// Shared by [MainShellTabBody], [HomeTabScreen], [StatisticsScreen], and [AccountScreen].
+  static double mainShellContentBottomClearance(BuildContext context) =>
+      mainShellContentBottomGap +
+      pillTopOffsetFromOverlayBottom(context) +
+      mainShellContentBottomFudge +
+      _largeScreenBottomClearanceBonus(context);
+
+  /// Ramps from 0 on compact phones to [mainShellLargeScreenClearanceBonus] on tall ones.
+  static double _largeScreenBottomClearanceBonus(BuildContext context) {
+    final height = MediaQuery.sizeOf(context).height;
+    if (height <= _compactScreenHeightReference) return 0;
+
+    final span = _largeScreenHeightReference - _compactScreenHeightReference;
+    if (span <= 0) return mainShellLargeScreenClearanceBonus;
+
+    final t = ((height - _compactScreenHeightReference) / span).clamp(0.0, 1.0);
+    return mainShellLargeScreenClearanceBonus * t;
   }
 
   static double _pillAnchorBottom(BuildContext context) =>
