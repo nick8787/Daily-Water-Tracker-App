@@ -45,6 +45,23 @@ class AppBottomNavBar extends StatelessWidget {
   static double pillTopOffsetFromOverlayBottom(BuildContext context) =>
       _pillAnchorBottom(context) + _pillHeight;
 
+  /// Symmetric gap below the home water card (`HomeTabScreen.minSymmetricGap`).
+  static const double mainShellContentBottomGap = 28;
+
+  /// Extra clearance tuned with [HomeTabScreen] (`bottomLayoutFudgePx`).
+  static const double mainShellContentBottomFudge = 25;
+
+  /// Bottom inset for main-shell tabs — halfway between legacy nav padding and
+  /// the home card anchor (`gap + pillTop + fudge`).
+  static double mainShellContentBottomInset(BuildContext context) {
+    final homeAligned =
+        mainShellContentBottomGap +
+        pillTopOffsetFromOverlayBottom(context) +
+        mainShellContentBottomFudge;
+    final legacy = reservedHeight(context) + 12;
+    return (homeAligned + legacy) / 2;
+  }
+
   static double _pillAnchorBottom(BuildContext context) =>
       math.max(0.0, _pillAnchorBase - _navDownPx(context));
 

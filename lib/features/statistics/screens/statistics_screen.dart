@@ -45,7 +45,7 @@ class _StatisticsBody extends StatelessWidget {
       },
       builder: (context, state) {
         final bottomPad = embedInMainShell
-            ? AppBottomNavBar.reservedHeight(context) + 12
+            ? AppBottomNavBar.mainShellContentBottomInset(context)
             : MediaQuery.paddingOf(context).bottom + 20;
 
         return Scaffold(
