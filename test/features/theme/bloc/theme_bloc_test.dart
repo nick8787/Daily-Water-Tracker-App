@@ -14,6 +14,8 @@ import 'theme_bloc_test.mocks.dart';
   Box,
 ])
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   final box = MockBox<dynamic>();
 
   const themeMode = ThemeMode.dark;
@@ -65,6 +67,18 @@ void main() {
       expect: () => [
         ThemeState.initial().copyWith(themeMode: themeMode),
       ],
+    );
+
+    blocTest<ThemeBloc, ThemeState>(
+      'switchTheme from system (light platform) enables dark mode',
+      setUp: () {
+        when(
+          box.put(ThemeBox.themeModeKey, EnumToString().parse(ThemeMode.dark)),
+        ).thenAnswer((_) async {});
+      },
+      build: () => ThemeBloc(box),
+      act: (bloc) => bloc.switchTheme(),
+      expect: () => [const ThemeState(themeMode: ThemeMode.dark)],
     );
   });
 }
