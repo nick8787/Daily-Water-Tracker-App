@@ -138,9 +138,22 @@ class AccountMenuSection extends StatelessWidget {
         const AccountMenuDivider(),
         _menuRow(AccountMenuItem(
           fillVertically: expandVertically,
+          leadingAsset: icPrivacyPolicy,
+          title: LocaleKeys.account_menu_privacy_policy.tr(),
+          onTap: () => onComingSoon(
+            context,
+            LocaleKeys.account_menu_privacy_policy.tr(),
+          ),
+        )),
+        const AccountMenuDivider(),
+        _menuRow(AccountMenuItem(
+          fillVertically: expandVertically,
           leadingIcon: Icons.more_horiz,
           title: LocaleKeys.account_menu_more.tr(),
-          onTap: () => context.push(settingsMoreRoute),
+          onTap: () => context.push(
+            settingsMoreRoute,
+            extra: context.read<AccountCubit>(),
+          ),
         )),
       ],
     );

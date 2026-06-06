@@ -14,6 +14,7 @@ import 'package:daily_water_tracker/features/history/screens/history_screen.dart
 import 'package:daily_water_tracker/features/home/cubit/home_cubit.dart';
 import 'package:daily_water_tracker/features/main_nav/cubit/main_nav_cubit.dart';
 import 'package:daily_water_tracker/features/account/screens/settings_more_screen.dart';
+import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
 import 'package:daily_water_tracker/features/preferences/screens/preferences_screen.dart';
 import 'package:daily_water_tracker/features/profile/screens/profile_screen.dart';
 import 'package:daily_water_tracker/features/statistics/cubit/statistics_cubit.dart';
@@ -185,12 +186,22 @@ final goRouter = GoRouter(
     GoRoute(
       path: settingsMoreRoute,
       name: 'SettingsMore',
-      pageBuilder: (context, state) => _adaptivePushedPage(
-        key: state.pageKey,
-        child: const SettingsMoreScreen(),
-        duration: const Duration(milliseconds: 220),
-        curve: Curves.easeOutCubic,
-      ),
+      pageBuilder: (context, state) {
+        final accountCubit = state.extra as AccountCubit?;
+        final child = accountCubit != null
+            ? BlocProvider.value(
+                value: accountCubit,
+                child: const SettingsMoreScreen(),
+              )
+            : const SettingsMoreScreen();
+
+        return _adaptivePushedPage(
+          key: state.pageKey,
+          child: child,
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOutCubic,
+        );
+      },
     ),
     GoRoute(
       path: achievementsRoute,

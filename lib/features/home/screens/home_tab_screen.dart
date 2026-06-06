@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:daily_water_tracker/common/widgets/app_bottom_nav_bar.dart';
+import 'package:daily_water_tracker/common/widgets/main_shell_tab_body.dart';
 import 'package:daily_water_tracker/features/home/cubit/home_cubit.dart';
 import 'package:daily_water_tracker/features/home/cubit/home_state.dart';
 import 'package:daily_water_tracker/features/home/widgets/home_date_bar.dart';
@@ -18,17 +19,11 @@ class HomeTabScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bottomLayoutFudgePx = 25.0;
-    final pillTopOffset =
-        AppBottomNavBar.pillTopOffsetFromOverlayBottom(
-          context,
-        ) +
-        bottomLayoutFudgePx;
     final screenH = MediaQuery.sizeOf(context).height;
     final cardMaxH = math.max(450.0, screenH * 0.69);
     const topBarHeight = HomeDateBar.preferredHeight;
     const minCardH = 300.0;
-    const minSymmetricGap = 28.0;
+    const minTopGap = AppBottomNavBar.mainShellContentBottomGap;
 
     return _HomeAnchoredTodayLifecycle(
       child: Scaffold(
@@ -39,82 +34,85 @@ class HomeTabScreen extends StatelessWidget {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 520),
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 14,
-                ),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final slot =
-                        constraints.maxHeight - topBarHeight - pillTopOffset;
-                    final safeSlot = math.max(0.0, slot);
+                padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: topBarHeight,
+                      child: Center(child: _TopDateBar()),
+                    ),
+                    Expanded(
+                      child: MainShellTabBody(
+                        child: LayoutBuilder(
+                          builder: (context, contentConstraints) {
+                            final slot = contentConstraints.maxHeight;
+                            final safeSlot = math.max(0.0, slot);
 
-                    final rawCardH = safeSlot - 2 * minSymmetricGap;
-                    var cardH = math.min(
-                      cardMaxH,
-                      math.max(minCardH, rawCardH),
-                    );
-                    var gap = (safeSlot - cardH) / 2;
-                    if (gap < 0) {
-                      cardH = safeSlot.clamp(0.0, cardMaxH);
-                      gap = (safeSlot - cardH) / 2;
-                    }
+                            final rawCardH = safeSlot - minTopGap;
+                            var cardH = math.min(
+                              cardMaxH,
+                              math.max(minCardH, rawCardH),
+                            );
+                            var topGap = math.max(minTopGap, safeSlot - cardH);
+                            if (topGap < 0) {
+                              cardH = safeSlot.clamp(0.0, cardMaxH);
+                              topGap = math.max(0.0, safeSlot - cardH);
+                            }
 
-                    return SizedBox(
-                      height: constraints.maxHeight,
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: topBarHeight,
-                            child: Center(child: _TopDateBar()),
-                          ),
-                          SizedBox(height: gap),
-                          SizedBox(
-                            height: cardH,
-                            child: Container(
-                              width: double.infinity,
-                              decoration: appCardDecoration(context),
-                              child: BlocBuilder<HomeCubit, HomeState>(
-                                builder: (context, state) {
-                                  if (state.isLoading) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  }
+                            return Column(
+                              children: [
+                                SizedBox(height: topGap),
+                                SizedBox(
+                                  height: cardH,
+                                  child: Container(
+                                    width: double.infinity,
+                                    decoration: appCardDecoration(context),
+                                    child: BlocBuilder<HomeCubit, HomeState>(
+                                      builder: (context, state) {
+                                        if (state.isLoading) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
 
-                                  if (state.records.isEmpty) {
-                                    final today = DateTime(
-                                      DateTime.now().year,
-                                      DateTime.now().month,
-                                      DateTime.now().day,
-                                    );
-                                    final isViewingToday =
-                                        state.selectedDate == today;
-                                    final emptyTitle = isViewingToday
-                                        ? LocaleKeys.home_empty_today.tr()
-                                        : LocaleKeys.home_empty_other_day.tr();
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 18,
-                                        vertical: 10,
-                                      ),
-                                      child: HomeWaterCardEmpty(
-                                        title: emptyTitle,
-                                      ),
-                                    );
-                                  }
+                                        if (state.records.isEmpty) {
+                                          final today = DateTime(
+                                            DateTime.now().year,
+                                            DateTime.now().month,
+                                            DateTime.now().day,
+                                          );
+                                          final isViewingToday =
+                                              state.selectedDate == today;
+                                          final emptyTitle = isViewingToday
+                                              ? LocaleKeys
+                                                  .home_empty_today
+                                                  .tr()
+                                              : LocaleKeys
+                                                  .home_empty_other_day
+                                                  .tr();
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 18,
+                                              vertical: 10,
+                                            ),
+                                            child: HomeWaterCardEmpty(
+                                              title: emptyTitle,
+                                            ),
+                                          );
+                                        }
 
-                                  return HomeWaterCardFlip(state: state);
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: gap),
-                          SizedBox(height: pillTopOffset),
-                        ],
+                                        return HomeWaterCardFlip(state: state);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
               ),
             ),

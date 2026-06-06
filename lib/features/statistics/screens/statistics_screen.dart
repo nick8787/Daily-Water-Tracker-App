@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:daily_water_tracker/common/widgets/app_bottom_nav_bar.dart';
+import 'package:daily_water_tracker/common/widgets/main_shell_tab_body.dart';
 import 'package:daily_water_tracker/common/widgets/app_loader.dart';
 import 'package:daily_water_tracker/common/widgets/app_screen_title.dart';
 import 'package:daily_water_tracker/features/statistics/cubit/statistics_cubit.dart';
@@ -11,7 +11,6 @@ import 'package:daily_water_tracker/features/statistics/cubit/statistics_state.d
 import 'package:daily_water_tracker/features/statistics/widgets/statistics_intake_breakdown_card.dart';
 import 'package:daily_water_tracker/features/statistics/widgets/statistics_weekly_activity_card.dart';
 import 'package:daily_water_tracker/features/statistics/widgets/statistics_weekly_insights_card.dart';
-import 'package:daily_water_tracker/features/theme/theme_info.dart';
 
 class StatisticsScreen extends StatelessWidget {
   const StatisticsScreen({super.key, this.embedInMainShell = false});
@@ -44,8 +43,8 @@ class _StatisticsBody extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final bottomPad = embedInMainShell
-            ? AppBottomNavBar.mainShellContentBottomInset(context)
+        final bottomClearance = embedInMainShell
+            ? MainShellTabBody.resolveBottomClearance(context)
             : MediaQuery.paddingOf(context).bottom + 20;
 
         return Scaffold(
@@ -76,33 +75,14 @@ class _StatisticsBody extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              final contentHeight =
-                                  constraints.maxHeight - bottomPad;
-                              return RefreshIndicator(
-                                color: brandBlue,
-                                onRefresh: () =>
-                                    context.read<StatisticsCubit>().refresh(),
-                                child: ListView(
-                                  physics: const BouncingScrollPhysics(
-                                    parent: AlwaysScrollableScrollPhysics(),
-                                  ),
-                                  padding: EdgeInsets.fromLTRB(
-                                    20,
-                                    0,
-                                    20,
-                                    bottomPad,
-                                  ),
-                                  children: [
-                                    SizedBox(
-                                      height: contentHeight,
-                                      child: _StatisticsContent(state: state),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
+                          child: MainShellTabBody(
+                            bottomClearance: bottomClearance,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              child: _StatisticsContent(state: state),
+                            ),
                           ),
                         ),
                       ],
