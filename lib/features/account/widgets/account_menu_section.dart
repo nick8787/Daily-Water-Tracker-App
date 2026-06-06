@@ -35,7 +35,11 @@ class AccountMenuSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.watch<ThemeBloc>().state.themeMode == ThemeMode.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final themeBloc = context.read<ThemeBloc>();
+
+    void onDarkThemeToggle(bool enabled) =>
+        themeBloc.setDarkThemeEnabled(enabled);
 
     return AccountMenuCard(
       expandVertically: expandVertically,
@@ -127,9 +131,9 @@ class AccountMenuSection extends StatelessWidget {
           trailing: CupertinoSwitch(
             value: isDark,
             activeTrackColor: brandBlue,
-            onChanged: (_) => context.read<ThemeBloc>().switchTheme(),
+            onChanged: onDarkThemeToggle,
           ),
-          onTap: () => context.read<ThemeBloc>().switchTheme(),
+          onTap: () => onDarkThemeToggle(!isDark),
         )),
         const AccountMenuDivider(),
         _menuRow(AccountMenuItem(

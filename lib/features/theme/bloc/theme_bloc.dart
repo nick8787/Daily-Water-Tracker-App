@@ -28,23 +28,27 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
         _themeBox.get(ThemeBox.themeModeKey),
       );
       themeMode ??= ThemeMode.system;
+      emit(state.copyWith(themeMode: themeMode));
       await _themeBox.put(
         ThemeBox.themeModeKey,
         EnumToString().parse(themeMode),
       );
-      emit(state.copyWith(themeMode: themeMode));
     });
   }
 
   void switchTheme() {
-    switch (state.themeMode) {
-      case ThemeMode.light:
-        add(const SetTheme(ThemeMode.dark));
-      case ThemeMode.dark:
-        add(const SetTheme(ThemeMode.light));
-      case ThemeMode.system:
-        add(const SetTheme(ThemeMode.light));
-    }
+    final platformBrightness =
+        WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    final isEffectivelyDark = switch (state.themeMode) {
+      ThemeMode.dark => true,
+      ThemeMode.light => false,
+      ThemeMode.system => platformBrightness == Brightness.dark,
+    };
+    add(SetTheme(isEffectivelyDark ? ThemeMode.light : ThemeMode.dark));
+  }
+
+  void setDarkThemeEnabled(bool enabled) {
+    add(SetTheme(enabled ? ThemeMode.dark : ThemeMode.light));
   }
 
   String get themeLabel {
