@@ -16,10 +16,9 @@ import 'package:daily_water_tracker/features/theme/shadow.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 
-/// Full-screen rank ascension ceremony — premium celebratory overlay.
+/// Full-screen rank ascension ceremony
 abstract final class RankCelebrationDialog {
-  /// Shows the ceremony and returns the **next** rank definition for retention
-  /// teaser, or `null` when the user reached the maximum tier.
+
   static Future<AchievementDefinition?> show(
     BuildContext context, {
     required BadgeModel rank,
