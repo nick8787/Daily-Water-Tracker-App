@@ -486,6 +486,18 @@ abstract class  LocaleKeys {
   static const achievements_conditions_goal_days = 'achievements.conditions.goal_days';
   static const achievements_conditions_total_volume = 'achievements.conditions.total_volume';
   static const achievements_conditions = 'achievements.conditions';
+  static const achievements_celebration_barrier_label = 'achievements.celebration.barrier_label';
+  static const achievements_celebration_congrats = 'achievements.celebration.congrats';
+  static const achievements_celebration_new_status = 'achievements.celebration.new_status';
+  static const achievements_celebration_primary_action = 'achievements.celebration.primary_action';
+  static const achievements_celebration_share = 'achievements.celebration.share';
+  static const achievements_celebration_title = 'achievements.celebration.title';
+  static const achievements_celebration_continue = 'achievements.celebration.continue';
+  static const achievements_celebration_teaser_next_rank_title = 'achievements.celebration.teaser_next_rank_title';
+  static const achievements_celebration_teaser_next_rank_message = 'achievements.celebration.teaser_next_rank_message';
+  static const achievements_celebration_teaser_max_rank_title = 'achievements.celebration.teaser_max_rank_title';
+  static const achievements_celebration_teaser_max_rank_message = 'achievements.celebration.teaser_max_rank_message';
+  static const achievements_celebration = 'achievements.celebration';
   static const achievements = 'achievements';
 
 }

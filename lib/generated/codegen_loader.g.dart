@@ -626,6 +626,19 @@ class CodegenLoader extends AssetLoader{
       "first_log": "Перший запис води",
       "goal_days": "Днів з виконаною ціллю",
       "total_volume": "Загальний об'єм гідратації"
+    },
+    "celebration": {
+      "barrier_label": "Святкування рангу",
+      "congrats": "ВІТАЄМО!",
+      "new_status": "Ваш новий статус:",
+      "primary_action": "Ура!",
+      "share": "Поділитися",
+      "title": "Новий ранг розблоковано!",
+      "continue": "Продовжити",
+      "teaser_next_rank_title": "Клас!",
+      "teaser_next_rank_message": "Наступна ціль: {rank}. Продовжуй в тому ж дусі!",
+      "teaser_max_rank_title": "Легенда гідратації!",
+      "teaser_max_rank_message": "Ви досягли абсолютної вершини. Так тримати!"
     }
   }
 };
@@ -1241,6 +1254,19 @@ static const Map<String,dynamic> _en_US = {
       "first_log": "First water log",
       "goal_days": "Days with goal met",
       "total_volume": "Total hydration volume"
+    },
+    "celebration": {
+      "barrier_label": "Rank celebration",
+      "congrats": "CONGRATULATIONS!",
+      "new_status": "Your new status:",
+      "primary_action": "Awesome!",
+      "share": "Share",
+      "title": "New rank unlocked!",
+      "continue": "Continue",
+      "teaser_next_rank_title": "Nice!",
+      "teaser_next_rank_message": "Next goal: {rank}. Keep it up!",
+      "teaser_max_rank_title": "Hydration legend!",
+      "teaser_max_rank_message": "You've reached the absolute peak. Keep shining!"
     }
   }
 };

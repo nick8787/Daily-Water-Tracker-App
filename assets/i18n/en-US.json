@@ -610,6 +610,19 @@
       "first_log": "First water log",
       "goal_days": "Days with goal met",
       "total_volume": "Total hydration volume"
+    },
+    "celebration": {
+      "barrier_label": "Rank celebration",
+      "congrats": "CONGRATULATIONS!",
+      "new_status": "Your new status:",
+      "primary_action": "Awesome!",
+      "share": "Share",
+      "title": "New rank unlocked!",
+      "continue": "Continue",
+      "teaser_next_rank_title": "Nice!",
+      "teaser_next_rank_message": "Next goal: {rank}. Keep it up!",
+      "teaser_max_rank_title": "Hydration legend!",
+      "teaser_max_rank_message": "You've reached the absolute peak. Keep shining!"
     }
   }
 }

@@ -118,4 +118,16 @@ abstract final class AchievementsRegistry {
     }
     return null;
   }
+
+  /// Next rank in the evolution ladder, or `null` when [currentRankId] is max tier.
+  static AchievementDefinition? getNextRank(String currentRankId) {
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].id == currentRankId) {
+        final nextIndex = i + 1;
+        if (nextIndex >= all.length) return null;
+        return all[nextIndex];
+      }
+    }
+    return null;
+  }
 }

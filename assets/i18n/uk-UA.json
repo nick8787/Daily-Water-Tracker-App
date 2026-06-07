@@ -610,6 +610,19 @@
       "first_log": "Перший запис води",
       "goal_days": "Днів з виконаною ціллю",
       "total_volume": "Загальний об'єм гідратації"
+    },
+    "celebration": {
+      "barrier_label": "Святкування рангу",
+      "congrats": "ВІТАЄМО!",
+      "new_status": "Ваш новий статус:",
+      "primary_action": "Ура!",
+      "share": "Поділитися",
+      "title": "Новий ранг розблоковано!",
+      "continue": "Продовжити",
+      "teaser_next_rank_title": "Клас!",
+      "teaser_next_rank_message": "Наступна ціль: {rank}. Продовжуй в тому ж дусі!",
+      "teaser_max_rank_title": "Легенда гідратації!",
+      "teaser_max_rank_message": "Ви досягли абсолютної вершини. Так тримати!"
     }
   }
 }
