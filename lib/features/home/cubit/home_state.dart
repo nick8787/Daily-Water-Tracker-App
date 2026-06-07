@@ -1,4 +1,5 @@
 import 'package:daily_water_tracker/common/constants/hydration_defaults.dart';
+import 'package:daily_water_tracker/features/achievements/models/badge_model.dart';
 import 'package:daily_water_tracker/firebase/models/water_record_model.dart';
 
 class HomeState {
@@ -14,6 +15,7 @@ class HomeState {
     required this.anchoredToLiveToday,
     required this.deferProgressUpdates,
     required this.pendingRecords,
+    this.pendingRankCelebration,
   });
 
   final List<WaterRecordModel> records;
@@ -34,6 +36,8 @@ class HomeState {
 
   final List<WaterRecordModel>? pendingRecords;
 
+  final BadgeModel? pendingRankCelebration;
+
   HomeState copyWith({
     List<WaterRecordModel>? records,
     int? dailyLimitMl,
@@ -46,7 +50,9 @@ class HomeState {
     bool? anchoredToLiveToday,
     bool? deferProgressUpdates,
     List<WaterRecordModel>? pendingRecords,
+    BadgeModel? pendingRankCelebration,
     bool clearPendingRecords = false,
+    bool clearPendingRankCelebration = false,
   }) {
     return HomeState(
       records: records ?? this.records,
@@ -61,6 +67,9 @@ class HomeState {
       deferProgressUpdates: deferProgressUpdates ?? this.deferProgressUpdates,
       pendingRecords:
           clearPendingRecords ? null : (pendingRecords ?? this.pendingRecords),
+      pendingRankCelebration: clearPendingRankCelebration
+          ? null
+          : (pendingRankCelebration ?? this.pendingRankCelebration),
     );
   }
 
@@ -78,6 +87,7 @@ class HomeState {
       anchoredToLiveToday: true,
       deferProgressUpdates: false,
       pendingRecords: null,
+      pendingRankCelebration: null,
     );
   }
 }

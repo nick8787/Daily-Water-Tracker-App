@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Typography helpers built on Plus Jakarta Sans (via Google Fonts).
+/// Typography helpers — Plus Jakarta Sans (EN) and Montserrat (UK).
 abstract final class AppTypography {
-  static TextTheme textTheme(Brightness brightness) {
-    return GoogleFonts.plusJakartaSansTextTheme(
-      ThemeData(brightness: brightness).textTheme,
-    );
+  static bool isUkrainian(Locale locale) => locale.languageCode == 'uk';
+
+  static TextTheme textTheme(Brightness brightness, Locale locale) {
+    final base = ThemeData(brightness: brightness).textTheme;
+    if (isUkrainian(locale)) {
+      return GoogleFonts.montserratTextTheme(base);
+    }
+    return GoogleFonts.plusJakartaSansTextTheme(base);
   }
 
   /// Pushed-route / in-body screen titles (Account header, AppBar titles).
@@ -18,8 +22,8 @@ abstract final class AppTypography {
     );
   }
 
-  static TextStyle progressRingCaption(Color color) {
-    return TextStyle(
+  static TextStyle progressRingCaption(Color color, TextTheme theme) {
+    return (theme.labelMedium ?? const TextStyle()).copyWith(
       fontSize: 14,
       height: 1.2,
       fontWeight: FontWeight.w900,
@@ -27,8 +31,8 @@ abstract final class AppTypography {
     );
   }
 
-  static TextStyle progressRingValue(Color color) {
-    return TextStyle(
+  static TextStyle progressRingValue(Color color, TextTheme theme) {
+    return (theme.displaySmall ?? const TextStyle()).copyWith(
       fontSize: 50,
       height: 1.02,
       fontWeight: FontWeight.w100,
@@ -37,8 +41,8 @@ abstract final class AppTypography {
     );
   }
 
-  static TextStyle progressRingSubtitle(Color color) {
-    return TextStyle(
+  static TextStyle progressRingSubtitle(Color color, TextTheme theme) {
+    return (theme.labelMedium ?? const TextStyle()).copyWith(
       fontSize: 14,
       height: 1.25,
       fontWeight: FontWeight.w900,
@@ -46,8 +50,8 @@ abstract final class AppTypography {
     );
   }
 
-  static TextStyle sheetVolumeDisplay(Color color) {
-    return TextStyle(
+  static TextStyle sheetVolumeDisplay(Color color, TextTheme theme) {
+    return (theme.displaySmall ?? const TextStyle()).copyWith(
       fontSize: 52,
       height: 1,
       fontWeight: FontWeight.w200,
@@ -55,14 +59,21 @@ abstract final class AppTypography {
     );
   }
 
-  static const TextStyle notifierTextLabel = TextStyle(
-    fontSize: 26,
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w300,
-  );
+  static TextStyle notifierTextLabel(Locale locale) {
+    const base = TextStyle(
+      fontSize: 26,
+      fontStyle: FontStyle.normal,
+      fontWeight: FontWeight.w300,
+    );
+    if (isUkrainian(locale)) {
+      return GoogleFonts.montserrat(textStyle: base);
+    }
+    return GoogleFonts.plusJakartaSans(textStyle: base);
+  }
 }
 
 /// Legacy typography access — prefer [AppTypography].
 class TextStyles {
-  static const TextStyle notifierTextLabel = AppTypography.notifierTextLabel;
+  static TextStyle notifierTextLabel(Locale locale) =>
+      AppTypography.notifierTextLabel(locale);
 }

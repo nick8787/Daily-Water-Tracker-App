@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/theme_info.dart';
 
 Color profileFieldHintColor(BuildContext context) {
@@ -113,47 +114,13 @@ class ProfileTextField extends StatelessWidget {
           vertical: 12,
         ),
         filled: true,
-        fillColor: Theme.of(
-          context,
-        ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.55),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(
-            color: Theme.of(
-              context,
-            ).colorScheme.outlineVariant.withValues(alpha: 0.85),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: brandBlue, width: 1.4),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.error,
-            width: 1.2,
-          ),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.error,
-            width: 1.4,
-          ),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(
-            color: Theme.of(
-              context,
-            ).colorScheme.outlineVariant.withValues(alpha: 0.55),
-          ),
-        ),
+        fillColor: AppFieldStyle.fillColor(context),
+        border: AppFieldStyle.borderNone(),
+        enabledBorder: AppFieldStyle.borderEnabled(),
+        focusedBorder: AppFieldStyle.borderFocused(),
+        errorBorder: AppFieldStyle.borderError(color: scheme.error),
+        focusedErrorBorder: AppFieldStyle.borderFocusedError(color: scheme.error),
+        disabledBorder: AppFieldStyle.borderDisabled(context),
       ),
     );
   }

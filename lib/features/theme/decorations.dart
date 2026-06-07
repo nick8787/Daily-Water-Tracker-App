@@ -126,6 +126,7 @@ abstract final class AppAuthStyle {
   }) {
     final focused = fieldFocusedBorder(context);
     final error = fieldErrorBorder(context);
+    const radius = fieldRadius;
 
     return InputDecoration(
       labelText: labelText,
@@ -134,26 +135,101 @@ abstract final class AppAuthStyle {
       suffixIcon: suffixIcon,
       filled: true,
       fillColor: fieldFill(context),
-      border: const OutlineInputBorder(
-        borderRadius: fieldRadius,
-        borderSide: BorderSide.none,
+      border: AppFieldStyle.borderNone(radius),
+      enabledBorder: AppFieldStyle.borderEnabled(radius),
+      focusedBorder: AppFieldStyle.borderFocused(color: focused, radius: radius),
+      errorBorder: AppFieldStyle.borderError(color: error, radius: radius),
+      focusedErrorBorder: AppFieldStyle.borderFocusedError(
+        color: error,
+        radius: radius,
       ),
-      enabledBorder: const OutlineInputBorder(
-        borderRadius: fieldRadius,
-        borderSide: BorderSide(color: fieldEnabledBorderColor),
+    );
+  }
+}
+
+/// Shared text-field chrome across profile, preferences, and sheets.
+abstract final class AppFieldStyle {
+  static const Color enabledBorderColor = AppPalette.blackShade;
+  static const BorderRadius radius16 = BorderRadius.all(Radius.circular(16));
+  static const BorderRadius radius14 = BorderRadius.all(Radius.circular(14));
+  static const double focusedBorderWidth = 1.4;
+
+  static Color fillColor(BuildContext context) {
+    return Theme.of(context).colorScheme.surfaceContainerHighest.withValues(
+      alpha: 0.55,
+    );
+  }
+
+  static OutlineInputBorder borderNone([BorderRadius radius = radius16]) {
+    return OutlineInputBorder(
+      borderRadius: radius,
+      borderSide: BorderSide.none,
+    );
+  }
+
+  static OutlineInputBorder borderEnabled([BorderRadius radius = radius16]) {
+    return OutlineInputBorder(
+      borderRadius: radius,
+      borderSide: const BorderSide(color: enabledBorderColor),
+    );
+  }
+
+  static OutlineInputBorder borderFocused({
+    Color color = AppPalette.brandBlue,
+    BorderRadius radius = radius16,
+    double width = focusedBorderWidth,
+  }) {
+    return OutlineInputBorder(
+      borderRadius: radius,
+      borderSide: BorderSide(color: color, width: width),
+    );
+  }
+
+  static OutlineInputBorder borderError({
+    required Color color,
+    BorderRadius radius = radius16,
+    double width = 1.2,
+  }) {
+    return OutlineInputBorder(
+      borderRadius: radius,
+      borderSide: BorderSide(color: color, width: width),
+    );
+  }
+
+  static OutlineInputBorder borderFocusedError({
+    required Color color,
+    BorderRadius radius = radius16,
+    double width = focusedBorderWidth,
+  }) {
+    return OutlineInputBorder(
+      borderRadius: radius,
+      borderSide: BorderSide(color: color, width: width),
+    );
+  }
+
+  static OutlineInputBorder borderDisabled(
+    BuildContext context, [
+    BorderRadius radius = radius16,
+  ]) {
+    return OutlineInputBorder(
+      borderRadius: radius,
+      borderSide: BorderSide(
+        color: Theme.of(
+          context,
+        ).colorScheme.outlineVariant.withValues(alpha: 0.55),
       ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: fieldRadius,
-        borderSide: BorderSide(color: focused, width: 1.4),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: fieldRadius,
-        borderSide: BorderSide(color: error, width: 1.2),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: fieldRadius,
-        borderSide: BorderSide(color: error, width: 1.4),
-      ),
+    );
+  }
+
+  static InputDecorationTheme inputDecorationTheme(ColorScheme scheme) {
+    return InputDecorationTheme(
+      filled: true,
+      fillColor: scheme.surfaceContainerHighest.withValues(alpha: 0.55),
+      border: borderNone(),
+      enabledBorder: borderEnabled(),
+      focusedBorder: borderFocused(),
+      errorBorder: borderError(color: scheme.error),
+      focusedErrorBorder: borderFocusedError(color: scheme.error),
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:daily_water_tracker/common/services/localization_service.dart';
 import 'package:daily_water_tracker/common/utils/system_ui_overlay.dart';
 import 'package:daily_water_tracker/features/theme/color_schemes.dart';
+import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/ext.dart';
 import 'package:daily_water_tracker/features/theme/text_styles.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
@@ -10,21 +12,24 @@ final ThemeData lightTheme = buildAppTheme(
   brightness: Brightness.light,
   appColors: AppColors.light,
   overlay: AppSystemUiOverlay.light,
+  locale: LocalizationService.englishLocale,
 );
 
 final ThemeData darkTheme = buildAppTheme(
   brightness: Brightness.dark,
   appColors: AppColors.dark,
   overlay: AppSystemUiOverlay.dark,
+  locale: LocalizationService.englishLocale,
 );
 
 ThemeData buildAppTheme({
   required Brightness brightness,
   required AppColors appColors,
   required SystemUiOverlayStyle overlay,
+  required Locale locale,
 }) {
   final isDark = brightness == Brightness.dark;
-  final baseText = AppTypography.textTheme(brightness);
+  final baseText = AppTypography.textTheme(brightness, locale);
   final scheme = appColorScheme(brightness);
 
   return ThemeData(
@@ -79,24 +84,7 @@ ThemeData buildAppTheme({
       iconColor: scheme.onSurface.withValues(alpha: 0.72),
       textColor: scheme.onSurface,
     ),
-    inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: scheme.surfaceContainerHighest.withValues(alpha: 0.55),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide.none,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(
-          color: scheme.outlineVariant.withValues(alpha: 0.85),
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: AppPalette.brandBlue, width: 1.4),
-      ),
-    ),
+    inputDecorationTheme: AppFieldStyle.inputDecorationTheme(scheme),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: isDark ? const Color(0xFF2A3038) : const Color(0xFF1A1D21),
       contentTextStyle: baseText.bodyMedium?.copyWith(color: Colors.white),

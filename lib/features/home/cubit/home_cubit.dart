@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/services/analytics_service.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/common/utils/drink_presets_utils.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/features/achievements/logic/achievements_calculator.dart';
+import 'package:daily_water_tracker/features/achievements/logic/rank_celebration_logic.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
 
 import '../../../firebase/models/drink_type.dart';
@@ -129,6 +132,7 @@ class HomeCubit extends Cubit<HomeState> {
           drinkTypeWire: drinkType.wireName,
         ),
       );
+      await _syncRankCelebrationAfterHydrationChange(allowCelebration: true);
     } catch (e, st) {
       recordCrashlyticsError(
         e,
@@ -161,6 +165,7 @@ class HomeCubit extends Cubit<HomeState> {
           drinkTypeWire: drinkType.wireName,
         ),
       );
+      unawaited(_syncRankCelebrationAfterHydrationChange());
     } catch (e, st) {
       recordCrashlyticsError(
         e,
@@ -182,6 +187,7 @@ class HomeCubit extends Cubit<HomeState> {
         recordKey: recordKey,
       );
       unawaited(_analytics.logWaterRecordDeleted());
+      unawaited(_syncRankCelebrationAfterHydrationChange());
     } catch (e, st) {
       recordCrashlyticsError(
         e,
@@ -260,6 +266,60 @@ class HomeCubit extends Cubit<HomeState> {
     }
 
     emit(state.copyWith(deferProgressUpdates: defer));
+  }
+
+  void clearPendingRankCelebration() {
+    if (state.pendingRankCelebration == null) return;
+    emit(state.copyWith(clearPendingRankCelebration: true));
+  }
+
+  Future<void> _syncRankCelebrationAfterHydrationChange({
+    bool allowCelebration = false,
+  }) async {
+    try {
+      final profile = await _firestoreRepository.getUserProfile();
+      if (profile == null) return;
+
+      final entries = await _firestoreRepository.fetchHydrationLog();
+      final badges = AchievementsCalculator.calculate(
+        entries: entries,
+        dailyGoalMl: profile.dailyGoalMl,
+      );
+
+      final reconciled = RankCelebrationLogic.reconcileLastCelebratedRankId(
+        badges: badges,
+        lastCelebratedRankId: profile.lastCelebratedRankId,
+      );
+
+      if (reconciled != profile.lastCelebratedRankId) {
+        if (reconciled == null) {
+          await _firestoreRepository.clearLastCelebratedRankId();
+        } else {
+          await _firestoreRepository.updateLastCelebratedRankId(reconciled);
+        }
+      }
+
+      if (!allowCelebration) return;
+
+      final rankToCelebrate = RankCelebrationLogic.rankToCelebrate(
+        badges: badges,
+        lastCelebratedRankId: reconciled,
+      );
+      if (rankToCelebrate == null) return;
+
+      await _firestoreRepository.updateLastCelebratedRankId(rankToCelebrate.id);
+      SchedulerBinding.instance.scheduleFrameCallback((_) {
+        if (isClosed) return;
+        emit(state.copyWith(pendingRankCelebration: rankToCelebrate));
+      });
+    } catch (e, st) {
+      recordCrashlyticsError(
+        e,
+        st,
+        st,
+        reason: 'HomeCubit: rank celebration sync failed',
+      );
+    }
   }
 
   @override

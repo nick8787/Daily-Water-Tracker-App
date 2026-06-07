@@ -593,17 +593,52 @@ class CodegenLoader extends AssetLoader{
   "achievements": {
     "loading": "Завантажуємо досягнення…",
     "error_load_failed": "Не вдалося завантажити досягнення. Спробуйте ще раз.",
-    "first_drop": {
-      "title": "Перша крапля",
-      "desc": "Випито найпершу склянку води!"
+    "banner_current_rank": "Ваш ранг: {rank}",
+    "banner_achieved_rank_label": "Досягнутий ранг",
+    "banner_no_rank": "Ваш ранг: Початківець (ще не розблоковано)",
+    "banner_no_rank_title": "Ще не розблоковано",
+    "status_locked": "Заблоковано",
+    "status_locked_hint": "Досягніть попереднього рангу та виконайте умови",
+    "status_unlocked": "Ранг досягнуто!",
+    "ranks": {
+      "beginner": {
+        "title": "Початківець",
+        "desc": "Запишіть свій перший склянку води."
+      },
+      "fan": {
+        "title": "Водяний ентузіаст",
+        "desc": "Виконайте денну ціль 7 днів (не обов'язково підряд)."
+      },
+      "master": {
+        "title": "Аква-Майстер",
+        "desc": "30 днів з виконаною ціллю та 50 літрів води."
+      },
+      "ocean_lord": {
+        "title": "Володар Океану",
+        "desc": "100 днів з ціллю та 200 літрів води."
+      },
+      "poseidon": {
+        "title": "Аква-Посейдон",
+        "desc": "365 днів з ціллю та 700 літрів води."
+      }
     },
-    "marathon_3": {
-      "title": "Гідратаційний марафон",
-      "desc": "Денна ціль виконувалась 3 дні поспіль."
+    "conditions": {
+      "first_log": "Перший запис води",
+      "goal_days": "Днів з виконаною ціллю",
+      "total_volume": "Загальний об'єм гідратації"
     },
-    "volume_10l": {
-      "title": "Клуб 10 літрів",
-      "desc": "Випито 10 літрів ефективної гідратації за весь час."
+    "celebration": {
+      "barrier_label": "Святкування рангу",
+      "congrats": "ВІТАЄМО!",
+      "new_status": "Ваш новий статус:",
+      "primary_action": "Ура!",
+      "share": "Поділитися",
+      "title": "Новий ранг розблоковано!",
+      "continue": "Продовжити",
+      "teaser_next_rank_title": "Клас!",
+      "teaser_next_rank_message": "Наступна ціль: {rank}. Продовжуй в тому ж дусі!",
+      "teaser_max_rank_title": "Легенда гідратації!",
+      "teaser_max_rank_message": "Ви досягли абсолютної вершини. Так тримати!"
     }
   }
 };
@@ -1186,17 +1221,52 @@ static const Map<String,dynamic> _en_US = {
   "achievements": {
     "loading": "Loading achievements…",
     "error_load_failed": "Could not load achievements. Please try again.",
-    "first_drop": {
-      "title": "First Drop",
-      "desc": "Logged your very first glass of water!"
+    "banner_current_rank": "Your rank: {rank}",
+    "banner_achieved_rank_label": "Achieved rank",
+    "banner_no_rank": "Your rank: Beginner (not yet unlocked)",
+    "banner_no_rank_title": "Not unlocked yet",
+    "status_locked": "Locked",
+    "status_locked_hint": "Reach the previous rank and complete the conditions",
+    "status_unlocked": "Rank achieved!",
+    "ranks": {
+      "beginner": {
+        "title": "Beginner",
+        "desc": "Log your first glass of water."
+      },
+      "fan": {
+        "title": "Hydration Fan",
+        "desc": "Meet your daily goal on 7 separate days."
+      },
+      "master": {
+        "title": "Aqua Master",
+        "desc": "30 goal days and 50 liters of hydration."
+      },
+      "ocean_lord": {
+        "title": "Ocean Lord",
+        "desc": "100 goal days and 200 liters of hydration."
+      },
+      "poseidon": {
+        "title": "Hydration Deity",
+        "desc": "365 goal days and 700 liters of hydration."
+      }
     },
-    "marathon_3": {
-      "title": "Hydration Marathon",
-      "desc": "Met your daily goal 3 days in a row."
+    "conditions": {
+      "first_log": "First water log",
+      "goal_days": "Days with goal met",
+      "total_volume": "Total hydration volume"
     },
-    "volume_10l": {
-      "title": "10 Liter Club",
-      "desc": "Drank 10 liters of effective hydration in total."
+    "celebration": {
+      "barrier_label": "Rank celebration",
+      "congrats": "CONGRATULATIONS!",
+      "new_status": "Your new status:",
+      "primary_action": "Awesome!",
+      "share": "Share",
+      "title": "New rank unlocked!",
+      "continue": "Continue",
+      "teaser_next_rank_title": "Nice!",
+      "teaser_next_rank_message": "Next goal: {rank}. Keep it up!",
+      "teaser_max_rank_title": "Hydration legend!",
+      "teaser_max_rank_message": "You've reached the absolute peak. Keep shining!"
     }
   }
 };

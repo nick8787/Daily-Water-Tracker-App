@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 
@@ -59,6 +60,26 @@ class AppSnackBar {
       message: message,
       background: Theme.of(context).colorScheme.surface,
       borderColor: AppPalette.successGreen.withValues(alpha: 0.28),
+    );
+  }
+
+  /// Rank ascension retention teaser — same top slide-in as other app toasts.
+  static bool showRankRetentionTeaser(
+    BuildContext context, {
+    required String title,
+    required String message,
+    Duration dismissAfter = const Duration(seconds: 5),
+  }) {
+    HapticFeedback.mediumImpact();
+    return _show(
+      context,
+      dismissAfter: dismissAfter,
+      icon: Icons.emoji_events_outlined,
+      iconColor: Theme.of(context).colorScheme.primary,
+      title: title,
+      message: message,
+      background: Theme.of(context).colorScheme.surface,
+      borderColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.28),
     );
   }
 

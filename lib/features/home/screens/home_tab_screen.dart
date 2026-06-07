@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:daily_water_tracker/common/widgets/app_bottom_nav_bar.dart';
+import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/common/widgets/main_shell_tab_body.dart';
+import 'package:daily_water_tracker/features/achievements/models/achievement_definition.dart';
+import 'package:daily_water_tracker/features/achievements/widgets/rank_celebration_dialog.dart';
 import 'package:daily_water_tracker/features/home/cubit/home_cubit.dart';
 import 'package:daily_water_tracker/features/home/cubit/home_state.dart';
 import 'package:daily_water_tracker/features/home/widgets/home_date_bar.dart';
@@ -17,6 +20,28 @@ import 'package:intl/intl.dart';
 class HomeTabScreen extends StatelessWidget {
   const HomeTabScreen({super.key});
 
+  static void _showRankRetentionTeaser(
+    BuildContext context, {
+    required AchievementDefinition? nextRank,
+  }) {
+    if (nextRank != null) {
+      AppSnackBar.showRankRetentionTeaser(
+        context,
+        title: LocaleKeys.achievements_celebration_teaser_next_rank_title.tr(),
+        message: LocaleKeys.achievements_celebration_teaser_next_rank_message.tr(
+          namedArgs: {'rank': nextRank.nameKey.tr()},
+        ),
+      );
+      return;
+    }
+
+    AppSnackBar.showRankRetentionTeaser(
+      context,
+      title: LocaleKeys.achievements_celebration_teaser_max_rank_title.tr(),
+      message: LocaleKeys.achievements_celebration_teaser_max_rank_message.tr(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenH = MediaQuery.sizeOf(context).height;
@@ -26,7 +51,20 @@ class HomeTabScreen extends StatelessWidget {
     const minTopGap = AppBottomNavBar.mainShellContentBottomGap;
 
     return _HomeAnchoredTodayLifecycle(
-      child: Scaffold(
+      child: BlocListener<HomeCubit, HomeState>(
+        listenWhen: (previous, current) =>
+            previous.pendingRankCelebration != current.pendingRankCelebration &&
+            current.pendingRankCelebration != null,
+        listener: (context, state) async {
+          final rank = state.pendingRankCelebration;
+          if (rank == null) return;
+
+          final nextRank = await RankCelebrationDialog.show(context, rank: rank);
+          if (!context.mounted) return;
+          context.read<HomeCubit>().clearPendingRankCelebration();
+          _showRankRetentionTeaser(context, nextRank: nextRank);
+        },
+        child: Scaffold(
         body: SafeArea(
           bottom: false,
           child: Align(
@@ -118,6 +156,7 @@ class HomeTabScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
       ),
     );
   }

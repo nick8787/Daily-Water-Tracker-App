@@ -142,6 +142,8 @@ class FirestoreRepository {
     bool clearQuietHoursEnd = false,
     bool? isAutoGoalEnabled,
     bool? notificationsEnabled,
+    String? lastCelebratedRankId,
+    bool clearLastCelebratedRankId = false,
   }) async {
     final doc = _userDocOrNull;
     if (doc == null) return;
@@ -203,6 +205,11 @@ class FirestoreRepository {
     if (clearPhotoId) payload['photo_id'] = FieldValue.delete();
     if (clearPhotoUrl) payload['photo_url'] = FieldValue.delete();
     if (clearFcmToken) payload['fcm_token'] = FieldValue.delete();
+    if (lastCelebratedRankId != null) {
+      payload['last_celebrated_rank_id'] = lastCelebratedRankId;
+    } else if (clearLastCelebratedRankId) {
+      payload['last_celebrated_rank_id'] = FieldValue.delete();
+    }
 
     if (payload.isEmpty) return;
     await doc.set(payload, SetOptions(merge: true));
@@ -214,6 +221,14 @@ class FirestoreRepository {
     if (photoId != null || photoUrl != null || clearPhotoId || clearPhotoUrl) {
       unawaited(_analytics.logPhotoUpdated());
     }
+  }
+
+  Future<void> updateLastCelebratedRankId(String rankId) async {
+    await updateUserProfile(lastCelebratedRankId: rankId);
+  }
+
+  Future<void> clearLastCelebratedRankId() async {
+    await updateUserProfile(clearLastCelebratedRankId: true);
   }
 
   /// When auto-goal is on, rewrite [daily_goal_ml] if weight implies a different snapped target.

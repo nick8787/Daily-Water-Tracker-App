@@ -26,6 +26,7 @@ class UserModel {
     this.reminderIntervalMinutes,
     this.quietHoursStart,
     this.quietHoursEnd,
+    this.lastCelebratedRankId,
   });
 
   final String id;
@@ -79,6 +80,9 @@ class UserModel {
   final String? quietHoursStart;
   final String? quietHoursEnd;
 
+  /// Last hydration rank for which the ascension ceremony was shown.
+  final String? lastCelebratedRankId;
+
   Map<String, dynamic> toFirestore() {
     return <String, dynamic>{
       'user_name': userName,
@@ -99,6 +103,8 @@ class UserModel {
       if (reminderIntervalMinutes != null) 'reminder_interval_minutes': reminderIntervalMinutes,
       if (quietHoursStart != null) 'quiet_hours_start': quietHoursStart,
       if (quietHoursEnd != null) 'quiet_hours_end': quietHoursEnd,
+      if (lastCelebratedRankId != null)
+        'last_celebrated_rank_id': lastCelebratedRankId,
     };
   }
 
@@ -124,6 +130,7 @@ class UserModel {
     Object? reminderIntervalMinutes = _unset,
     Object? quietHoursStart = _unset,
     Object? quietHoursEnd = _unset,
+    Object? lastCelebratedRankId = _unset,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -153,6 +160,9 @@ class UserModel {
       quietHoursEnd: identical(quietHoursEnd, _unset)
           ? this.quietHoursEnd
           : quietHoursEnd as String?,
+      lastCelebratedRankId: identical(lastCelebratedRankId, _unset)
+          ? this.lastCelebratedRankId
+          : lastCelebratedRankId as String?,
     );
   }
 
@@ -183,6 +193,9 @@ class UserModel {
       reminderIntervalMinutes: _readReminderMinutes(data['reminder_interval_minutes']),
       quietHoursStart: _trimOrNull(data['quiet_hours_start'] as String?),
       quietHoursEnd: _trimOrNull(data['quiet_hours_end'] as String?),
+      lastCelebratedRankId: _trimOrNull(
+        data['last_celebrated_rank_id'] as String?,
+      ),
     );
   }
 

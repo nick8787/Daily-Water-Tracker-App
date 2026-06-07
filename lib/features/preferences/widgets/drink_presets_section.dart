@@ -9,7 +9,7 @@ import 'package:daily_water_tracker/features/preferences/cubit/preferences_state
 import 'package:daily_water_tracker/features/preferences/widgets/info_sheets/presets_info_sheet.dart';
 import 'package:daily_water_tracker/features/preferences/widgets/preferences_info_bottom_sheet.dart';
 import 'package:daily_water_tracker/features/preferences/widgets/preferences_section_shell.dart';
-import 'package:daily_water_tracker/features/theme/theme_info.dart';
+import 'package:daily_water_tracker/features/theme/decorations.dart';
 
 class DrinkPresetsSection extends StatefulWidget {
   const DrinkPresetsSection({super.key});
@@ -124,25 +124,13 @@ class _DrinkPresetsSectionState extends State<DrinkPresetsSection> {
                             vertical: 10,
                           ),
                           filled: true,
-                          fillColor: theme.colorScheme.surfaceContainerHighest
-                              .withValues(alpha: 0.55),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide.none,
+                          fillColor: AppFieldStyle.fillColor(context),
+                          border: AppFieldStyle.borderNone(AppFieldStyle.radius14),
+                          enabledBorder: AppFieldStyle.borderEnabled(
+                            AppFieldStyle.radius14,
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(
-                              color: theme.colorScheme.outlineVariant
-                                  .withValues(alpha: 0.85),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(
-                              color: brandBlue,
-                              width: 1.3,
-                            ),
+                          focusedBorder: AppFieldStyle.borderFocused(
+                            radius: AppFieldStyle.radius14,
                           ),
                         ),
                         onChanged: (v) => onFieldChanged(i, v),
