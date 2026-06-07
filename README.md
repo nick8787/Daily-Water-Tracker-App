@@ -16,7 +16,7 @@ A Flutter app for tracking daily water intake. Backed by Firebase, with real-tim
 - Push reminders via FCM with quiet hours and topic subscription
 - Local scheduled reminders, timezone-aware
 - Remote Config for switching the progress indicator style (circular / linear) and showing an emergency banner without shipping a new build
-- Shareable "today" link that opens straight into the app (App Links via Firebase Hosting, dev-only)
+- Shareable "today" link that opens straight into the app (App Links via Firebase Hosting, dev + prod)
 - Profile + avatar upload to Firebase Storage
 - Account deletion flow with reauthentication
 - EN / UK localisation

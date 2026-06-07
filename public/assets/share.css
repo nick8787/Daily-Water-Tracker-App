@@ -1,0 +1,330 @@
+:root {
+  --brand-blue: #12a0e6;
+  --brand-blue-dark: #0178d9;
+  --brand-gradient: linear-gradient(135deg, #58adf5 0%, #0178d9 100%);
+  --background: #f1f1f1;
+  --surface: #ffffff;
+  --text-primary: #2c3e50;
+  --text-muted: #9eadbd;
+  --text-secondary: #163a5e;
+  --border: #e5e5e5;
+  --shadow: 0 18px 48px rgba(22, 58, 94, 0.08);
+  --radius-card: 24px;
+  --radius-button: 16px;
+  --font-en: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-uk: "Montserrat", system-ui, -apple-system, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-en);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body[data-lang="uk"] {
+  font-family: var(--font-uk);
+}
+
+.page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px 40px;
+}
+
+.page__inner {
+  width: 100%;
+  max-width: 420px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.brand__icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  object-fit: cover;
+}
+
+.brand__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brand__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  letter-spacing: -0.02em;
+}
+
+.brand__badge {
+  display: none;
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(18, 160, 230, 0.12);
+  color: var(--brand-blue);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.brand__badge.is-visible {
+  display: inline-block;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 32px 24px 28px;
+  text-align: center;
+}
+
+.card__eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.card__volume {
+  margin: 0;
+  font-size: clamp(3rem, 14vw, 3.75rem);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.card__unit {
+  display: inline-block;
+  margin-left: 0.12em;
+  font-size: 0.42em;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--brand-blue);
+  vertical-align: super;
+}
+
+.card__subtitle {
+  margin: 10px 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.card__message {
+  margin: 20px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.card--generic .card__volume-wrap {
+  display: none;
+}
+
+.card__volume-wrap {
+  min-height: 4.5rem;
+}
+
+body:not(.is-ready) .card__volume-wrap,
+body:not(.is-ready) .card__subtitle,
+body:not(.is-ready) .card__message,
+body:not(.is-ready) .store-buttons,
+body:not(.is-ready) .qr-section {
+  visibility: hidden;
+}
+
+body.is-ready .card__volume-wrap,
+body.is-ready .card__subtitle,
+body.is-ready .card__message,
+body.is-ready .store-buttons,
+body.is-ready .qr-section.is-visible {
+  visibility: visible;
+}
+
+.card--generic .card__generic-icon {
+  display: flex;
+}
+
+.card__generic-icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(88, 173, 245, 0.18), rgba(1, 120, 217, 0.12));
+}
+
+.card__generic-icon img,
+.card__generic-icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+.cta-block {
+  margin-top: 24px;
+}
+
+.cta-block__title {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.store-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.store-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: var(--radius-button);
+  background: var(--brand-gradient);
+  color: #fff;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(18, 160, 230, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.store-button:hover,
+.store-button:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(18, 160, 230, 0.34);
+}
+
+.store-button:active {
+  transform: translateY(0);
+}
+
+.store-button--secondary {
+  background: var(--surface);
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border);
+  box-shadow: none;
+}
+
+.store-button--secondary:hover,
+.store-button--secondary:focus-visible {
+  box-shadow: 0 8px 20px rgba(22, 58, 94, 0.06);
+}
+
+.store-button.is-hidden {
+  display: none;
+}
+
+.store-button svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.qr-section {
+  display: none;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.qr-section.is-visible {
+  display: block;
+}
+
+.qr-section__label {
+  margin: 0 0 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.qr-section__frame {
+  display: inline-flex;
+  padding: 14px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid var(--border);
+}
+
+.qr-section__image {
+  display: block;
+  width: 168px;
+  height: 168px;
+  background: #f8fbff;
+}
+
+.footer-note {
+  margin: 28px 0 0;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.footer-note a {
+  color: var(--brand-blue);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-note a:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 720px) {
+  .page {
+    padding-top: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .store-button {
+    transition: none;
+  }
+}

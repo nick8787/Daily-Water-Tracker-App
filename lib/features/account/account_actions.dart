@@ -3,31 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 
-import 'package:daily_water_tracker/common/di/injector_module.dart';
-import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
 import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/common/widgets/app_confirm_dialog.dart';
 import 'package:daily_water_tracker/common/widgets/app_loader.dart';
 import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
-import 'package:daily_water_tracker/features/deep_links/services/water_deep_link_service.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:daily_water_tracker/features/deep_links/services/progress_share_service.dart';
 
 abstract final class AccountActions {
   AccountActions._();
 
   static Future<void> onShareProgressTap(BuildContext context) async {
-    if (flutterFlavor.isProd) {
-      comingSoon(context, LocaleKeys.account_menu_share_progress.tr());
-      return;
-    }
     await shareTodayProgress(context);
   }
 
   static Future<void> shareTodayProgress(BuildContext context) async {
     final firestore = context.read<FirestoreRepository>();
-    final deepLinks = InjectorModule.locator<WaterDeepLinkService>();
 
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -49,11 +41,10 @@ abstract final class AccountActions {
         return;
       }
 
-      final uri = deepLinks.buildShareProgressUri(ml: totalMl);
-      await SharePlus.instance.share(
-        ShareParams(
-          text: uri.toString(),
-        ),
+      final locale = Localizations.localeOf(context).toString();
+      await ProgressShareService.shareTodayProgress(
+        ml: totalMl,
+        locale: locale,
       );
     } catch (e, st) {
       logCaughtError('AccountActions.shareTodayProgress', e, st);

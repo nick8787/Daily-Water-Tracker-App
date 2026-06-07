@@ -59,7 +59,11 @@ class HomeTabScreen extends StatelessWidget {
           final rank = state.pendingRankCelebration;
           if (rank == null) return;
 
-          final nextRank = await RankCelebrationDialog.show(context, rank: rank);
+          final nextRank = await RankCelebrationDialog.show(
+            context,
+            rank: rank,
+            todayMl: state.totalRawMl,
+          );
           if (!context.mounted) return;
           context.read<HomeCubit>().clearPendingRankCelebration();
           _showRankRetentionTeaser(context, nextRank: nextRank);

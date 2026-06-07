@@ -6,8 +6,25 @@
     <title>Daily Water Tracker</title>
     <meta
       name="description"
-      content="Track daily water intake and stay hydrated."
+      content="A friend shared their daily hydration progress with you."
     >
+    <!-- Static Open Graph fallback for link preview crawlers (Telegram, iMessage, Slack). -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Daily Water Tracker">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="Daily Water Tracker — Shared hydration">
+    <meta
+      property="og:description"
+      content="A friend shared their daily hydration progress with you. Track yours too."
+    >
+    <meta property="og:url" content="/share">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Daily Water Tracker — Shared hydration">
+    <meta
+      name="twitter:description"
+      content="A friend shared their daily hydration progress with you. Track yours too."
+    >
+    <link rel="canonical" href="/share">
     <meta name="theme-color" content="#12A0E6">
     <link rel="icon" type="image/png" sizes="58x58" href="/assets/favicon.png">
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
@@ -19,7 +36,7 @@
     >
     <link rel="stylesheet" href="/assets/share.css">
   </head>
-  <body data-page="home">
+  <body data-page="share">
     <main class="page">
       <div class="page__inner">
         <header class="brand">
@@ -36,7 +53,9 @@
           </div>
         </header>
 
-        <section class="card card--generic" aria-labelledby="hero-title">
+        <section class="card" id="share-card" aria-labelledby="card-eyebrow">
+          <p class="card__eyebrow" id="card-eyebrow">Shared progress</p>
+
           <div class="card__generic-icon" aria-hidden="true">
             <img
               src="/assets/app-icon.png"
@@ -46,13 +65,21 @@
               style="border-radius: 8px;"
             >
           </div>
-          <p class="card__eyebrow" id="hero-title">Daily Water Tracker</p>
-          <p class="card__message" id="hero-message">
-            Track your daily water intake and stay hydrated.
+
+          <div class="card__volume-wrap">
+            <p class="card__volume" id="card-volume" aria-live="polite">
+              0<span class="card__unit">ml</span>
+            </p>
+            <p class="card__subtitle" id="card-subtitle">drank today</p>
+          </div>
+
+          <p class="card__message" id="card-message">
+            A friend shared their daily hydration progress with you.
           </p>
         </section>
 
-        <section class="cta-block">
+        <section class="cta-block" aria-labelledby="cta-title">
+          <h2 class="cta-block__title" id="cta-title">Track yours too</h2>
           <div class="store-buttons">
             <a
               class="store-button"
@@ -82,6 +109,23 @@
             </a>
           </div>
         </section>
+
+        <section class="qr-section" id="qr-section" aria-labelledby="qr-label">
+          <p class="qr-section__label" id="qr-label">Scan to download on your phone</p>
+          <div class="qr-section__frame">
+            <img
+              class="qr-section__image"
+              id="qr-image"
+              width="168"
+              height="168"
+              alt="QR code to download the app"
+            >
+          </div>
+        </section>
+
+        <p class="footer-note" id="footer-note">
+          Already have the app? Open the same link on your phone — it will launch automatically.
+        </p>
       </div>
     </main>
 

@@ -4,30 +4,32 @@ import 'package:daily_water_tracker/features/deep_links/models/water_link_purpos
 class DeepLinkState extends Equatable {
   const DeepLinkState({
     required this.purpose,
-    required this.lastHandledUri,
+    required this.shareDeliveryId,
   });
 
   final WaterLinkPurpose purpose;
-  final String? lastHandledUri;
+
+  /// Increments every time a share link should be presented in the UI.
+  final int shareDeliveryId;
 
   DeepLinkState copyWith({
     WaterLinkPurpose? purpose,
-    String? lastHandledUri,
+    int? shareDeliveryId,
   }) {
     return DeepLinkState(
       purpose: purpose ?? this.purpose,
-      lastHandledUri: lastHandledUri ?? this.lastHandledUri,
+      shareDeliveryId: shareDeliveryId ?? this.shareDeliveryId,
     );
   }
 
   factory DeepLinkState.initial() => const DeepLinkState(
     purpose: WaterLinkPurposeNone(),
-    lastHandledUri: null,
+    shareDeliveryId: 0,
   );
 
   @override
   List<Object?> get props => [
     purpose,
-    lastHandledUri,
+    shareDeliveryId,
   ];
 }

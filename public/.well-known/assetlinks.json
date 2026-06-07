@@ -7,7 +7,19 @@
       "namespace": "android_app",
       "package_name": "com.dailywatertracker.app.dev",
       "sha256_cert_fingerprints": [
-"D5:FE:B0:7C:31:DC:41:B0:C0:88:83:09:F9:3C:18:E8:AE:E2:DB:8A:58:F2:5D:C7:37:C0:79:C2:09:77:5C:C0"
+        "D5:FE:B0:7C:31:DC:41:B0:C0:88:83:09:F9:3C:18:E8:AE:E2:DB:8A:58:F2:5D:C7:37:C0:79:C2:09:77:5C:C0"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.dailywatertracker.app",
+      "sha256_cert_fingerprints": [
+        "D5:FE:B0:7C:31:DC:41:B0:C0:88:83:09:F9:3C:18:E8:AE:E2:DB:8A:58:F2:5D:C7:37:C0:79:C2:09:77:5C:C0"
       ]
     }
   }

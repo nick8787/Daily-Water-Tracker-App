@@ -18,6 +18,10 @@ class DeepLinkCubit extends Cubit<DeepLinkState> {
   final WaterDeepLinkService _service;
   StreamSubscription<Uri>? _sub;
 
+  String? _debouncedUri;
+  DateTime? _debouncedAt;
+  static const _duplicateIntentWindow = Duration(milliseconds: 900);
+
   Future<void> initialize() async {
     try {
       final initial = await _service.getInitialUri();
@@ -45,21 +49,52 @@ class DeepLinkCubit extends Cubit<DeepLinkState> {
   }
 
   void _handleUri(Uri uri) {
-    final normalized = uri.toString();
-    if (normalized == state.lastHandledUri) return;
-
     final purpose = _parsePurpose(uri);
-    emit(state.copyWith(purpose: purpose, lastHandledUri: normalized));
+    if (purpose is! WaterLinkPurposeShareProgress) return;
+
+    final normalized = _normalizeShareUri(uri);
+    final now = DateTime.now();
+    if (_debouncedUri == normalized &&
+        _debouncedAt != null &&
+        now.difference(_debouncedAt!) < _duplicateIntentWindow) {
+      return;
+    }
+
+    _debouncedUri = normalized;
+    _debouncedAt = now;
+
+    emit(
+      state.copyWith(
+        purpose: purpose,
+        shareDeliveryId: state.shareDeliveryId + 1,
+      ),
+    );
   }
 
   WaterLinkPurpose _parsePurpose(Uri uri) {
-    if (uri.path != '/share') return const WaterLinkPurposeNone();
+    final path = uri.path.endsWith('/') && uri.path.length > 1
+        ? uri.path.substring(0, uri.path.length - 1)
+        : uri.path;
+    if (path != '/share') return const WaterLinkPurposeNone();
 
     final mlStr = uri.queryParameters['ml'];
     final ml = int.tryParse((mlStr ?? '').trim());
     if (ml == null || ml <= 0) return const WaterLinkPurposeNone();
 
     return WaterLinkPurposeShareProgress(ml: ml);
+  }
+
+  String _normalizeShareUri(Uri uri) {
+    final path = uri.path.endsWith('/') && uri.path.length > 1
+        ? uri.path.substring(0, uri.path.length - 1)
+        : uri.path;
+
+    return Uri(
+      scheme: uri.scheme,
+      host: uri.host,
+      path: path,
+      queryParameters: uri.queryParameters.isEmpty ? null : uri.queryParameters,
+    ).toString();
   }
 
   @override

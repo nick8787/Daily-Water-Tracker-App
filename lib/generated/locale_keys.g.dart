@@ -388,8 +388,13 @@ abstract class  LocaleKeys {
   static const main_nav_coming_soon = 'main_nav.coming_soon';
   static const main_nav = 'main_nav';
   static const deep_link_shared_title = 'deep_link.shared.title';
+  static const deep_link_shared_drank_today = 'deep_link.shared.drank_today';
   static const deep_link_shared_message = 'deep_link.shared.message';
+  static const deep_link_shared_primary_action = 'deep_link.shared.primary_action';
+  static const deep_link_shared_secondary_action = 'deep_link.shared.secondary_action';
   static const deep_link_shared = 'deep_link.shared';
+  static const deep_link_share_progress_message = 'deep_link.share.progress_message';
+  static const deep_link_share = 'deep_link.share';
   static const deep_link = 'deep_link';
   static const language_english = 'language.english';
   static const language_ukrainian = 'language.ukrainian';
@@ -491,6 +496,7 @@ abstract class  LocaleKeys {
   static const achievements_celebration_new_status = 'achievements.celebration.new_status';
   static const achievements_celebration_primary_action = 'achievements.celebration.primary_action';
   static const achievements_celebration_share = 'achievements.celebration.share';
+  static const achievements_celebration_share_message = 'achievements.celebration.share_message';
   static const achievements_celebration_title = 'achievements.celebration.title';
   static const achievements_celebration_continue = 'achievements.celebration.continue';
   static const achievements_celebration_teaser_next_rank_title = 'achievements.celebration.teaser_next_rank_title';
