@@ -1,14 +1,18 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
-/// User-facing achievement state derived from [AchievementDefinition] + progress.
+import 'package:daily_water_tracker/features/achievements/models/rank_condition.dart';
+
+/// User-facing hydration rank (tier) with composite progress.
 class BadgeModel extends Equatable {
   const BadgeModel({
     required this.id,
     required this.nameKey,
     required this.descriptionKey,
     required this.iconPath,
-    required this.currentProgress,
-    required this.maxProgress,
+    required this.placeholderIcon,
+    required this.tierOrder,
+    required this.conditions,
     this.unlockDate,
   });
 
@@ -16,25 +20,21 @@ class BadgeModel extends Equatable {
   final String nameKey;
   final String descriptionKey;
   final String iconPath;
-  final double currentProgress;
-  final double maxProgress;
+  final IconData placeholderIcon;
+  final int tierOrder;
+  final List<RankCondition> conditions;
   final DateTime? unlockDate;
 
-  bool get isUnlocked =>
-      maxProgress > 0 && currentProgress >= maxProgress;
-
-  double get progressFraction {
-    if (maxProgress <= 0) return 0;
-    return (currentProgress / maxProgress).clamp(0.0, 1.0);
-  }
+  bool get isUnlocked => conditions.every((c) => c.isComplete);
 
   BadgeModel copyWith({
     String? id,
     String? nameKey,
     String? descriptionKey,
     String? iconPath,
-    double? currentProgress,
-    double? maxProgress,
+    IconData? placeholderIcon,
+    int? tierOrder,
+    List<RankCondition>? conditions,
     DateTime? unlockDate,
   }) {
     return BadgeModel(
@@ -42,8 +42,9 @@ class BadgeModel extends Equatable {
       nameKey: nameKey ?? this.nameKey,
       descriptionKey: descriptionKey ?? this.descriptionKey,
       iconPath: iconPath ?? this.iconPath,
-      currentProgress: currentProgress ?? this.currentProgress,
-      maxProgress: maxProgress ?? this.maxProgress,
+      placeholderIcon: placeholderIcon ?? this.placeholderIcon,
+      tierOrder: tierOrder ?? this.tierOrder,
+      conditions: conditions ?? this.conditions,
       unlockDate: unlockDate ?? this.unlockDate,
     );
   }
@@ -54,8 +55,9 @@ class BadgeModel extends Equatable {
     nameKey,
     descriptionKey,
     iconPath,
-    currentProgress,
-    maxProgress,
+    placeholderIcon,
+    tierOrder,
+    conditions,
     unlockDate,
   ];
 }

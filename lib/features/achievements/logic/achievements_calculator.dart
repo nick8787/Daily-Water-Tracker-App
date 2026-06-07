@@ -3,9 +3,12 @@ import 'package:daily_water_tracker/features/achievements/data/achievements_regi
 import 'package:daily_water_tracker/features/achievements/models/achievement_day_summary.dart';
 import 'package:daily_water_tracker/features/achievements/models/achievement_definition.dart';
 import 'package:daily_water_tracker/features/achievements/models/badge_model.dart';
+import 'package:daily_water_tracker/features/achievements/models/rank_condition.dart';
+import 'package:daily_water_tracker/features/achievements/models/rank_condition_type.dart';
 import 'package:daily_water_tracker/firebase/models/drink_type.dart';
 import 'package:daily_water_tracker/firebase/models/hydration_log_entry.dart';
 
+/// Pure rank rules — unit-testable without Firestore or Cubit.
 abstract final class AchievementsCalculator {
   static List<BadgeModel> calculate({
     required List<HydrationLogEntry> entries,
@@ -13,15 +16,17 @@ abstract final class AchievementsCalculator {
   }) {
     final goalMl = dailyGoalMl > 0 ? dailyGoalMl : kDefaultDailyGoalMl;
     final daySummaries = _groupEntriesByDay(entries);
-    final sortedEntries = _sortedByTimestampAsc(entries);
+    final entriesAsc = _sortedByTimestampAsc(entries);
+    final goalMetDays = _goalMetDaysSorted(daySummaries, goalMl);
+    final totalVolumeMl = _cumulativeEffectiveMl(entriesAsc);
 
     return [
       for (final definition in AchievementsRegistry.all)
-        _buildBadge(
+        _buildRank(
           definition: definition,
-          entries: sortedEntries,
-          daySummaries: daySummaries,
-          dailyGoalMl: goalMl,
+          entriesAsc: entriesAsc,
+          goalMetDays: goalMetDays,
+          totalVolumeMl: totalVolumeMl,
         ),
     ];
   }
@@ -30,102 +35,130 @@ abstract final class AchievementsCalculator {
     List<HydrationLogEntry> entries,
   ) => _groupEntriesByDay(entries);
 
-  static BadgeModel _buildBadge({
+  static BadgeModel _buildRank({
     required AchievementDefinition definition,
-    required List<HydrationLogEntry> entries,
-    required Map<DateTime, AchievementDaySummary> daySummaries,
-    required int dailyGoalMl,
+    required List<HydrationLogEntry> entriesAsc,
+    required List<DateTime> goalMetDays,
+    required double totalVolumeMl,
   }) {
-    return switch (definition.id) {
-      AchievementsRegistry.firstDropId => _firstDrop(
-        definition,
-        entries,
-      ),
-      AchievementsRegistry.marathon3Id => _marathon3(
-        definition,
-        daySummaries,
-        dailyGoalMl,
-      ),
-      AchievementsRegistry.volume10lId => _volume10l(
-        definition,
-        entries,
-      ),
-      _ => _emptyBadge(definition),
-    };
-  }
+    final conditions = <RankCondition>[];
 
-  static BadgeModel _firstDrop(
-    AchievementDefinition definition,
-    List<HydrationLogEntry> entriesAsc,
-  ) {
-    if (entriesAsc.isEmpty) {
-      return _badgeFrom(definition, currentProgress: 0);
+    for (final template in definition.conditionDefinitions) {
+      conditions.add(
+        _resolveCondition(
+          template: template,
+          entriesAsc: entriesAsc,
+          goalMetDays: goalMetDays,
+          totalVolumeMl: totalVolumeMl,
+        ),
+      );
     }
 
-    return _badgeFrom(
-      definition,
-      currentProgress: 1,
-      unlockDate: entriesAsc.first.record.timestamp,
-    );
-  }
-
-  static BadgeModel _marathon3(
-    AchievementDefinition definition,
-    Map<DateTime, AchievementDaySummary> daySummaries,
-    int dailyGoalMl,
-  ) {
-    final streak = _maxConsecutiveGoalDays(
-      daySummaries: daySummaries,
-      dailyGoalMl: dailyGoalMl,
-    );
-
-    final unlockDate = streak.current >= definition.maxProgress
-        ? streak.unlockDay
+    final unlockDate = conditions.every((c) => c.isComplete)
+        ? _latestDate(
+            conditions
+                .map((c) => c.completedAt)
+                .whereType<DateTime>()
+                .toList(),
+          )
         : null;
 
-    return _badgeFrom(
-      definition,
-      currentProgress: streak.current.toDouble(),
-      unlockDate: unlockDate,
-    );
-  }
-
-  static BadgeModel _volume10l(
-    AchievementDefinition definition,
-    List<HydrationLogEntry> entriesAsc,
-  ) {
-    final result = _cumulativeEffectiveMl(entriesAsc);
-    final progress = result.totalMl.clamp(0.0, definition.maxProgress);
-
-    final unlockDate = result.totalMl >= definition.maxProgress
-        ? result.thresholdReachedAt
-        : null;
-
-    return _badgeFrom(
-      definition,
-      currentProgress: progress,
-      unlockDate: unlockDate,
-    );
-  }
-
-  static BadgeModel _emptyBadge(AchievementDefinition definition) {
-    return _badgeFrom(definition, currentProgress: 0);
-  }
-
-  static BadgeModel _badgeFrom(
-    AchievementDefinition definition, {
-    required double currentProgress,
-    DateTime? unlockDate,
-  }) {
     return BadgeModel(
       id: definition.id,
       nameKey: definition.nameKey,
       descriptionKey: definition.descriptionKey,
       iconPath: definition.iconPath,
-      currentProgress: currentProgress,
-      maxProgress: definition.maxProgress,
+      placeholderIcon: definition.placeholderIcon,
+      tierOrder: definition.tierOrder,
+      conditions: conditions,
       unlockDate: unlockDate,
     );
+  }
+
+  static RankCondition _resolveCondition({
+    required RankConditionDefinition template,
+    required List<HydrationLogEntry> entriesAsc,
+    required List<DateTime> goalMetDays,
+    required double totalVolumeMl,
+  }) {
+    return switch (template.type) {
+      RankConditionType.logEntries => RankCondition(
+        type: template.type,
+        labelKey: template.labelKey,
+        currentValue: entriesAsc.isEmpty ? 0 : 1,
+        targetValue: template.targetValue,
+        completedAt: entriesAsc.isEmpty
+            ? null
+            : entriesAsc.first.record.timestamp,
+      ),
+      RankConditionType.goalDays => RankCondition(
+        type: template.type,
+        labelKey: template.labelKey,
+        currentValue: goalMetDays.length.toDouble(),
+        targetValue: template.targetValue,
+        completedAt: _goalDaysCompletedAt(
+          goalMetDays: goalMetDays,
+          targetDays: template.targetValue.toInt(),
+          entriesAsc: entriesAsc,
+        ),
+      ),
+      RankConditionType.totalVolumeMl => RankCondition(
+        type: template.type,
+        labelKey: template.labelKey,
+        currentValue: totalVolumeMl.clamp(0, template.targetValue),
+        targetValue: template.targetValue,
+        completedAt: _volumeCompletedAt(
+          entriesAsc: entriesAsc,
+          targetMl: template.targetValue,
+        ),
+      ),
+    };
+  }
+
+  static DateTime? _goalDaysCompletedAt({
+    required List<DateTime> goalMetDays,
+    required int targetDays,
+    required List<HydrationLogEntry> entriesAsc,
+  }) {
+    if (goalMetDays.length < targetDays) return null;
+
+    final milestoneDay = goalMetDays[targetDays - 1];
+    DateTime? latestOnDay;
+    for (final entry in entriesAsc) {
+      if (_normalizeDay(entry.calendarDay) == milestoneDay) {
+        final ts = entry.record.timestamp;
+        if (latestOnDay == null || ts.isAfter(latestOnDay)) {
+          latestOnDay = ts;
+        }
+      }
+    }
+    return latestOnDay ?? milestoneDay;
+  }
+
+  static DateTime? _volumeCompletedAt({
+    required List<HydrationLogEntry> entriesAsc,
+    required double targetMl,
+  }) {
+    var running = 0.0;
+    for (final entry in entriesAsc) {
+      running += entry.record.effectiveHydrationMl;
+      if (running >= targetMl) {
+        return entry.record.timestamp;
+      }
+    }
+    return null;
+  }
+
+  static List<DateTime> _goalMetDaysSorted(
+    Map<DateTime, AchievementDaySummary> daySummaries,
+    int dailyGoalMl,
+  ) {
+    final days = daySummaries.entries
+        .where((e) => e.value.goalMet(dailyGoalMl))
+        .map((e) => e.key)
+        .toList()
+      ..sort();
+    return days;
   }
 
   static List<HydrationLogEntry> _sortedByTimestampAsc(
@@ -160,74 +193,21 @@ abstract final class AchievementsCalculator {
     };
   }
 
+  static double _cumulativeEffectiveMl(List<HydrationLogEntry> entriesAsc) {
+    var total = 0.0;
+    for (final entry in entriesAsc) {
+      total += entry.record.effectiveHydrationMl;
+    }
+    return total;
+  }
+
   static DateTime _normalizeDay(DateTime day) {
     return DateTime(day.year, day.month, day.day);
   }
 
-  /// Walks every calendar day from first log → last log; gaps break the streak.
-  static _GoalStreakResult _maxConsecutiveGoalDays({
-    required Map<DateTime, AchievementDaySummary> daySummaries,
-    required int dailyGoalMl,
-  }) {
-    if (daySummaries.isEmpty || dailyGoalMl <= 0) {
-      return const _GoalStreakResult(current: 0);
-    }
-
-    final sortedDays = daySummaries.keys.toList()..sort();
-    final firstDay = sortedDays.first;
-    final lastDay = sortedDays.last;
-
-    var maxStreak = 0;
-    var running = 0;
-    DateTime? maxStreakEndDay;
-    DateTime? runningEndDay;
-
-    for (
-      var day = firstDay;
-      !day.isAfter(lastDay);
-      day = day.add(const Duration(days: 1))
-    ) {
-      final normalized = _normalizeDay(day);
-      final summary = daySummaries[normalized];
-      final metGoal = summary?.goalMet(dailyGoalMl) ?? false;
-
-      if (metGoal) {
-        running++;
-        runningEndDay = normalized;
-        if (running > maxStreak) {
-          maxStreak = running;
-          maxStreakEndDay = runningEndDay;
-        }
-      } else {
-        running = 0;
-        runningEndDay = null;
-      }
-    }
-
-    return _GoalStreakResult(
-      current: maxStreak,
-      unlockDay: maxStreakEndDay,
-    );
-  }
-
-  static _VolumeProgressResult _cumulativeEffectiveMl(
-    List<HydrationLogEntry> entriesAsc,
-  ) {
-    var total = 0.0;
-    DateTime? thresholdReachedAt;
-
-    for (final entry in entriesAsc) {
-      total += entry.record.effectiveHydrationMl;
-      if (thresholdReachedAt == null &&
-          total >= AchievementsRegistry.volume10lMaxProgressMl) {
-        thresholdReachedAt = entry.record.timestamp;
-      }
-    }
-
-    return _VolumeProgressResult(
-      totalMl: total,
-      thresholdReachedAt: thresholdReachedAt,
-    );
+  static DateTime? _latestDate(List<DateTime> dates) {
+    if (dates.isEmpty) return null;
+    return dates.reduce((a, b) => a.isAfter(b) ? a : b);
   }
 }
 
@@ -235,24 +215,4 @@ final class _DayBucket {
   double effectiveMl = 0;
   final Set<DrinkType> drinkTypes = {};
   int entryCount = 0;
-}
-
-final class _GoalStreakResult {
-  const _GoalStreakResult({
-    required this.current,
-    this.unlockDay,
-  });
-
-  final int current;
-  final DateTime? unlockDay;
-}
-
-final class _VolumeProgressResult {
-  const _VolumeProgressResult({
-    required this.totalMl,
-    this.thresholdReachedAt,
-  });
-
-  final double totalMl;
-  final DateTime? thresholdReachedAt;
 }
