@@ -11,6 +11,7 @@ import 'package:daily_water_tracker/features/preferences/utils/quiet_hours_forma
 import 'package:daily_water_tracker/features/preferences/widgets/info_sheets/reminders_info_sheet.dart';
 import 'package:daily_water_tracker/features/preferences/widgets/preferences_info_bottom_sheet.dart';
 import 'package:daily_water_tracker/features/preferences/widgets/preferences_section_shell.dart';
+import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/theme_info.dart';
 
 class ReminderSettingsSection extends StatelessWidget {
@@ -127,24 +128,10 @@ class ReminderSettingsSection extends StatelessWidget {
                     vertical: 4,
                   ),
                   filled: true,
-                  fillColor: theme.colorScheme.surfaceContainerHighest
-                      .withValues(alpha: 0.55),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.outlineVariant.withValues(
-                        alpha: 0.85,
-                      ),
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: brandBlue, width: 1.4),
-                  ),
+                  fillColor: AppFieldStyle.fillColor(context),
+                  border: AppFieldStyle.borderNone(),
+                  enabledBorder: AppFieldStyle.borderEnabled(),
+                  focusedBorder: AppFieldStyle.borderFocused(),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<int?>(
@@ -237,8 +224,11 @@ class _QuietTimeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Material(
-      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.55),
-      borderRadius: BorderRadius.circular(14),
+      color: AppFieldStyle.fillColor(context),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: const BorderSide(color: AppFieldStyle.enabledBorderColor),
+      ),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(14),

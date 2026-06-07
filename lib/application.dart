@@ -10,7 +10,6 @@ import 'package:daily_water_tracker/features/deep_links/listeners/deep_link_list
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 
 import 'common/router.dart';
-import 'features/theme/app_theme.dart';
 import 'features/theme/theme.dart';
 
 class Application extends StatefulWidget {
@@ -35,13 +34,25 @@ class _ApplicationState extends State<Application> {
   @override
   Widget build(BuildContext context) {
     final themeState = context.select((ThemeBloc bloc) => bloc.state);
+    final locale = context.locale;
+
     return BlocListener<AppVersionCubit, AppVersionStatus>(
       listener: _onAppVersion,
       child: MaterialApp.router(
         title: LocaleKeys.app_title.tr(),
         routerConfig: goRouter,
-        theme: lightTheme,
-        darkTheme: darkTheme,
+        theme: buildAppTheme(
+          brightness: Brightness.light,
+          appColors: AppColors.light,
+          overlay: AppSystemUiOverlay.light,
+          locale: locale,
+        ),
+        darkTheme: buildAppTheme(
+          brightness: Brightness.dark,
+          appColors: AppColors.dark,
+          overlay: AppSystemUiOverlay.dark,
+          locale: locale,
+        ),
         themeMode: themeState.themeMode,
         themeAnimationDuration: const Duration(milliseconds: 420),
         themeAnimationCurve: Curves.easeInOutCubic,

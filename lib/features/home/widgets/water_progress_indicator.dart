@@ -52,6 +52,7 @@ class _WaterProgressIndicatorState extends State<WaterProgressIndicator> {
 
   Widget _centerContent(BuildContext context) {
     final colors = context.appColors;
+    final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -61,19 +62,28 @@ class _WaterProgressIndicatorState extends State<WaterProgressIndicator> {
           Text(
             LocaleKeys.home_progress_done.tr(),
             textAlign: TextAlign.center,
-            style: AppTypography.progressRingCaption(colors.progressLabelMuted),
+            style: AppTypography.progressRingCaption(
+              colors.progressLabelMuted,
+              textTheme,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             '${widget.currentAmount}',
             textAlign: TextAlign.center,
-            style: AppTypography.progressRingValue(colors.progressValueText),
+            style: AppTypography.progressRingValue(
+              colors.progressValueText,
+              textTheme,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             LocaleKeys.home_progress_of_goal.tr(namedArgs: {'goal': '${widget.goalAmount}'}),
             textAlign: TextAlign.center,
-            style: AppTypography.progressRingSubtitle(colors.progressLabelMuted),
+            style: AppTypography.progressRingSubtitle(
+              colors.progressLabelMuted,
+              textTheme,
+            ),
           ),
         ],
       ),
