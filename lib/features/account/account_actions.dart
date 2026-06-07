@@ -43,6 +43,7 @@ abstract final class AccountActions {
 
       final locale = Localizations.localeOf(context).toString();
       await ProgressShareService.shareTodayProgress(
+        context: context,
         ml: totalMl,
         locale: locale,
       );
