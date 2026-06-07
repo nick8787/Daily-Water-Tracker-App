@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 
 import 'package:daily_water_tracker/common/di/injector_module.dart';
-import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
 import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/common/widgets/app_confirm_dialog.dart';
 import 'package:daily_water_tracker/common/widgets/app_loader.dart';
@@ -18,10 +17,6 @@ abstract final class AccountActions {
   AccountActions._();
 
   static Future<void> onShareProgressTap(BuildContext context) async {
-    if (flutterFlavor.isProd) {
-      comingSoon(context, LocaleKeys.account_menu_share_progress.tr());
-      return;
-    }
     await shareTodayProgress(context);
   }
 

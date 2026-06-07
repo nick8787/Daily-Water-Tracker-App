@@ -173,6 +173,38 @@
     badge.classList.toggle("is-visible", stores.showDevBadge);
   }
 
+  function setMetaContent(selector, value) {
+    var el = document.querySelector(selector);
+    if (el) el.setAttribute("content", value);
+  }
+
+  function setLinkHref(selector, value) {
+    var el = document.querySelector(selector);
+    if (el) el.setAttribute("href", value);
+  }
+
+  function syncSocialMeta(lang, ml) {
+    var origin = window.location.origin;
+    var search = window.location.search || "";
+    var pageUrl = origin + "/share" + search;
+    var appName = t(lang, "appName");
+    var title = ml
+      ? formatMl(ml, lang) + " ml · " + appName
+      : appName;
+    var description = ml
+      ? formatMl(ml, lang) + " ml — " + t(lang, "drankToday")
+      : t(lang, "genericMessage");
+
+    document.title = title;
+    setMetaContent('meta[name="description"]', description);
+    setMetaContent('meta[property="og:title"]', title);
+    setMetaContent('meta[property="og:description"]', description);
+    setMetaContent('meta[property="og:url"]', pageUrl);
+    setMetaContent('meta[name="twitter:title"]', title);
+    setMetaContent('meta[name="twitter:description"]', description);
+    setLinkHref('link[rel="canonical"]', pageUrl);
+  }
+
   function initSharePage() {
     var lang = detectLang();
     var env = detectEnv();
@@ -182,21 +214,7 @@
 
     document.documentElement.lang = lang === "uk" ? "uk" : "en";
     document.body.dataset.lang = lang;
-    document.title = t(lang, "appName");
-
-    var metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.content = ml
-        ? formatMl(ml, lang) + " ml — " + t(lang, "sharedMessage")
-        : t(lang, "genericMessage");
-    }
-
-    var ogDescription = document.querySelector('meta[property="og:description"]');
-    if (ogDescription) {
-      ogDescription.content = ml
-        ? formatMl(ml, lang) + " ml — " + t(lang, "drankToday")
-        : t(lang, "genericMessage");
-    }
+    syncSocialMeta(lang, ml);
 
     setText("brand-title", t(lang, "appName"));
     setText("card-eyebrow", t(lang, "sharedProgress"));

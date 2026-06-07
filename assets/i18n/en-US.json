@@ -488,8 +488,11 @@
   },
   "deep_link": {
     "shared": {
-      "title": "Shared progress",
-      "message": "Your friend drank {ml} ml today! Keep it up!"
+      "title": "Shared hydration",
+      "drank_today": "drank today",
+      "message": "A friend shared their daily hydration progress with you.",
+      "primary_action": "Start tracking yours",
+      "secondary_action": "Maybe later"
     }
   },
   "language": {

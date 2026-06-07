@@ -123,7 +123,7 @@ class CodegenLoader extends AssetLoader{
       "other_day": "За цей день\nнапоїв немає"
     },
     "progress": {
-      "done": "готово",
+      "done": "випито",
       "of_goal": "з {goal} ml"
     },
     "today_drinks": {
@@ -405,7 +405,7 @@ class CodegenLoader extends AssetLoader{
       "default": "Кожен стовпчик — день. Тримайте ритм!"
     },
     "breakdown": {
-      "title": "Структура споживання",
+      "title": "Розподіл споживання",
       "caption": "Останні 7 днів · ефективна гідратація",
       "empty": "Додавайте напої, щоб побачити розподіл за типами.",
       "scroll_hint": "Прокрутіть для більшого"
@@ -504,8 +504,11 @@ class CodegenLoader extends AssetLoader{
   },
   "deep_link": {
     "shared": {
-      "title": "Спільний прогрес",
-      "message": "Друг випив {ml} ml сьогодні! Так тримати!"
+      "title": "Спільна гідратація",
+      "drank_today": "випито сьогодні",
+      "message": "Друг поділився своїм денним прогресом гідратації з тобою.",
+      "primary_action": "Відстежувати і свій прогрес",
+      "secondary_action": "Можливо пізніше"
     }
   },
   "language": {
@@ -1132,8 +1135,11 @@ static const Map<String,dynamic> _en_US = {
   },
   "deep_link": {
     "shared": {
-      "title": "Shared progress",
-      "message": "Your friend drank {ml} ml today! Keep it up!"
+      "title": "Shared hydration",
+      "drank_today": "drank today",
+      "message": "A friend shared their daily hydration progress with you.",
+      "primary_action": "Start tracking yours",
+      "secondary_action": "Maybe later"
     }
   },
   "language": {

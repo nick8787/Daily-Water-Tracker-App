@@ -388,7 +388,10 @@ abstract class  LocaleKeys {
   static const main_nav_coming_soon = 'main_nav.coming_soon';
   static const main_nav = 'main_nav';
   static const deep_link_shared_title = 'deep_link.shared.title';
+  static const deep_link_shared_drank_today = 'deep_link.shared.drank_today';
   static const deep_link_shared_message = 'deep_link.shared.message';
+  static const deep_link_shared_primary_action = 'deep_link.shared.primary_action';
+  static const deep_link_shared_secondary_action = 'deep_link.shared.secondary_action';
   static const deep_link_shared = 'deep_link.shared';
   static const deep_link = 'deep_link';
   static const language_english = 'language.english';
