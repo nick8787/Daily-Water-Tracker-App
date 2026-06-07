@@ -509,6 +509,9 @@ class CodegenLoader extends AssetLoader{
       "message": "Друг поділився своїм денним прогресом гідратації з тобою.",
       "primary_action": "Відстежувати і свій прогрес",
       "secondary_action": "Можливо пізніше"
+    },
+    "share": {
+      "progress_message": "Сьогодні я випив(ла) {ml} мл у Daily Water Tracker. Відстежуй і свій прогрес:\n{url}"
     }
   },
   "language": {
@@ -636,6 +639,7 @@ class CodegenLoader extends AssetLoader{
       "new_status": "Ваш новий статус:",
       "primary_action": "Ура!",
       "share": "Поділитися",
+      "share_message": "Я досяг(ла) рангу {rank} у Daily Water Tracker! Сьогодні випив(ла) {ml} мл.\n{url}",
       "title": "Новий ранг розблоковано!",
       "continue": "Продовжити",
       "teaser_next_rank_title": "Клас!",
@@ -1140,6 +1144,9 @@ static const Map<String,dynamic> _en_US = {
       "message": "A friend shared their daily hydration progress with you.",
       "primary_action": "Start tracking yours",
       "secondary_action": "Maybe later"
+    },
+    "share": {
+      "progress_message": "I've drunk {ml} ml today with Daily Water Tracker. Track yours too:\n{url}"
     }
   },
   "language": {
@@ -1267,6 +1274,7 @@ static const Map<String,dynamic> _en_US = {
       "new_status": "Your new status:",
       "primary_action": "Awesome!",
       "share": "Share",
+      "share_message": "I just reached {rank} in Daily Water Tracker! I've drunk {ml} ml today.\n{url}",
       "title": "New rank unlocked!",
       "continue": "Continue",
       "teaser_next_rank_title": "Nice!",

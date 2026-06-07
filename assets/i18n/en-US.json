@@ -493,6 +493,9 @@
       "message": "A friend shared their daily hydration progress with you.",
       "primary_action": "Start tracking yours",
       "secondary_action": "Maybe later"
+    },
+    "share": {
+      "progress_message": "I've drunk {ml} ml today with Daily Water Tracker. Track yours too:\n{url}"
     }
   },
   "language": {
@@ -620,6 +623,7 @@
       "new_status": "Your new status:",
       "primary_action": "Awesome!",
       "share": "Share",
+      "share_message": "I just reached {rank} in Daily Water Tracker! I've drunk {ml} ml today.\n{url}",
       "title": "New rank unlocked!",
       "continue": "Continue",
       "teaser_next_rank_title": "Nice!",

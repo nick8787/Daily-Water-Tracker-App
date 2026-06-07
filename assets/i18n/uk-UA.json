@@ -493,6 +493,9 @@
       "message": "Друг поділився своїм денним прогресом гідратації з тобою.",
       "primary_action": "Відстежувати і свій прогрес",
       "secondary_action": "Можливо пізніше"
+    },
+    "share": {
+      "progress_message": "Сьогодні я випив(ла) {ml} мл у Daily Water Tracker. Відстежуй і свій прогрес:\n{url}"
     }
   },
   "language": {
@@ -620,6 +623,7 @@
       "new_status": "Ваш новий статус:",
       "primary_action": "Ура!",
       "share": "Поділитися",
+      "share_message": "Я досяг(ла) рангу {rank} у Daily Water Tracker! Сьогодні випив(ла) {ml} мл.\n{url}",
       "title": "Новий ранг розблоковано!",
       "continue": "Продовжити",
       "teaser_next_rank_title": "Клас!",

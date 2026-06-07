@@ -7,10 +7,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/features/achievements/cubit/achievements_cubit.dart';
 import 'package:daily_water_tracker/features/achievements/data/achievements_registry.dart';
 import 'package:daily_water_tracker/features/achievements/models/achievement_definition.dart';
 import 'package:daily_water_tracker/features/achievements/models/badge_model.dart';
+import 'package:daily_water_tracker/features/deep_links/services/progress_share_service.dart';
 import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/shadow.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
@@ -22,6 +24,7 @@ abstract final class RankCelebrationDialog {
   static Future<AchievementDefinition?> show(
     BuildContext context, {
     required BadgeModel rank,
+    required int todayMl,
   }) {
     return showGeneralDialog<AchievementDefinition?>(
       context: context,
@@ -30,7 +33,7 @@ abstract final class RankCelebrationDialog {
       barrierColor: Colors.transparent,
       transitionDuration: const Duration(milliseconds: 420),
       pageBuilder: (dialogContext, animation, secondaryAnimation) {
-        return _RankCelebrationOverlay(rank: rank);
+        return _RankCelebrationOverlay(rank: rank, todayMl: todayMl);
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         final curved = CurvedAnimation(
@@ -48,9 +51,13 @@ abstract final class RankCelebrationDialog {
 }
 
 class _RankCelebrationOverlay extends StatefulWidget {
-  const _RankCelebrationOverlay({required this.rank});
+  const _RankCelebrationOverlay({
+    required this.rank,
+    required this.todayMl,
+  });
 
   final BadgeModel rank;
+  final int todayMl;
 
   @override
   State<_RankCelebrationOverlay> createState() =>
@@ -67,6 +74,7 @@ class _RankCelebrationOverlayState extends State<_RankCelebrationOverlay>
   late final AnimationController _pulseController;
   late final Animation<Offset> _cardSlide;
   late final Animation<double> _heroFade;
+  bool _isSharing = false;
 
   @override
   void initState() {
@@ -118,6 +126,30 @@ class _RankCelebrationOverlayState extends State<_RankCelebrationOverlay>
   void _onPrimaryAction() {
     final nextRank = AchievementsCubit.getNextRank(widget.rank.id);
     Navigator.of(context).pop(nextRank);
+  }
+
+  Future<void> _onShareTap() async {
+    if (_isSharing) return;
+
+    setState(() => _isSharing = true);
+    try {
+      final locale = Localizations.localeOf(context).toString();
+      await ProgressShareService.shareRankCelebration(
+        rank: widget.rank,
+        ml: widget.todayMl,
+        locale: locale,
+      );
+    } catch (_) {
+      if (!mounted) return;
+      AppSnackBar.showError(
+        context,
+        LocaleKeys.account_snackbar_share_failed.tr(),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isSharing = false);
+      }
+    }
   }
 
   int get _primaryParticleCount =>
@@ -212,19 +244,27 @@ class _RankCelebrationOverlayState extends State<_RankCelebrationOverlay>
                   ),
                   const SizedBox(height: 8),
                   TextButton.icon(
-                    onPressed: () {
-                      // Share flow will be wired in a follow-up.
-                      debugPrint('Share');
-                    },
-                    icon: Icon(
-                      Icons.share_outlined,
-                      size: 20,
-                      color: AppPalette.white.withValues(alpha: 0.88),
-                    ),
+                    onPressed: _isSharing ? null : _onShareTap,
+                    icon: _isSharing
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppPalette.white.withValues(alpha: 0.88),
+                            ),
+                          )
+                        : Icon(
+                            Icons.share_outlined,
+                            size: 20,
+                            color: AppPalette.white.withValues(alpha: 0.88),
+                          ),
                     label: Text(
                       LocaleKeys.achievements_celebration_share.tr(),
                       style: textTheme.labelLarge?.copyWith(
-                        color: AppPalette.white.withValues(alpha: 0.88),
+                        color: AppPalette.white.withValues(
+                          alpha: _isSharing ? 0.55 : 0.88,
+                        ),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
