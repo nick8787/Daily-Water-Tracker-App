@@ -128,13 +128,14 @@ class _RankCelebrationOverlayState extends State<_RankCelebrationOverlay>
     Navigator.of(context).pop(nextRank);
   }
 
-  Future<void> _onShareTap() async {
+  Future<void> _onShareTap(BuildContext shareContext) async {
     if (_isSharing) return;
 
     setState(() => _isSharing = true);
     try {
-      final locale = Localizations.localeOf(context).toString();
+      final locale = Localizations.localeOf(shareContext).toString();
       await ProgressShareService.shareRankCelebration(
+        context: shareContext,
         rank: widget.rank,
         ml: widget.todayMl,
         locale: locale,
@@ -243,31 +244,37 @@ class _RankCelebrationOverlayState extends State<_RankCelebrationOverlay>
                     onPressed: _onPrimaryAction,
                   ),
                   const SizedBox(height: 8),
-                  TextButton.icon(
-                    onPressed: _isSharing ? null : _onShareTap,
-                    icon: _isSharing
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: AppPalette.white.withValues(alpha: 0.88),
+                  Builder(
+                    builder: (shareContext) {
+                      return TextButton.icon(
+                        onPressed: _isSharing
+                            ? null
+                            : () => _onShareTap(shareContext),
+                        icon: _isSharing
+                            ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppPalette.white.withValues(alpha: 0.88),
+                                ),
+                              )
+                            : Icon(
+                                Icons.share_outlined,
+                                size: 20,
+                                color: AppPalette.white.withValues(alpha: 0.88),
+                              ),
+                        label: Text(
+                          LocaleKeys.achievements_celebration_share.tr(),
+                          style: textTheme.labelLarge?.copyWith(
+                            color: AppPalette.white.withValues(
+                              alpha: _isSharing ? 0.55 : 0.88,
                             ),
-                          )
-                        : Icon(
-                            Icons.share_outlined,
-                            size: 20,
-                            color: AppPalette.white.withValues(alpha: 0.88),
+                            fontWeight: FontWeight.w600,
                           ),
-                    label: Text(
-                      LocaleKeys.achievements_celebration_share.tr(),
-                      style: textTheme.labelLarge?.copyWith(
-                        color: AppPalette.white.withValues(
-                          alpha: _isSharing ? 0.55 : 0.88,
                         ),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 8),
                 ],
