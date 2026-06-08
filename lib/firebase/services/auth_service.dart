@@ -66,10 +66,17 @@ class AuthService {
         ? 'dailywatertracker-app-prod.web.app'
         : 'dailywatertracker-app-dev.web.app';
 
-    // ActionCodeSettings.url sets continueUrl on the default Firebase handler.
-    // Console Action URL controls the main link host (/__/auth/action on web.app).
+    // handleCodeInApp + bundle/package ids make iOS/Android open the app on a
+    // single tap from the reset email (Universal/App Links).
     return ActionCodeSettings(
       url: 'https://$host/password-reset',
+      handleCodeInApp: true,
+      iOSBundleId: flutterFlavor.isProd
+          ? 'com.dailywatertracker.app.prod'
+          : 'com.dailywatertracker.app.dev',
+      androidPackageName: flutterFlavor.isProd
+          ? 'com.dailywatertracker.app'
+          : 'com.dailywatertracker.app.dev',
     );
   }
 

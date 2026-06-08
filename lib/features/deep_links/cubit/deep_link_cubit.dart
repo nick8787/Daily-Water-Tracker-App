@@ -5,6 +5,7 @@ import 'package:daily_water_tracker/features/deep_links/cubit/deep_link_state.da
 import 'package:daily_water_tracker/features/deep_links/models/water_link_purpose.dart';
 import 'package:daily_water_tracker/features/deep_links/services/auth_deep_link_parser.dart';
 import 'package:daily_water_tracker/features/deep_links/services/water_deep_link_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeepLinkCubit extends Cubit<DeepLinkState> {
@@ -12,22 +13,30 @@ class DeepLinkCubit extends Cubit<DeepLinkState> {
     required WaterDeepLinkService service,
   }) : _service = service,
        super(DeepLinkState.initial()) {
-    unawaited(initialize());
+    unawaited(_initialize());
   }
 
   final WaterDeepLinkService _service;
   StreamSubscription<Uri>? _sub;
+  final Completer<void> _readyCompleter = Completer<void>();
 
   String? _debouncedUri;
   DateTime? _debouncedAt;
   static const _duplicateIntentWindow = Duration(milliseconds: 900);
 
-  Future<void> initialize() async {
+  /// Completes after the cold-start link (if any) has been ingested.
+  Future<void> get ready => _readyCompleter.future;
+
+  Future<void> _initialize() async {
     try {
-      final initial = await _service.getInitialUri();
       await _sub?.cancel();
       _sub = _service.uriStream.listen(_handleUri);
 
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        await Future<void>.delayed(Duration.zero);
+      }
+
+      final initial = await _service.getInitialUri();
       if (initial != null) {
         _handleUri(initial);
       }
@@ -38,6 +47,10 @@ class DeepLinkCubit extends Cubit<DeepLinkState> {
         st,
         reason: 'DeepLinkCubit.initialize failed',
       );
+    } finally {
+      if (!_readyCompleter.isCompleted) {
+        _readyCompleter.complete();
+      }
     }
   }
 

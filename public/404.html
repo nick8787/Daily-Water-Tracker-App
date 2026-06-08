@@ -38,7 +38,8 @@
         <header class="brand">
           <img
             class="brand__icon"
-            src="/assets/app-icon.png"
+            data-app-icon
+            src="/assets/app-icon-prod.png"
             width="56"
             height="56"
             alt="Daily Water Tracker"
@@ -61,5 +62,16 @@
         </p>
       </div>
     </main>
+    <script>
+      (function () {
+        var host = (window.location.hostname || "").toLowerCase();
+        var env =
+          host.indexOf("-dev") !== -1 || host.indexOf(".dev.") !== -1 ? "dev" : "prod";
+        var path =
+          env === "dev" ? "/assets/app-icon-dev.png" : "/assets/app-icon-prod.png";
+        var node = document.querySelector("[data-app-icon]");
+        if (node) node.setAttribute("src", path);
+      })();
+    </script>
   </body>
 </html>

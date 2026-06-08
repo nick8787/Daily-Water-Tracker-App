@@ -82,6 +82,10 @@ class _CompletePasswordResetScreenState
               scrolledUnderElevation: 0,
               surfaceTintColor: Colors.transparent,
               shadowColor: Colors.transparent,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => context.go(loginRoute),
+              ),
             ),
             body: SafeArea(
               child: DismissKeyboardOnTap(

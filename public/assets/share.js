@@ -73,6 +73,18 @@
     return "prod";
   }
 
+  function appIconPath(env) {
+    return env === "dev" ? "/assets/app-icon-dev.png" : "/assets/app-icon-prod.png";
+  }
+
+  function applyAppIcons(env) {
+    var path = appIconPath(env);
+    var nodes = document.querySelectorAll("[data-app-icon]");
+    for (var i = 0; i < nodes.length; i += 1) {
+      nodes[i].setAttribute("src", path);
+    }
+  }
+
   function detectPlatform() {
     var ua = navigator.userAgent || "";
     if (/android/i.test(ua)) return "android";
@@ -215,6 +227,7 @@
     document.documentElement.lang = lang === "uk" ? "uk" : "en";
     document.body.dataset.lang = lang;
     syncSocialMeta(lang, ml);
+    applyAppIcons(env);
 
     setText("brand-title", t(lang, "appName"));
     setText("card-eyebrow", t(lang, "sharedProgress"));
@@ -260,6 +273,7 @@
     document.documentElement.lang = lang === "uk" ? "uk" : "en";
     document.body.dataset.lang = lang;
     document.title = t(lang, "appName");
+    applyAppIcons(env);
 
     setText("brand-title", t(lang, "appName"));
     setText("hero-title", t(lang, "appName"));

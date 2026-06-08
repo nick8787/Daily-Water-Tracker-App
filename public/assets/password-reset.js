@@ -69,6 +69,18 @@
     return "dev";
   }
 
+  function appIconPath(env) {
+    return env === "dev" ? "/assets/app-icon-dev.png" : "/assets/app-icon-prod.png";
+  }
+
+  function applyAppIcons(env) {
+    var path = appIconPath(env);
+    var nodes = document.querySelectorAll("[data-app-icon]");
+    for (var i = 0; i < nodes.length; i += 1) {
+      nodes[i].setAttribute("src", path);
+    }
+  }
+
   function detectLang() {
     var lang = (navigator.language || "en").toLowerCase();
     if (lang.indexOf("uk") === 0) return "uk";
@@ -147,6 +159,7 @@
     var mode = readMode(params);
 
     document.body.setAttribute("data-lang", lang === "uk" ? "uk" : "en");
+    applyAppIcons(env);
 
     setText("brand-title", "Daily Water Tracker");
     setText("loading-message", copy.loading);
