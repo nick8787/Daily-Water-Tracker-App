@@ -45,6 +45,8 @@ class CodegenLoader extends AssetLoader{
     "deleting_account": "Видалення акаунта…",
     "updating_photo": "Оновлення фото…",
     "updating_password": "Оновлення пароля…",
+    "sending_reset_link": "Надсилання посилання…",
+    "verifying_reset_link": "Перевірка посилання…",
     "loading_statistics": "Завантаження статистики…"
   },
   "auth": {
@@ -73,6 +75,41 @@ class CodegenLoader extends AssetLoader{
       "no_account": "Немає акаунта?",
       "sign_up": "Зареєструватися",
       "have_account": "Вже є акаунт?"
+    },
+    "forgot_password": {
+      "title": "Скидання пароля",
+      "subtitle": "Введіть email — ми надішлемо посилання для скидання.",
+      "link": "Забули пароль?",
+      "button_send": "Надіслати посилання",
+      "button_back_to_sign_in": "Повернутися до входу",
+      "success": {
+        "title": "Перевірте пошту",
+        "message": "Якщо акаунт для {email} існує, ми надіслали посилання для скидання пароля."
+      },
+      "error": {
+        "generic": "Не вдалося надіслати посилання. Спробуйте ще раз."
+      }
+    },
+    "complete_password_reset": {
+      "title": "Новий пароль",
+      "subtitle": "Створіть новий пароль для {email}.",
+      "field": {
+        "new_password": "Новий пароль",
+        "new_password_hint": "Щонайменше 6 символів"
+      },
+      "button": {
+        "save": "Зберегти пароль"
+      },
+      "success": {
+        "title": "Пароль оновлено",
+        "message": "Тепер можна увійти з новим паролем."
+      },
+      "error": {
+        "title": "Посилання недійсне",
+        "invalid_link": "Посилання для скидання недійсне або вже використане.",
+        "expired_link": "Термін дії посилання минув. Запросіть нове.",
+        "generic": "Не вдалося оновити пароль. Спробуйте ще раз."
+      }
     },
     "social": {
       "google": "Увійти через Google",
@@ -709,6 +746,8 @@ static const Map<String,dynamic> _en_US = {
     "deleting_account": "Deleting account…",
     "updating_photo": "Updating profile photo…",
     "updating_password": "Updating password…",
+    "sending_reset_link": "Sending reset link…",
+    "verifying_reset_link": "Verifying reset link…",
     "loading_statistics": "Loading statistics…"
   },
   "auth": {
@@ -737,6 +776,41 @@ static const Map<String,dynamic> _en_US = {
       "no_account": "Don't have an account?",
       "sign_up": "Sign Up",
       "have_account": "Already have an account?"
+    },
+    "forgot_password": {
+      "title": "Reset password",
+      "subtitle": "Enter your email and we will send you a reset link.",
+      "link": "Forgot password?",
+      "button_send": "Send reset link",
+      "button_back_to_sign_in": "Back to Sign In",
+      "success": {
+        "title": "Check your email",
+        "message": "If an account exists for {email}, we sent a password reset link."
+      },
+      "error": {
+        "generic": "Could not send reset link. Please try again."
+      }
+    },
+    "complete_password_reset": {
+      "title": "Set a new password",
+      "subtitle": "Create a new password for {email}.",
+      "field": {
+        "new_password": "New password",
+        "new_password_hint": "At least 6 characters"
+      },
+      "button": {
+        "save": "Save new password"
+      },
+      "success": {
+        "title": "Password updated",
+        "message": "You can now sign in with your new password."
+      },
+      "error": {
+        "title": "Link not valid",
+        "invalid_link": "This reset link is invalid or has already been used.",
+        "expired_link": "This reset link has expired. Request a new one.",
+        "generic": "Could not update your password. Please try again."
+      }
     },
     "social": {
       "google": "Continue with Google",

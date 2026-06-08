@@ -216,7 +216,25 @@ class _AuthGatewayScreenState extends State<AuthGatewayScreen> {
               },
               onFieldSubmitted: (_) => _onSignInPressed(context),
             ),
-            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: _onForgotPasswordPressed,
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(
+                  LocaleKeys.auth_forgot_password_link.tr(),
+                  style: const TextStyle(
+                    color: brandBlue,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
             BlocBuilder<LoginCubit, LoginState>(
               builder: (context, state) {
                 return FilledButton(
@@ -513,5 +531,14 @@ class _AuthGatewayScreenState extends State<AuthGatewayScreen> {
       email: _emailController.text.trim(),
       password: _passwordController.text,
     );
+  }
+
+  void _onForgotPasswordPressed() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    final email = _emailController.text.trim();
+    final destination = email.isEmpty
+        ? forgotPasswordRoute
+        : '$forgotPasswordRoute?email=${Uri.encodeComponent(email)}';
+    context.push(destination);
   }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:daily_water_tracker/common/router.dart';
 import 'package:daily_water_tracker/features/deep_links/cubit/deep_link_cubit.dart';
@@ -23,9 +24,12 @@ class DeepLinkListeners extends StatefulWidget {
 
 class _DeepLinkListenersState extends State<DeepLinkListeners>
     with WidgetsBindingObserver {
-  int _lastPresentedDeliveryId = 0;
+  int _lastPresentedShareDeliveryId = 0;
+  int _lastPresentedPasswordResetDeliveryId = 0;
   bool _isPresentingShareSheet = false;
+  bool _isNavigatingPasswordReset = false;
   WaterLinkPurposeShareProgress? _pendingShare;
+  WaterLinkPurposePasswordReset? _pendingPasswordReset;
 
   @override
   void initState() {
@@ -42,23 +46,46 @@ class _DeepLinkListenersState extends State<DeepLinkListeners>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _tryPresentPendingShare();
+      unawaited(_tryPresentPendingShare());
+      unawaited(_tryNavigatePendingPasswordReset());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<DeepLinkCubit, DeepLinkState>(
-      listenWhen: (prev, next) =>
-          next.shareDeliveryId != prev.shareDeliveryId &&
-          next.purpose is WaterLinkPurposeShareProgress,
-      listener: (context, state) {
-        final purpose = state.purpose;
-        if (purpose is! WaterLinkPurposeShareProgress) return;
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<DeepLinkCubit, DeepLinkState>(
+          listenWhen: (prev, next) =>
+              next.shareDeliveryId != prev.shareDeliveryId &&
+              next.purpose is WaterLinkPurposeShareProgress,
+          listener: (context, state) {
+            final purpose = state.purpose;
+            if (purpose is! WaterLinkPurposeShareProgress) return;
 
-        _pendingShare = purpose;
-        unawaited(_tryPresentShare(context, deliveryId: state.shareDeliveryId));
-      },
+            _pendingShare = purpose;
+            unawaited(
+              _tryPresentShare(context, deliveryId: state.shareDeliveryId),
+            );
+          },
+        ),
+        BlocListener<DeepLinkCubit, DeepLinkState>(
+          listenWhen: (prev, next) =>
+              next.passwordResetDeliveryId != prev.passwordResetDeliveryId &&
+              next.purpose is WaterLinkPurposePasswordReset,
+          listener: (context, state) {
+            final purpose = state.purpose;
+            if (purpose is! WaterLinkPurposePasswordReset) return;
+
+            _pendingPasswordReset = purpose;
+            unawaited(
+              _tryNavigatePasswordReset(
+                deliveryId: state.passwordResetDeliveryId,
+              ),
+            );
+          },
+        ),
+      ],
       child: widget.child,
     );
   }
@@ -68,16 +95,31 @@ class _DeepLinkListenersState extends State<DeepLinkListeners>
 
     final cubit = context.read<DeepLinkCubit>();
     final deliveryId = cubit.state.shareDeliveryId;
-    if (deliveryId <= _lastPresentedDeliveryId) return;
+    if (deliveryId <= _lastPresentedShareDeliveryId) return;
 
     await _tryPresentShare(context, deliveryId: deliveryId);
+  }
+
+  Future<void> _tryNavigatePendingPasswordReset() async {
+    if (!mounted ||
+        _pendingPasswordReset == null ||
+        _isNavigatingPasswordReset) {
+      return;
+    }
+
+    final cubit = context.read<DeepLinkCubit>();
+    final deliveryId = cubit.state.passwordResetDeliveryId;
+    if (deliveryId <= _lastPresentedPasswordResetDeliveryId) return;
+
+    await _tryNavigatePasswordReset(deliveryId: deliveryId);
   }
 
   Future<void> _tryPresentShare(
     BuildContext context, {
     required int deliveryId,
   }) async {
-    if (_isPresentingShareSheet || deliveryId <= _lastPresentedDeliveryId) {
+    if (_isPresentingShareSheet ||
+        deliveryId <= _lastPresentedShareDeliveryId) {
       return;
     }
 
@@ -103,13 +145,55 @@ class _DeepLinkListenersState extends State<DeepLinkListeners>
         await ShareProgressSheet.show(overlayContext, ml: purpose.ml);
 
         if (!mounted) return;
-        _lastPresentedDeliveryId = deliveryId;
+        _lastPresentedShareDeliveryId = deliveryId;
         _pendingShare = null;
         cubit.resetPurpose();
         return;
       }
     } finally {
       _isPresentingShareSheet = false;
+    }
+  }
+
+  Future<void> _tryNavigatePasswordReset({
+    required int deliveryId,
+  }) async {
+    if (_isNavigatingPasswordReset ||
+        deliveryId <= _lastPresentedPasswordResetDeliveryId) {
+      return;
+    }
+
+    final purpose = _pendingPasswordReset;
+    if (purpose == null) return;
+
+    final cubit = context.read<DeepLinkCubit>();
+    _isNavigatingPasswordReset = true;
+    const attempts = 24;
+    const baseDelay = Duration(milliseconds: 150);
+
+    try {
+      for (var i = 0; i < attempts; i++) {
+        await Future<void>.delayed(baseDelay * (i + 1));
+        if (!mounted) return;
+
+        final overlayContext = rootNavigatorKey.currentContext;
+        if (overlayContext == null || !overlayContext.mounted) continue;
+
+        final router = GoRouter.maybeOf(overlayContext);
+        if (router == null) continue;
+
+        final destination =
+            '$completePasswordResetRoute?oobCode=${Uri.encodeComponent(purpose.oobCode)}';
+        goRouter.go(destination);
+
+        if (!mounted) return;
+        _lastPresentedPasswordResetDeliveryId = deliveryId;
+        _pendingPasswordReset = null;
+        cubit.resetPurpose();
+        return;
+      }
+    } finally {
+      _isNavigatingPasswordReset = false;
     }
   }
 }

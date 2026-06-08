@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Daily Water Tracker — Reset password</title>
+    <meta
+      name="description"
+      content="Set a new password for your Daily Water Tracker account."
+    >
+    <meta name="theme-color" content="#12A0E6">
+    <link rel="icon" type="image/png" sizes="58x58" href="/assets/favicon.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="/assets/password-reset.css">
+  </head>
+  <body data-page="password-reset">
+    <main class="page">
+      <div class="page__inner">
+        <header class="brand">
+          <img
+            class="brand__icon"
+            src="/assets/app-icon.png"
+            width="56"
+            height="56"
+            alt="Daily Water Tracker"
+          >
+          <div class="brand__text">
+            <h1 class="brand__title" id="brand-title">Daily Water Tracker</h1>
+            <span class="brand__badge hidden" id="env-badge">Dev</span>
+          </div>
+        </header>
+
+        <section class="card hidden" id="loading-card" aria-live="polite">
+          <div class="status-card">
+            <p class="status-card__message" id="loading-message">Verifying reset link…</p>
+          </div>
+        </section>
+
+        <section class="card hidden" id="form-card" aria-labelledby="form-title">
+          <p class="card__eyebrow" id="form-eyebrow">Reset password</p>
+          <h2 class="status-card__title" id="form-title">Set a new password</h2>
+          <p class="status-card__message" id="form-subtitle">
+            Create a new password for
+            <span class="status-card__email" id="account-email">your account</span>.
+          </p>
+
+          <form class="reset-form" id="reset-form" novalidate>
+            <div class="reset-form__field">
+              <label class="reset-form__label" for="new-password" id="password-label">
+                New password
+              </label>
+              <div class="reset-form__input-wrap">
+                <input
+                  class="reset-form__input"
+                  id="new-password"
+                  type="password"
+                  autocomplete="new-password"
+                  minlength="6"
+                  required
+                >
+                <button
+                  class="reset-form__toggle"
+                  type="button"
+                  id="toggle-password"
+                  aria-label="Show password"
+                >
+                  👁
+                </button>
+              </div>
+              <p class="reset-form__hint" id="password-hint">At least 6 characters</p>
+            </div>
+
+            <div class="reset-form__field">
+              <label class="reset-form__label" for="confirm-password" id="confirm-label">
+                Confirm password
+              </label>
+              <div class="reset-form__input-wrap">
+                <input
+                  class="reset-form__input"
+                  id="confirm-password"
+                  type="password"
+                  autocomplete="new-password"
+                  minlength="6"
+                  required
+                >
+                <button
+                  class="reset-form__toggle"
+                  type="button"
+                  id="toggle-confirm"
+                  aria-label="Show confirm password"
+                >
+                  👁
+                </button>
+              </div>
+            </div>
+
+            <p class="reset-form__error hidden" id="form-error" role="alert"></p>
+            <button class="reset-form__submit" type="submit" id="submit-button">
+              Save new password
+            </button>
+          </form>
+        </section>
+
+        <section class="card hidden" id="success-card" aria-live="polite">
+          <div class="status-card">
+            <div class="status-card__icon" aria-hidden="true">✓</div>
+            <h2 class="status-card__title" id="success-title">Password updated</h2>
+            <p class="status-card__message" id="success-message">
+              You can now sign in with your new password.
+            </p>
+          </div>
+        </section>
+
+        <section class="card hidden" id="error-card" aria-live="polite">
+          <div class="status-card">
+            <div class="status-card__icon" aria-hidden="true">!</div>
+            <h2 class="status-card__title" id="error-title">Link not valid</h2>
+            <p class="status-card__message" id="error-message">
+              This reset link is invalid or has already been used.
+            </p>
+          </div>
+        </section>
+
+        <p class="footer-note" id="footer-note">
+          Already have the app? Open this link on your phone — it will launch automatically.
+        </p>
+      </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-auth-compat.js"></script>
+    <script src="/assets/password-reset.js"></script>
+  </body>
+</html>
