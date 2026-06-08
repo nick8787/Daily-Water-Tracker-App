@@ -30,6 +30,7 @@
     "updating_photo": "Updating profile photo…",
     "updating_password": "Updating password…",
     "sending_reset_link": "Sending reset link…",
+    "verifying_reset_link": "Verifying reset link…",
     "loading_statistics": "Loading statistics…"
   },
   "auth": {
@@ -71,6 +72,27 @@
       },
       "error": {
         "generic": "Could not send reset link. Please try again."
+      }
+    },
+    "complete_password_reset": {
+      "title": "Set a new password",
+      "subtitle": "Create a new password for {email}.",
+      "field": {
+        "new_password": "New password",
+        "new_password_hint": "At least 6 characters"
+      },
+      "button": {
+        "save": "Save new password"
+      },
+      "success": {
+        "title": "Password updated",
+        "message": "You can now sign in with your new password."
+      },
+      "error": {
+        "title": "Link not valid",
+        "invalid_link": "This reset link is invalid or has already been used.",
+        "expired_link": "This reset link has expired. Request a new one.",
+        "generic": "Could not update your password. Please try again."
       }
     },
     "social": {

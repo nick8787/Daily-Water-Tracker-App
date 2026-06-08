@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/assets.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
+import 'package:daily_water_tracker/features/deep_links/cubit/deep_link_cubit.dart';
+import 'package:daily_water_tracker/features/deep_links/models/water_link_purpose.dart';
 import 'package:daily_water_tracker/features/splash/cubit/splash_cubit.dart';
 import 'package:daily_water_tracker/features/splash/cubit/splash_state.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -52,6 +54,28 @@ class _SplashScreenState extends State<SplashScreen> {
     if (mounted) navigate();
   }
 
+  bool _navigateToPendingPasswordReset(BuildContext context) {
+    final purpose = context.read<DeepLinkCubit>().state.purpose;
+    if (purpose is! WaterLinkPurposePasswordReset) return false;
+
+    final destination =
+        '$completePasswordResetRoute?oobCode=${Uri.encodeComponent(purpose.oobCode)}';
+
+    _navigateAfterBackgroundFade(() {
+      goRouter.go(destination);
+      context.read<DeepLinkCubit>().resetPurpose();
+    });
+    return true;
+  }
+
+  void _handleSplashNavigation(
+    BuildContext context,
+    VoidCallback defaultNavigate,
+  ) {
+    if (_navigateToPendingPasswordReset(context)) return;
+    _navigateAfterBackgroundFade(defaultNavigate);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -71,21 +95,17 @@ class _SplashScreenState extends State<SplashScreen> {
       child: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
           if (state is SplashNavigateToLogin) {
-            _navigateAfterBackgroundFade(() {
-              // On iOS keep stack-based navigation to preserve the Hero animation.
-              // On Android use `go()` to avoid go_router matching assertions on cold start.
+            _handleSplashNavigation(context, () {
               if (Platform.isIOS) {
-                // Keep using context-based pushReplacement for Hero transition.
                 context.pushReplacement(loginRoute);
               } else {
-                // Use global router to avoid context/location races on cold start.
                 goRouter.go(loginRoute);
               }
             });
           } else if (state is SplashNavigateToAccount) {
-            _navigateAfterBackgroundFade(() => goRouter.go(accountRoute));
+            _handleSplashNavigation(context, () => goRouter.go(accountRoute));
           } else if (state is SplashNavigateToHome) {
-            _navigateAfterBackgroundFade(() => goRouter.go(homeRoute));
+            _handleSplashNavigation(context, () => goRouter.go(homeRoute));
           }
         },
         child: Scaffold(

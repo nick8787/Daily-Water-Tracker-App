@@ -18,6 +18,17 @@ class WaterLinkPurposeShareProgress extends WaterLinkPurpose {
   List<Object?> get props => [ml];
 }
 
+class WaterLinkPurposePasswordReset extends WaterLinkPurpose {
+  const WaterLinkPurposePasswordReset({
+    required this.oobCode,
+  });
+
+  final String oobCode;
+
+  @override
+  List<Object?> get props => [oobCode];
+}
+
 class WaterLinkPurposeNone extends WaterLinkPurpose {
   const WaterLinkPurposeNone();
 }

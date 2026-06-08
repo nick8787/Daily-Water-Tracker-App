@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
 import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -54,7 +55,34 @@ class AuthService {
   }
 
   Future<void> sendPasswordResetEmail({required String email}) {
-    return _auth.sendPasswordResetEmail(email: email);
+    return _auth.sendPasswordResetEmail(
+      email: email,
+      actionCodeSettings: _passwordResetActionCodeSettings(),
+    );
+  }
+
+  ActionCodeSettings _passwordResetActionCodeSettings() {
+    final host = flutterFlavor.isProd
+        ? 'dailywatertracker-app-prod.web.app'
+        : 'dailywatertracker-app-dev.web.app';
+
+    // ActionCodeSettings.url sets continueUrl on the default Firebase handler.
+    // Console Action URL controls the main link host (/__/auth/action on web.app).
+    return ActionCodeSettings(
+      url: 'https://$host/password-reset',
+      handleCodeInApp: false,
+    );
+  }
+
+  Future<String> verifyPasswordResetCode(String code) {
+    return _auth.verifyPasswordResetCode(code);
+  }
+
+  Future<void> confirmPasswordReset({
+    required String code,
+    required String newPassword,
+  }) {
+    return _auth.confirmPasswordReset(code: code, newPassword: newPassword);
   }
 
   Future<UserCredential> signInWithGoogle() async {

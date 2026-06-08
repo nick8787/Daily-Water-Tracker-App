@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/features/deep_links/cubit/deep_link_state.dart';
 import 'package:daily_water_tracker/features/deep_links/models/water_link_purpose.dart';
+import 'package:daily_water_tracker/features/deep_links/services/auth_deep_link_parser.dart';
 import 'package:daily_water_tracker/features/deep_links/services/water_deep_link_service.dart';
 
 class DeepLinkCubit extends Cubit<DeepLinkState> {
@@ -29,9 +30,7 @@ class DeepLinkCubit extends Cubit<DeepLinkState> {
       _sub = _service.uriStream.listen(_handleUri);
 
       if (initial != null) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _handleUri(initial);
-        });
+        _handleUri(initial);
       }
     } catch (e, st) {
       recordCrashlyticsError(
@@ -49,10 +48,33 @@ class DeepLinkCubit extends Cubit<DeepLinkState> {
   }
 
   void _handleUri(Uri uri) {
-    final purpose = _parsePurpose(uri);
-    if (purpose is! WaterLinkPurposeShareProgress) return;
+    final passwordReset = parseAuthPasswordResetLink(uri);
+    if (passwordReset != null) {
+      _emitIfNotDuplicate(
+        _normalizeUri(uri),
+        state.copyWith(
+          purpose: WaterLinkPurposePasswordReset(
+            oobCode: passwordReset.oobCode,
+          ),
+          passwordResetDeliveryId: state.passwordResetDeliveryId + 1,
+        ),
+      );
+      return;
+    }
 
-    final normalized = _normalizeShareUri(uri);
+    final sharePurpose = _parseSharePurpose(uri);
+    if (sharePurpose is! WaterLinkPurposeShareProgress) return;
+
+    _emitIfNotDuplicate(
+      _normalizeUri(uri),
+      state.copyWith(
+        purpose: sharePurpose,
+        shareDeliveryId: state.shareDeliveryId + 1,
+      ),
+    );
+  }
+
+  void _emitIfNotDuplicate(String normalized, DeepLinkState next) {
     final now = DateTime.now();
     if (_debouncedUri == normalized &&
         _debouncedAt != null &&
@@ -62,19 +84,11 @@ class DeepLinkCubit extends Cubit<DeepLinkState> {
 
     _debouncedUri = normalized;
     _debouncedAt = now;
-
-    emit(
-      state.copyWith(
-        purpose: purpose,
-        shareDeliveryId: state.shareDeliveryId + 1,
-      ),
-    );
+    emit(next);
   }
 
-  WaterLinkPurpose _parsePurpose(Uri uri) {
-    final path = uri.path.endsWith('/') && uri.path.length > 1
-        ? uri.path.substring(0, uri.path.length - 1)
-        : uri.path;
+  WaterLinkPurpose _parseSharePurpose(Uri uri) {
+    final path = _normalizedPath(uri.path);
     if (path != '/share') return const WaterLinkPurposeNone();
 
     final mlStr = uri.queryParameters['ml'];
@@ -84,17 +98,20 @@ class DeepLinkCubit extends Cubit<DeepLinkState> {
     return WaterLinkPurposeShareProgress(ml: ml);
   }
 
-  String _normalizeShareUri(Uri uri) {
-    final path = uri.path.endsWith('/') && uri.path.length > 1
-        ? uri.path.substring(0, uri.path.length - 1)
-        : uri.path;
-
+  String _normalizeUri(Uri uri) {
     return Uri(
       scheme: uri.scheme,
       host: uri.host,
-      path: path,
+      path: _normalizedPath(uri.path),
       queryParameters: uri.queryParameters.isEmpty ? null : uri.queryParameters,
     ).toString();
+  }
+
+  String _normalizedPath(String path) {
+    if (path.endsWith('/') && path.length > 1) {
+      return path.substring(0, path.length - 1);
+    }
+    return path;
   }
 
   @override

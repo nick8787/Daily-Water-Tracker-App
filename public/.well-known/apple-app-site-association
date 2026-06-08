@@ -14,10 +14,24 @@
           },
           {
             "/": "/share/*"
+          },
+          {
+            "/": "/password-reset",
+            "comment": "Password reset fallback page"
+          },
+          {
+            "/": "/password-reset/*"
+          },
+          {
+            "/": "/__/auth/links",
+            "comment": "Firebase Auth mobile link wrapper"
+          },
+          {
+            "/": "/__/auth/action",
+            "comment": "Firebase Auth action handler"
           }
         ]
       }
     ]
   }
 }
-

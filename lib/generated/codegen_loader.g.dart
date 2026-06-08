@@ -46,6 +46,7 @@ class CodegenLoader extends AssetLoader{
     "updating_photo": "Оновлення фото…",
     "updating_password": "Оновлення пароля…",
     "sending_reset_link": "Надсилання посилання…",
+    "verifying_reset_link": "Перевірка посилання…",
     "loading_statistics": "Завантаження статистики…"
   },
   "auth": {
@@ -87,6 +88,27 @@ class CodegenLoader extends AssetLoader{
       },
       "error": {
         "generic": "Не вдалося надіслати посилання. Спробуйте ще раз."
+      }
+    },
+    "complete_password_reset": {
+      "title": "Новий пароль",
+      "subtitle": "Створіть новий пароль для {email}.",
+      "field": {
+        "new_password": "Новий пароль",
+        "new_password_hint": "Щонайменше 6 символів"
+      },
+      "button": {
+        "save": "Зберегти пароль"
+      },
+      "success": {
+        "title": "Пароль оновлено",
+        "message": "Тепер можна увійти з новим паролем."
+      },
+      "error": {
+        "title": "Посилання недійсне",
+        "invalid_link": "Посилання для скидання недійсне або вже використане.",
+        "expired_link": "Термін дії посилання минув. Запросіть нове.",
+        "generic": "Не вдалося оновити пароль. Спробуйте ще раз."
       }
     },
     "social": {
@@ -725,6 +747,7 @@ static const Map<String,dynamic> _en_US = {
     "updating_photo": "Updating profile photo…",
     "updating_password": "Updating password…",
     "sending_reset_link": "Sending reset link…",
+    "verifying_reset_link": "Verifying reset link…",
     "loading_statistics": "Loading statistics…"
   },
   "auth": {
@@ -766,6 +789,27 @@ static const Map<String,dynamic> _en_US = {
       },
       "error": {
         "generic": "Could not send reset link. Please try again."
+      }
+    },
+    "complete_password_reset": {
+      "title": "Set a new password",
+      "subtitle": "Create a new password for {email}.",
+      "field": {
+        "new_password": "New password",
+        "new_password_hint": "At least 6 characters"
+      },
+      "button": {
+        "save": "Save new password"
+      },
+      "success": {
+        "title": "Password updated",
+        "message": "You can now sign in with your new password."
+      },
+      "error": {
+        "title": "Link not valid",
+        "invalid_link": "This reset link is invalid or has already been used.",
+        "expired_link": "This reset link has expired. Request a new one.",
+        "generic": "Could not update your password. Please try again."
       }
     },
     "social": {

@@ -10,6 +10,8 @@
 	<array>
 		<string>applinks:dailywatertracker-app-dev.web.app</string>
 		<string>applinks:dailywatertracker-app-prod.web.app</string>
+		<string>applinks:dailywatertracker-app-dev.firebaseapp.com</string>
+		<string>applinks:dailywatertracker-app-prod.firebaseapp.com</string>
 	</array>
 </dict>
 </plist>

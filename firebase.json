@@ -72,6 +72,14 @@
       {
         "source": "/share/**",
         "destination": "/share/index.html"
+      },
+      {
+        "source": "/password-reset",
+        "destination": "/password-reset/index.html"
+      },
+      {
+        "source": "/password-reset/**",
+        "destination": "/password-reset/index.html"
       }
     ]
   }
