@@ -121,6 +121,7 @@ class HomeCubit extends Cubit<HomeState> {
         volumeMl: volumeMl,
         drinkType: drinkType,
       );
+      _focusTodayAfterNewIntakeIfNeeded();
       unawaited(
         _reminderScheduler.rescheduleReminders(
           lastIntakeAnchor: DateTime.now(),
@@ -201,6 +202,13 @@ class HomeCubit extends Cubit<HomeState> {
 
   void syncAnchoredTodayIfNeeded() {
     if (!state.anchoredToLiveToday) return;
+    final today = _todayCalendar;
+    if (state.selectedDate == today) return;
+    selectCalendarDay(today);
+  }
+
+  /// New intakes are always stored under today's day doc
+  void _focusTodayAfterNewIntakeIfNeeded() {
     final today = _todayCalendar;
     if (state.selectedDate == today) return;
     selectCalendarDay(today);
