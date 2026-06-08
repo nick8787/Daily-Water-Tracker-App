@@ -250,6 +250,7 @@ class _RemindersDebugPanelState extends State<RemindersDebugPanel> {
             icon: Icons.restore_rounded,
             busy: _busy,
             enabled: !_busy,
+            hapticFeedback: false,
             onTap: () => unawaited(_resetScheduler()),
           ),
           const SizedBox(height: 12),

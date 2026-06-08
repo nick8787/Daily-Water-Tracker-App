@@ -10,6 +10,7 @@ import 'package:daily_water_tracker/features/achievements/models/achievement_def
 import 'package:daily_water_tracker/features/achievements/models/badge_model.dart';
 import 'package:daily_water_tracker/features/deep_links/services/progress_share_service.dart';
 import 'package:daily_water_tracker/features/theme/decorations.dart';
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:daily_water_tracker/features/theme/shadow.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
@@ -534,7 +535,7 @@ class _PrimaryCelebrationButton extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onPressed,
+        onTap: () => VibrationFeedback.run(context, onPressed),
         borderRadius: BorderRadius.circular(18),
         child: Ink(
           width: double.infinity,

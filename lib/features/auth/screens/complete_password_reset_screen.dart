@@ -11,6 +11,7 @@ import 'package:daily_water_tracker/features/auth/widgets/auth_text_field.dart';
 import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -273,7 +274,7 @@ class _CompletePasswordResetScreenState
         ),
         const SizedBox(height: 16),
         FilledButton(
-          onPressed: onAction,
+          onPressed: () => VibrationFeedback.run(context, onAction),
           style: FilledButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 12),
             shape: RoundedRectangleBorder(

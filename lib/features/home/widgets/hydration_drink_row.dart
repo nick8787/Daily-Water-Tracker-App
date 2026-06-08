@@ -1,6 +1,7 @@
 import 'package:daily_water_tracker/common/l10n/drink_type_l10n.dart';
 import 'package:daily_water_tracker/features/home/widgets/drink_type_svgs.dart';
 import 'package:daily_water_tracker/features/home/widgets/water_progress_indicator.dart';
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:daily_water_tracker/firebase/models/water_record_model.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -67,7 +68,7 @@ class HydrationDrinkRow extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(14),
-        onTap: onTap,
+        onTap: () => VibrationFeedback.run(context, onTap),
         child: Padding(
           padding: rowPadding,
           child: Row(

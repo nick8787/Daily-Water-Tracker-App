@@ -2,6 +2,7 @@ import 'package:daily_water_tracker/features/home/cubit/home_state.dart';
 import 'package:daily_water_tracker/features/home/widgets/home_date_bar.dart';
 import 'package:daily_water_tracker/features/home/widgets/home_today_drinks_panel.dart';
 import 'package:daily_water_tracker/features/home/widgets/water_progress_indicator.dart';
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:daily_water_tracker/features/remote_config/cubit/remote_config_cubit.dart';
 import 'package:daily_water_tracker/features/remote_config/models/issue_disclaimer.dart';
 import 'package:daily_water_tracker/features/remote_config/widgets/issue_disclaimer_widget.dart';
@@ -91,8 +92,10 @@ class _HomeWaterCardFlipState extends State<HomeWaterCardFlip> {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
-                      onTap: () =>
-                          setState(() => _drinksPanelOpen = !_drinksPanelOpen),
+                      onTap: () => VibrationFeedback.run(
+                        context,
+                        () => setState(() => _drinksPanelOpen = !_drinksPanelOpen),
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

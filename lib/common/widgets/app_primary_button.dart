@@ -1,5 +1,6 @@
 import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:flutter/material.dart';
 
 class AppGradientButton extends StatelessWidget {
@@ -12,6 +13,7 @@ class AppGradientButton extends StatelessWidget {
     this.height = 54,
     this.radius = 18,
     this.icon,
+    this.hapticFeedback = true,
   });
 
   final String label;
@@ -21,6 +23,15 @@ class AppGradientButton extends StatelessWidget {
   final double height;
   final double radius;
   final IconData? icon;
+  final bool hapticFeedback;
+
+  void _handleTap(BuildContext context) {
+    if (hapticFeedback) {
+      VibrationFeedback.run(context, onTap);
+    } else {
+      onTap();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +51,7 @@ class AppGradientButton extends StatelessWidget {
           ),
           color: Colors.transparent,
           child: InkWell(
-            onTap: canInteract ? onTap : null,
+            onTap: canInteract ? () => _handleTap(context) : null,
             child: Ink(
               height: height,
               decoration: BoxDecoration(

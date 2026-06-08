@@ -1,3 +1,4 @@
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
@@ -93,7 +94,9 @@ class ProfileAvatarCard extends StatelessWidget {
                       shape: const CircleBorder(),
                       child: InkWell(
                         customBorder: const CircleBorder(),
-                        onTap: isLoading ? null : onPickPhoto,
+                        onTap: isLoading || onPickPhoto == null
+                            ? null
+                            : () => VibrationFeedback.run(context, onPickPhoto!),
                         child: Container(
                           width: _cameraSize,
                           height: _cameraSize,

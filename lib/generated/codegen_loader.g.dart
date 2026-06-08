@@ -251,6 +251,7 @@ class CodegenLoader extends AssetLoader{
       "language": "Мова",
       "privacy_policy": "Політика конфіденційності",
       "dark_theme": "Темна тема",
+      "use_vibration": "Використовувати вібрацію",
       "more": "Ще",
       "achievements": "Мої досягнення"
     },
@@ -960,6 +961,7 @@ static const Map<String,dynamic> _en_US = {
       "language": "Language",
       "privacy_policy": "Privacy policy",
       "dark_theme": "Use dark theme",
+      "use_vibration": "Use vibration",
       "more": "More",
       "achievements": "Achievements"
     },

@@ -7,8 +7,11 @@ import 'package:daily_water_tracker/features/account/widgets/account_logout_foot
 import 'package:daily_water_tracker/features/account/widgets/account_menu_card.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_menu_item.dart';
 import 'package:daily_water_tracker/features/locale/widgets/locale_rebuild.dart';
+import 'package:daily_water_tracker/features/theme/theme.dart';
+import 'package:daily_water_tracker/features/vibration/cubit/vibration_cubit.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -37,6 +40,9 @@ class _SettingsMoreView extends StatelessWidget {
     final sessionBusy = context.select<AccountCubit, bool>(
       (c) => c.state.isSessionActionInProgress,
     );
+    final vibrationEnabled = context.select<VibrationCubit, bool>(
+      (c) => c.state.enabled,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -57,13 +63,30 @@ class _SettingsMoreView extends StatelessWidget {
               AccountMenuItem(
                 leadingAsset: icProfileSecurity,
                 title: LocaleKeys.account_menu_login_security.tr(),
+                hapticOnTap: true,
                 onTap: () => context.push(loginSecurityRoute),
               ),
               const AccountMenuDivider(),
               AccountMenuItem(
                 leadingIcon: Icons.language_rounded,
                 title: LocaleKeys.account_menu_language.tr(),
+                hapticOnTap: true,
                 onTap: () => AccountLanguageActions.onLanguageTap(context),
+              ),
+              const AccountMenuDivider(),
+              AccountMenuItem(
+                leadingIcon: Icons.vibration_rounded,
+                title: LocaleKeys.account_menu_use_vibration.tr(),
+                showChevron: false,
+                trailing: CupertinoSwitch(
+                  value: vibrationEnabled,
+                  activeTrackColor: brandBlue,
+                  onChanged: (value) =>
+                      context.read<VibrationCubit>().setEnabled(value),
+                ),
+                onTap: () => context.read<VibrationCubit>().setEnabled(
+                  !vibrationEnabled,
+                ),
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:flutter/material.dart';
 
 class AccountMenuItem extends StatelessWidget {
@@ -13,6 +14,7 @@ class AccountMenuItem extends StatelessWidget {
     this.showChevron = true,
     this.enabled = true,
     this.fillVertically = false,
+    this.hapticOnTap = false,
   });
 
   final String title;
@@ -24,6 +26,7 @@ class AccountMenuItem extends StatelessWidget {
   final bool showChevron;
   final bool enabled;
   final bool fillVertically;
+  final bool hapticOnTap;
   final VoidCallback onTap;
 
   static const double _leadingSize = 22;
@@ -142,7 +145,15 @@ class AccountMenuItem extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: enabled ? onTap : null,
+        onTap: enabled
+            ? () {
+                if (hapticOnTap) {
+                  VibrationFeedback.run(context, onTap);
+                } else {
+                  onTap();
+                }
+              }
+            : null,
         borderRadius: BorderRadius.circular(18),
         child: content,
       ),

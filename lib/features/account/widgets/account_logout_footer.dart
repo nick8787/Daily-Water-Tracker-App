@@ -1,4 +1,5 @@
 import 'package:daily_water_tracker/common/assets.dart';
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,9 @@ class AccountLogoutFooter extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: TextButton.icon(
-        onPressed: actionsEnabled ? onLogOutPressed : null,
+        onPressed: actionsEnabled
+            ? () => VibrationFeedback.run(context, onLogOutPressed)
+            : null,
         style: TextButton.styleFrom(
           foregroundColor: foreground,
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),

@@ -20,7 +20,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pub_semver/pub_semver.dart';
 
 import '../../features/theme/theme.dart';
+import '../../features/vibration/cubit/vibration_cubit.dart';
 import '../services/theme_box.dart';
+import '../services/vibration_box.dart';
 
 class GlobalBlocProvider extends StatelessWidget {
   const GlobalBlocProvider({
@@ -52,6 +54,9 @@ class GlobalBlocProvider extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               ThemeBloc(Hive.box(ThemeBox.name))..add(const InitTheme()),
+        ),
+        BlocProvider(
+          create: (context) => VibrationCubit(Hive.box(VibrationBox.name)),
         ),
         BlocProvider(
           create: (context) =>

@@ -9,6 +9,7 @@ import 'package:daily_water_tracker/features/auth/widgets/auth_text_field.dart';
 import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -132,7 +133,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             builder: (context, state) {
               final isLoading = state is ForgotPasswordLoading;
               return FilledButton(
-                onPressed: isLoading ? null : () => _onSendPressed(context),
+                onPressed: isLoading
+                    ? null
+                    : () => VibrationFeedback.run(
+                        context,
+                        () => _onSendPressed(context),
+                      ),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
@@ -182,7 +188,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
         const SizedBox(height: 16),
         FilledButton(
-          onPressed: () => context.go(loginRoute),
+          onPressed: () => VibrationFeedback.run(context, () => context.go(loginRoute)),
           style: FilledButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 12),
             shape: RoundedRectangleBorder(
