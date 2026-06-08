@@ -80,10 +80,9 @@ abstract final class AccountActions {
       intent: AppConfirmIntent.affirmative,
       icon: Icons.logout_rounded,
     );
-    if (confirmed != true || !context.mounted) return;
+    if (confirmed != true) return;
 
     await WidgetsBinding.instance.endOfFrame;
-    if (!context.mounted) return;
 
     await cubit.logOut();
   }

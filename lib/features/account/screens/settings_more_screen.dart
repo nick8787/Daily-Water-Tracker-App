@@ -3,6 +3,7 @@ import 'package:daily_water_tracker/common/router.dart';
 import 'package:daily_water_tracker/features/account/account_actions.dart';
 import 'package:daily_water_tracker/features/account/account_language_actions.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
+import 'package:daily_water_tracker/features/account/listeners/account_logout_session_listener.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_logout_footer.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_menu_card.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_menu_item.dart';
@@ -27,7 +28,11 @@ class SettingsMoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LocaleRebuild(
-      builder: (context) => const _SettingsMoreView(),
+      builder: (context) => const AccountLogoutSessionListener(
+        child: AccountLogoutSigningOutMask(
+          child: _SettingsMoreView(),
+        ),
+      ),
     );
   }
 }

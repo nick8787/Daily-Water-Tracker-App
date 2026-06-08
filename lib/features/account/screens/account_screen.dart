@@ -1,10 +1,5 @@
-import 'dart:async';
-
 import 'package:daily_water_tracker/common/di/injector_module.dart';
-import 'package:daily_water_tracker/common/router.dart';
-import 'package:daily_water_tracker/common/widgets/app_loader.dart';
 import 'package:daily_water_tracker/common/widgets/app_notification_settings_dialog.dart';
-import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/common/widgets/main_shell_tab_body.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
@@ -12,16 +7,14 @@ import 'package:daily_water_tracker/data/repositories/storage_repository.dart';
 import 'package:daily_water_tracker/features/account/account_actions.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_state.dart';
+import 'package:daily_water_tracker/features/account/listeners/account_session_listener.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_app_bar.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_menu_section.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_user_info_section.dart';
-import 'package:daily_water_tracker/features/main_nav/cubit/main_nav_cubit.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
 import 'package:daily_water_tracker/firebase/services/local_notifications_service.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
 import 'package:daily_water_tracker/firebase/services/user_account_deletion_service.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -48,96 +41,6 @@ class AccountScreen extends StatelessWidget {
 class AccountScreenView extends StatelessWidget {
   const AccountScreenView({super.key});
 
-  static bool _listenWhen(AccountState prev, AccountState next) {
-    if (prev.sessionPhase != next.sessionPhase) return true;
-    if (prev.sessionAction != next.sessionAction) return true;
-    if (prev.feedback != next.feedback &&
-        next.feedback != AccountFeedback.none) {
-      return true;
-    }
-    return prev.isPhotoBusy != next.isPhotoBusy;
-  }
-
-  static void _listener(BuildContext context, AccountState state) {
-    final cubit = context.read<AccountCubit>();
-    final mainNav = context.read<MainNavCubit>();
-
-    if (state.sessionAction == AccountSessionAction.logout) {
-      switch (state.sessionPhase) {
-        case AccountSessionPhase.inProgress:
-          mainNav.setAccountSigningOutMask(true);
-          return;
-        case AccountSessionPhase.succeeded:
-          goRouter.go(loginRoute);
-          return;
-        case AccountSessionPhase.failed:
-          mainNav.setAccountSigningOutMask(false);
-          final message = state.sessionErrorText();
-          if (message.isNotEmpty) {
-            AppSnackBar.showError(context, message);
-          }
-          cubit.clearSession();
-          return;
-        case AccountSessionPhase.idle:
-          break;
-      }
-    }
-
-    if (state.sessionAction == AccountSessionAction.deleteAccount) {
-      switch (state.sessionPhase) {
-        case AccountSessionPhase.inProgress:
-          AppLoader.show(
-            context,
-            message: LocaleKeys.loader_deleting_account.tr(),
-          );
-          return;
-        case AccountSessionPhase.succeeded:
-          unawaited(
-            AppLoader.hideWithMinimumVisibleDuration(),
-          );
-          goRouter.go(loginRoute);
-          return;
-        case AccountSessionPhase.failed:
-          unawaited(
-            AppLoader.hideWithMinimumVisibleDuration(),
-          );
-          final message = state.sessionErrorText();
-          if (message.isNotEmpty) {
-            AppSnackBar.showError(context, message);
-          }
-          cubit.clearSession();
-          return;
-        case AccountSessionPhase.idle:
-          break;
-      }
-    }
-
-    if (state.isSessionActionInProgress) return;
-
-    if (state.isPhotoBusy) {
-      AppLoader.show(context, message: LocaleKeys.loader_updating_photo.tr());
-      return;
-    }
-
-    if (AppLoader.isShowing) AppLoader.hide();
-
-    if (!state.hasFeedback) return;
-
-    switch (state.feedback) {
-      case AccountFeedback.success:
-        AppSnackBar.showInfo(
-          context,
-          title: LocaleKeys.account_success_title.tr(),
-          message: state.localizedFeedbackMessage(),
-        );
-      case AccountFeedback.error:
-        AppSnackBar.showError(context, state.localizedFeedbackMessage());
-      case AccountFeedback.none:
-        break;
-    }
-    cubit.clearFeedback();
-  }
-
   Future<void> _onNotificationsToggle(BuildContext context, bool wantOn) async {
     final cubit = context.read<AccountCubit>();
     final blocked = await cubit.setAppNotificationsEnabled(wantOn);
@@ -150,10 +53,9 @@ class AccountScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _AccountLifecycleSync(
-      child: BlocConsumer<AccountCubit, AccountState>(
-        listenWhen: _listenWhen,
-        listener: _listener,
-        builder: (context, state) {
+      child: AccountSessionListener(
+        child: BlocBuilder<AccountCubit, AccountState>(
+          builder: (context, state) {
           final sessionBusy = state.isSessionActionInProgress;
 
           return Scaffold(
@@ -191,6 +93,7 @@ class AccountScreenView extends StatelessWidget {
             ),
           );
         },
+        ),
       ),
     );
   }
