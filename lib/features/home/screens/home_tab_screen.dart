@@ -1,9 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:daily_water_tracker/common/widgets/app_bottom_nav_bar.dart';
 import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/common/widgets/main_shell_tab_body.dart';
@@ -15,7 +11,10 @@ import 'package:daily_water_tracker/features/home/widgets/home_date_bar.dart';
 import 'package:daily_water_tracker/features/home/widgets/home_water_card_empty.dart';
 import 'package:daily_water_tracker/features/home/widgets/home_water_card_flip.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
-import 'package:intl/intl.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeTabScreen extends StatelessWidget {
   const HomeTabScreen({super.key});

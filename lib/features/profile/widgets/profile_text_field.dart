@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/theme_info.dart';
+import 'package:flutter/material.dart';
 
 Color profileFieldHintColor(BuildContext context) {
   return Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.55);

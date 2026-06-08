@@ -1,8 +1,8 @@
+import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/widgets.dart';
-import 'package:daily_water_tracker/common/services/logger.dart';
 
 class AnalyticsService {
   final FirebaseAnalytics _analytics;

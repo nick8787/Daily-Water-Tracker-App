@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-
 import 'package:daily_water_tracker/features/achievements/models/achievement_category.dart';
 import 'package:daily_water_tracker/features/achievements/models/achievement_definition.dart';
 import 'package:daily_water_tracker/features/achievements/models/rank_condition.dart';
 import 'package:daily_water_tracker/features/achievements/models/rank_condition_type.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:flutter/material.dart';
 
 /// Central catalog of hydration evolution ranks (metadata only).
 abstract final class AchievementsRegistry {

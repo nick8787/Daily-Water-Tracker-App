@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/features/preferences/cubit/preferences_cubit.dart';
 import 'package:daily_water_tracker/features/preferences/cubit/preferences_state.dart';
 import 'package:daily_water_tracker/features/preferences/widgets/info_sheets/presets_info_sheet.dart';
 import 'package:daily_water_tracker/features/preferences/widgets/preferences_info_bottom_sheet.dart';
 import 'package:daily_water_tracker/features/preferences/widgets/preferences_section_shell.dart';
 import 'package:daily_water_tracker/features/theme/decorations.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DrinkPresetsSection extends StatefulWidget {
   const DrinkPresetsSection({super.key});

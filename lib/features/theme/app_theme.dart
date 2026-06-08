@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:daily_water_tracker/common/services/localization_service.dart';
 import 'package:daily_water_tracker/common/utils/system_ui_overlay.dart';
 import 'package:daily_water_tracker/features/theme/color_schemes.dart';
@@ -7,6 +5,8 @@ import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/ext.dart';
 import 'package:daily_water_tracker/features/theme/text_styles.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 final ThemeData lightTheme = buildAppTheme(
   brightness: Brightness.light,

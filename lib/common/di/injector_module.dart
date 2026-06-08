@@ -1,11 +1,6 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dio/dio.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:daily_water_tracker/common/services/services.dart';
 import 'package:daily_water_tracker/common/utils/app_utils.dart';
 import 'package:daily_water_tracker/features/app_update/mixin/app_version_mixin.dart';
@@ -15,6 +10,11 @@ import 'package:daily_water_tracker/firebase/services/auth_service.dart';
 import 'package:daily_water_tracker/firebase/services/local_notifications_service.dart';
 import 'package:daily_water_tracker/firebase/services/remote_config_service.dart';
 import 'package:daily_water_tracker/network/web_socket/web_socket_client.dart';
+import 'package:dio/dio.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pub_semver/pub_semver.dart';
 

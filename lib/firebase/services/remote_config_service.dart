@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/foundation.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/features/remote_config/models/issue_disclaimer.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 
 enum ProgressIndicatorType {
   circular,

@@ -1,13 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/assets.dart';
 import 'package:daily_water_tracker/common/utils/system_ui_overlay.dart';
 import 'package:daily_water_tracker/features/app_update/cubit/app_version_cubit.dart';
 import 'package:daily_water_tracker/features/app_update/models/app_version_status.dart';
 import 'package:daily_water_tracker/features/deep_links/listeners/deep_link_listeners.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'common/router.dart';
 import 'features/theme/theme.dart';

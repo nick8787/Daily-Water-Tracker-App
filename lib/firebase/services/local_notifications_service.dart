@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:daily_water_tracker/common/services/logger.dart';
-import 'package:flutter/foundation.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -51,9 +50,7 @@ class LocalNotificationsService {
     try {
       const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
       const iosInit = DarwinInitializationSettings(
-        requestSoundPermission: true,
-        requestBadgePermission: true,
-        requestAlertPermission: true,
+        
       );
       await _plugin.initialize(
         const InitializationSettings(android: androidInit, iOS: iosInit),
@@ -110,11 +107,7 @@ class LocalNotificationsService {
         defaultChannelName,
         description: defaultChannelDescription,
         importance: Importance.max,
-        playSound: true,
-        enableVibration: true,
         vibrationPattern: Int64List.fromList([0, 400, 200, 500]),
-        showBadge: true,
-        audioAttributesUsage: AudioAttributesUsage.notification,
       ),
     );
   }
@@ -223,13 +216,8 @@ class LocalNotificationsService {
       icon: _androidSmallIconName,
       category: AndroidNotificationCategory.reminder,
       visibility: NotificationVisibility.public,
-      playSound: true,
-      enableVibration: true,
       vibrationPattern: Int64List.fromList([0, 380, 180, 380]),
-      channelShowBadge: true,
       ticker: ticker,
-      fullScreenIntent: false,
-      audioAttributesUsage: AudioAttributesUsage.notification,
       styleInformation: bodyForBigText != null && bodyForBigText.isNotEmpty
           ? BigTextStyleInformation(bodyForBigText, contentTitle: ticker)
           : null,

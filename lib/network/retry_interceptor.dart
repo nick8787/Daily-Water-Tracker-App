@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:dio/dio.dart';
 
 import '../common/services/services.dart';
 import 'dio_connectivity_request_retrier.dart';
-import 'package:daily_water_tracker/common/services/logger.dart';
 
 class RetryOnConnectionChangeInterceptor extends Interceptor {
   final DioConnectivityRequestRetrier requestRetrier;

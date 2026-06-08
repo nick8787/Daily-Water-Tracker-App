@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/l10n/locale_resolver.dart';
 import 'package:daily_water_tracker/common/services/localization_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'locale_state.dart';
 

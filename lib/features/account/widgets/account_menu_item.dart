@@ -86,7 +86,6 @@ class AccountMenuItem extends StatelessWidget {
     TextStyle? subtitleStyle,
   ) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildLeading(iconColor),
         const SizedBox(width: 14),
@@ -129,9 +128,7 @@ class AccountMenuItem extends StatelessWidget {
     );
 
     final content = fillVertically
-        ? SizedBox(
-            width: double.infinity,
-            height: double.infinity,
+        ? SizedBox.expand(
             child: Align(
               alignment: Alignment.centerLeft,
               child: SizedBox(

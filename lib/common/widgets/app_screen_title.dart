@@ -1,9 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/features/locale/cubit/locale_cubit.dart';
 import 'package:daily_water_tracker/features/locale/cubit/locale_state.dart';
 import 'package:daily_water_tracker/features/theme/text_styles.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppScreenTitle extends StatelessWidget {
   const AppScreenTitle({

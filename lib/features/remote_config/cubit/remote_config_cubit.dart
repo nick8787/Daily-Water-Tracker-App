@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/features/remote_config/cubit/remote_config_state.dart';
 import 'package:daily_water_tracker/firebase/services/remote_config_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RemoteConfigCubit extends Cubit<RemoteConfigState> {
   RemoteConfigCubit({

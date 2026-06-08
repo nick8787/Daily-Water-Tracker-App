@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:daily_water_tracker/common/l10n/drink_type_l10n.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/features/home/coefficient_format.dart';
 import 'package:daily_water_tracker/features/home/widgets/drink_type_svgs.dart';
 import 'package:daily_water_tracker/features/home/widgets/water_progress_indicator.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
-import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/firebase/models/drink_type.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 Future<void> showHydrationInfoSheet(BuildContext context) {
@@ -139,7 +137,7 @@ class HydrationInfoSheet extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: LocaleKeys.hydration_info_formula_hydration.tr(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
@@ -194,7 +192,7 @@ class HydrationInfoSheet extends StatelessWidget {
     Color muted,
     TextTheme theme,
   ) {
-    final types = DrinkType.values;
+    const types = DrinkType.values;
     final out = <Widget>[];
     for (var i = 0; i < types.length; i++) {
       if (i > 0) {

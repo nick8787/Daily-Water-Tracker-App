@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/services/analytics_service.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
+import 'package:flutter/material.dart';
 
 class AnalyticsListeners extends StatefulWidget {
   final Widget child;

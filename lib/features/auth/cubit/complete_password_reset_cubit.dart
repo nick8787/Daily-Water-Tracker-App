@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'complete_password_reset_state.dart';
 

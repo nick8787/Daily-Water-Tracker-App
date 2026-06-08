@@ -1,13 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:daily_water_tracker/common/widgets/app_bottom_sheet.dart';
 import 'package:daily_water_tracker/common/widgets/app_primary_button.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
 import 'package:daily_water_tracker/features/theme/text_styles.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// Bottom sheet shown when the app opens a shared hydration progress link
 abstract final class ShareProgressSheet {
@@ -50,7 +49,7 @@ class _ShareProgressSheetBody extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _ShareHeroIcon(),
+          const _ShareHeroIcon(),
           const SizedBox(height: 18),
           Text(
             LocaleKeys.deep_link_shared_title.tr(),

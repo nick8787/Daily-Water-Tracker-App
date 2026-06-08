@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-import 'package:go_router/go_router.dart';
 import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/router.dart';
 import 'package:daily_water_tracker/common/widgets/app_screen_title.dart';
@@ -9,6 +5,10 @@ import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_menu_card.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_menu_item.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginSecurityScreen extends StatelessWidget {
   const LoginSecurityScreen({super.key});

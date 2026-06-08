@@ -1,13 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:daily_water_tracker/common/l10n/profile_gender_l10n.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/features/profile/models/profile_gender.dart';
 import 'package:daily_water_tracker/features/profile/widgets/profile_text_field.dart'
     show profileFieldHintColor;
-import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/theme_info.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
 class ProfileGenderField extends StatelessWidget {
   const ProfileGenderField({

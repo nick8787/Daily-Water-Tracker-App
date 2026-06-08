@@ -1,6 +1,6 @@
-import 'package:equatable/equatable.dart';
 import 'package:daily_water_tracker/features/remote_config/models/issue_disclaimer.dart';
 import 'package:daily_water_tracker/firebase/services/remote_config_service.dart';
+import 'package:equatable/equatable.dart';
 
 class RemoteConfigState extends Equatable {
   const RemoteConfigState({
@@ -30,9 +30,9 @@ class RemoteConfigState extends Equatable {
   }
 
   factory RemoteConfigState.initial() {
-    return RemoteConfigState(
+    return const RemoteConfigState(
       progressIndicatorType: RemoteConfigService.fallbackProgressIndicatorType,
-      issueDisclaimers: const <IssueDisclaimer>[],
+      issueDisclaimers: <IssueDisclaimer>[],
     );
   }
 

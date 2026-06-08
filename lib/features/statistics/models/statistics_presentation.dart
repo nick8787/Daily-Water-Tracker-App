@@ -1,6 +1,6 @@
-import 'package:equatable/equatable.dart';
 import 'package:daily_water_tracker/firebase/models/drink_type.dart';
 import 'package:daily_water_tracker/firebase/models/statistics_week_data.dart';
+import 'package:equatable/equatable.dart';
 
 final class IntakeBreakdownRowVm extends Equatable {
   const IntakeBreakdownRowVm({

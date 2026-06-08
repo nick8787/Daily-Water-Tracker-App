@@ -1,12 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/features/achievements/models/badge_model.dart';
 import 'package:daily_water_tracker/features/deep_links/services/water_deep_link_service.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
 /// Builds localized share payloads for hydration progress deep links.

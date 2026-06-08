@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:daily_water_tracker/features/theme/decorations.dart';
+import 'package:flutter/material.dart';
 
 class AuthDivider extends StatelessWidget {
   final String label;

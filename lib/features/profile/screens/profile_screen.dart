@@ -1,17 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/router.dart';
 import 'package:daily_water_tracker/common/widgets/app_loader.dart';
-import 'package:daily_water_tracker/common/widgets/dismiss_keyboard_on_tap.dart';
 import 'package:daily_water_tracker/common/widgets/app_primary_button.dart';
 import 'package:daily_water_tracker/common/widgets/app_screen_title.dart';
 import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
+import 'package:daily_water_tracker/common/widgets/dismiss_keyboard_on_tap.dart';
+import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/data/repositories/storage_repository.dart';
 import 'package:daily_water_tracker/features/profile/cubit/profile_cubit.dart';
 import 'package:daily_water_tracker/features/profile/cubit/profile_state.dart';
 import 'package:daily_water_tracker/features/profile/models/profile_gender.dart';
@@ -22,8 +19,10 @@ import 'package:daily_water_tracker/features/profile/widgets/profile_physical_se
 import 'package:daily_water_tracker/features/profile/widgets/profile_section_card.dart';
 import 'package:daily_water_tracker/features/profile/widgets/profile_stat_tiles.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
-import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
-import 'package:daily_water_tracker/data/repositories/storage_repository.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

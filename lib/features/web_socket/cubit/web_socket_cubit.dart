@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/features/web_socket/services/web_socket_service.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 
 part 'web_socket_state.dart';

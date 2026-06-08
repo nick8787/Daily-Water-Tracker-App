@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 /// Localized rotating copy for scheduled hydration reminders.
 class ReminderMessages {

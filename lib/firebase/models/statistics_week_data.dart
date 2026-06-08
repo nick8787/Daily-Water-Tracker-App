@@ -1,5 +1,5 @@
-import 'package:equatable/equatable.dart';
 import 'package:daily_water_tracker/firebase/models/drink_type.dart';
+import 'package:equatable/equatable.dart';
 
 /// Per–drink-type effective hydration total for the statistics window (ml, rounded).
 class DrinkEffectiveMlBucket extends Equatable {

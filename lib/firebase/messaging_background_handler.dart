@@ -1,6 +1,6 @@
+import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:daily_water_tracker/common/services/logger.dart';
 
 /// Background push handler (Android).
 ///

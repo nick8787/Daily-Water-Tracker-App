@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:daily_water_tracker/features/theme/ext.dart';
 import 'package:daily_water_tracker/features/theme/shadow.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
+import 'package:flutter/material.dart';
 
 /// Shared decorations, gradients, and modal chrome defaults.
 abstract final class AppDecorations {
@@ -126,7 +126,6 @@ abstract final class AppAuthStyle {
   }) {
     final focused = fieldFocusedBorder(context);
     final error = fieldErrorBorder(context);
-    const radius = fieldRadius;
 
     return InputDecoration(
       labelText: labelText,
@@ -135,13 +134,12 @@ abstract final class AppAuthStyle {
       suffixIcon: suffixIcon,
       filled: true,
       fillColor: fieldFill(context),
-      border: AppFieldStyle.borderNone(radius),
-      enabledBorder: AppFieldStyle.borderEnabled(radius),
-      focusedBorder: AppFieldStyle.borderFocused(color: focused, radius: radius),
-      errorBorder: AppFieldStyle.borderError(color: error, radius: radius),
+      border: AppFieldStyle.borderNone(),
+      enabledBorder: AppFieldStyle.borderEnabled(),
+      focusedBorder: AppFieldStyle.borderFocused(color: focused),
+      errorBorder: AppFieldStyle.borderError(color: error),
       focusedErrorBorder: AppFieldStyle.borderFocusedError(
         color: error,
-        radius: radius,
       ),
     );
   }

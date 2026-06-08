@@ -1,8 +1,7 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-
 import 'package:daily_water_tracker/features/achievements/models/achievement_category.dart';
 import 'package:daily_water_tracker/features/achievements/models/rank_condition.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 /// Static rank metadata — no user progress.
 class AchievementDefinition extends Equatable {

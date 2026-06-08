@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/di/injector_module.dart';
+import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_state.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_profile_header.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_user_display.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
-import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AccountUserInfoSection extends StatelessWidget {

@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/assets.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
@@ -9,6 +7,8 @@ import 'package:daily_water_tracker/features/deep_links/cubit/deep_link_cubit.da
 import 'package:daily_water_tracker/features/deep_links/models/water_link_purpose.dart';
 import 'package:daily_water_tracker/features/splash/cubit/splash_cubit.dart';
 import 'package:daily_water_tracker/features/splash/cubit/splash_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 
@@ -123,17 +123,17 @@ class _SplashScreenState extends State<SplashScreen> {
                     fit: BoxFit.cover,
                   ),
                 ),
-              SafeArea(
+              const SafeArea(
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
                     Align(
-                      alignment: const Alignment(0, _wordmarkVerticalBias),
+                      alignment: Alignment(0, _wordmarkVerticalBias),
                       // iOS: show native-like launch background + Hero wordmark transition.
                       // Android: also render the wordmark to avoid a blank screen on deep-link cold start.
                       child: Hero(
                         tag: splashLoginHeroTag,
-                        child: const Image(
+                        child: Image(
                           image: AssetImage(splashWordmark),
                           fit: BoxFit.contain,
                         ),

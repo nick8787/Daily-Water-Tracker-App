@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:daily_water_tracker/common/widgets/dismiss_keyboard_on_tap.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
+import 'package:flutter/material.dart';
 
 class AuthScaffold extends StatelessWidget {
   final Widget child;

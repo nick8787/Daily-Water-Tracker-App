@@ -28,7 +28,7 @@ void main() {
             targetValue: 1,
           ),
         ],
-        unlockDate: unlocked ? DateTime(2026, 6, 1) : null,
+        unlockDate: unlocked ? DateTime(2026, 6) : null,
       );
     }
 

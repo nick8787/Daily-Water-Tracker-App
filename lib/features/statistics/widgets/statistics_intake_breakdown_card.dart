@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:daily_water_tracker/common/l10n/drink_type_l10n.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/features/home/widgets/drink_type_svgs.dart';
 import 'package:daily_water_tracker/features/home/widgets/water_sheet_shared.dart';
 import 'package:daily_water_tracker/features/statistics/models/statistics_presentation.dart';
 import 'package:daily_water_tracker/features/statistics/widgets/statistics_summary_metric_card.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 const double _kBreakdownIcon = 24;
@@ -115,7 +114,7 @@ class StatisticsIntakeBreakdownCard extends StatelessWidget {
           );
 
     final decoration = StatisticsSummaryMetricCard.tileDecoration(context);
-    final padding = StatisticsSummaryMetricCard.tilePadding;
+    const padding = StatisticsSummaryMetricCard.tilePadding;
 
     if (layoutMode == StatisticsBreakdownLayoutMode.balanced) {
       return Container(

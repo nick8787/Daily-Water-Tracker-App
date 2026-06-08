@@ -1,5 +1,5 @@
-import 'package:equatable/equatable.dart';
 import 'package:daily_water_tracker/firebase/models/water_record_model.dart';
+import 'package:equatable/equatable.dart';
 
 /// One drink row in the global hydration log with its calendar day document.
 class HydrationLogEntry extends Equatable {

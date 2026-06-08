@@ -1,8 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/common/widgets/app_confirm_dialog.dart';
 import 'package:daily_water_tracker/common/widgets/app_loader.dart';
@@ -10,6 +5,10 @@ import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
 import 'package:daily_water_tracker/features/deep_links/services/progress_share_service.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract final class AccountActions {
   AccountActions._();

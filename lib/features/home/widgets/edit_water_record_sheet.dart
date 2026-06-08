@@ -1,23 +1,21 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/di/injector_module.dart';
-import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/common/services/analytics_service.dart';
+import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/common/widgets/app_confirm_dialog.dart';
+import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/features/home/cubit/home_cubit.dart';
 import 'package:daily_water_tracker/features/home/widgets/water_progress_indicator.dart';
 import 'package:daily_water_tracker/features/home/widgets/water_sheet_shared.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
-import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/firebase/models/drink_type.dart';
 import 'package:daily_water_tracker/firebase/models/water_record_model.dart';
-import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 const int _kVolumeStep = 50;
 const int _kVolumeMin = 1;

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
+import 'package:flutter/material.dart';
 
 ColorScheme appColorScheme(Brightness brightness) {
   if (brightness == Brightness.dark) {
@@ -23,7 +23,6 @@ ColorScheme appColorScheme(Brightness brightness) {
 
   return const ColorScheme.light(
     primary: AppPalette.brandBlue,
-    onPrimary: AppPalette.white,
     secondary: AppPalette.brandBlue,
     onSecondary: AppPalette.white,
     surface: AppPalette.appBackground,

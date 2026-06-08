@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:daily_water_tracker/firebase/models/drink_type.dart';
+import 'package:equatable/equatable.dart';
 
 /// Aggregated hydration for one calendar day (for streak / habit rules)
 class AchievementDaySummary extends Equatable {

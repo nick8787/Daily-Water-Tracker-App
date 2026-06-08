@@ -1,6 +1,6 @@
-import 'package:equatable/equatable.dart';
 import 'package:daily_water_tracker/features/profile/models/profile_gender.dart';
 import 'package:daily_water_tracker/firebase/models/user_model.dart';
+import 'package:equatable/equatable.dart';
 
 sealed class ProfileState extends Equatable {
   const ProfileState();

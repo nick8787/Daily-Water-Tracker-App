@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:daily_water_tracker/common/services/analytics_service.dart';
+import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/common/utils/auto_goal_ml.dart';
 import 'package:daily_water_tracker/firebase/models/drink_type.dart';
 import 'package:daily_water_tracker/firebase/models/hydration_log_entry.dart';
 import 'package:daily_water_tracker/firebase/models/statistics_week_data.dart';
 import 'package:daily_water_tracker/firebase/models/user_model.dart';
 import 'package:daily_water_tracker/firebase/models/water_record_model.dart';
-import 'package:daily_water_tracker/common/services/logger.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 /// Firestore-backed persistence for user profile, hydration logs and statistics
 class FirestoreRepository {
@@ -325,8 +325,9 @@ class FirestoreRepository {
   /// Real-time updates for a single calendar day (local date parts of [day]).
   Stream<List<WaterRecordModel>> watchDayRecords(DateTime day) {
     final days = _daysCollectionOrNull;
-    if (days == null)
+    if (days == null) {
       return Stream<List<WaterRecordModel>>.value(const <WaterRecordModel>[]);
+    }
 
     final calendarDay = DateTime(day.year, day.month, day.day);
     final dayDocId = _dayDocId(calendarDay);

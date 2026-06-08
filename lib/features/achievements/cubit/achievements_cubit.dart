@@ -1,13 +1,12 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:daily_water_tracker/common/constants/hydration_defaults.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/features/achievements/data/achievements_registry.dart';
 import 'package:daily_water_tracker/features/achievements/logic/achievements_calculator.dart';
 import 'package:daily_water_tracker/features/achievements/logic/rank_celebration_logic.dart';
-import 'package:daily_water_tracker/features/achievements/data/achievements_registry.dart';
 import 'package:daily_water_tracker/features/achievements/models/achievement_definition.dart';
 import 'package:daily_water_tracker/features/achievements/models/badge_model.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'achievements_state.dart';
 

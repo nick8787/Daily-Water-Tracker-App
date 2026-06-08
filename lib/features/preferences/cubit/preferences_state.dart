@@ -1,8 +1,8 @@
-import 'package:equatable/equatable.dart';
 import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
 import 'package:daily_water_tracker/common/utils/auto_goal_ml.dart';
 import 'package:daily_water_tracker/common/utils/drink_presets_utils.dart';
 import 'package:daily_water_tracker/firebase/models/user_model.dart';
+import 'package:equatable/equatable.dart';
 
 sealed class PreferencesState extends Equatable {
   const PreferencesState();
@@ -71,10 +71,12 @@ class PreferencesLoaded extends PreferencesState {
     if (a[0] != b[0] || a[1] != b[1] || a[2] != b[2]) return true;
     if (_reminderPrefsDifferFromProfile) return true;
     if (remindersOnInDraft) {
-      if ((quietHoursStartDraft ?? '') != (profile.quietHoursStart ?? ''))
+      if ((quietHoursStartDraft ?? '') != (profile.quietHoursStart ?? '')) {
         return true;
-      if ((quietHoursEndDraft ?? '') != (profile.quietHoursEnd ?? ''))
+      }
+      if ((quietHoursEndDraft ?? '') != (profile.quietHoursEnd ?? '')) {
         return true;
+      }
     }
     return false;
   }

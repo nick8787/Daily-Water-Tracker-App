@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:daily_water_tracker/features/achievements/models/rank_condition_type.dart';
+import 'package:equatable/equatable.dart';
 
 /// One measurable requirement for a hydration rank.
 class RankCondition extends Equatable {

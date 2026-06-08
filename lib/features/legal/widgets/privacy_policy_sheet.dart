@@ -1,10 +1,8 @@
+import 'package:daily_water_tracker/features/home/widgets/water_progress_indicator.dart';
+import 'package:daily_water_tracker/features/theme/theme_info.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-import 'package:daily_water_tracker/features/home/widgets/water_progress_indicator.dart';
-import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
-import 'package:daily_water_tracker/features/theme/decorations.dart';
-import 'package:daily_water_tracker/features/theme/theme_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> showPrivacyPolicySheet(BuildContext context) {
@@ -85,7 +83,6 @@ class PrivacyPolicySheet extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               width: 46,
@@ -147,7 +144,7 @@ class PrivacyPolicySheet extends StatelessWidget {
                       TextSpan(
                         text: LocaleKeys.legal_privacy_policy_last_updated_date
                             .tr(),
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: brandBlue,
                           fontWeight: FontWeight.w800,
                         ),

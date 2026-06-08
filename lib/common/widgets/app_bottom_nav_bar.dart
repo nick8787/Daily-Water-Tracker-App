@@ -1,16 +1,14 @@
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/common/assets.dart';
 import 'package:daily_water_tracker/features/main_nav/cubit/main_nav_cubit.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
-import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/shadow.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 const String _kBottomNavStatisticsPng =
     'assets/images/ic_statistics_nav_bar.png';
@@ -74,7 +72,7 @@ class AppBottomNavBar extends StatelessWidget {
     final height = MediaQuery.sizeOf(context).height;
     if (height <= _compactScreenHeightReference) return 0;
 
-    final span = _largeScreenHeightReference - _compactScreenHeightReference;
+    const span = _largeScreenHeightReference - _compactScreenHeightReference;
     if (span <= 0) return mainShellLargeScreenClearanceBonus;
 
     final t = ((height - _compactScreenHeightReference) / span).clamp(0.0, 1.0);

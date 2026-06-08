@@ -1,5 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:logging/logging.dart';
 
 final log = Logger('EW');

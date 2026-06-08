@@ -1,12 +1,12 @@
-import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/common/utils/utils.dart';
 import 'package:daily_water_tracker/firebase/services/local_notifications_service.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_strategy/url_strategy.dart';
 

@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:daily_water_tracker/common/widgets/app_bottom_nav_bar.dart';
+import 'package:flutter/material.dart';
 
 /// Shared body chrome for Home, Statistics, and Account main-shell tabs.
 ///

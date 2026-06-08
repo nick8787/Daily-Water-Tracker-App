@@ -1,11 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:daily_water_tracker/common/di/injector_module.dart';
-import 'package:daily_water_tracker/common/widgets/app_primary_button.dart';
 import 'package:daily_water_tracker/common/widgets/app_loader.dart';
+import 'package:daily_water_tracker/common/widgets/app_primary_button.dart';
 import 'package:daily_water_tracker/common/widgets/app_screen_title.dart';
 import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/common/widgets/dismiss_keyboard_on_tap.dart';
@@ -14,6 +9,11 @@ import 'package:daily_water_tracker/features/auth/widgets/auth_text_field.dart';
 import 'package:daily_water_tracker/features/login_security/cubit/change_password_cubit.dart';
 import 'package:daily_water_tracker/features/login_security/cubit/change_password_state.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -98,7 +98,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                 hint: LocaleKeys
                                     .login_security_field_old_password_hint
                                     .tr(),
-                                textInputAction: TextInputAction.next,
                                 obscureText: !_isOldPasswordVisible,
                                 prefixIcon: const Icon(Icons.lock_outline),
                                 suffixIcon: IconButton(

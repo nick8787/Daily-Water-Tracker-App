@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
+import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/data/repositories/storage_repository.dart';
 import 'package:daily_water_tracker/features/profile/models/profile_gender.dart';
 import 'package:daily_water_tracker/firebase/models/user_model.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
-import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
-import 'package:daily_water_tracker/data/repositories/storage_repository.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'profile_state.dart';
