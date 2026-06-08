@@ -1,17 +1,16 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
 import 'package:daily_water_tracker/common/utils/auto_goal_ml.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/common/utils/drink_presets_utils.dart';
+import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/features/preferences/preferences_constants.dart';
 import 'package:daily_water_tracker/firebase/models/user_model.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
-import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'preferences_state.dart';
 
@@ -39,7 +38,7 @@ class PreferencesCubit extends Cubit<PreferencesState> {
       final prev = state;
       if (prev is PreferencesLoaded) {
         var autoDraft = prev.isAutoGoalDraft;
-        var autoDirty = prev.autoGoalDraftDirty;
+        final autoDirty = prev.autoGoalDraftDirty;
         if (!autoDirty && !prev.isSaving) {
           autoDraft = isAutoGoalEnabledForProfile(
             isAutoGoalEnabled: profile.isAutoGoalEnabled,

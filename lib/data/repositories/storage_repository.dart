@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:daily_water_tracker/common/services/logger.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class UploadProfilePhotoResult {
   const UploadProfilePhotoResult({

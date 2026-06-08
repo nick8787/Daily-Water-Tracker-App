@@ -1,16 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/router.dart';
-import 'package:daily_water_tracker/common/widgets/main_shell_tab_body.dart';
 import 'package:daily_water_tracker/common/widgets/app_loader.dart';
 import 'package:daily_water_tracker/common/widgets/app_notification_settings_dialog.dart';
 import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
+import 'package:daily_water_tracker/common/widgets/main_shell_tab_body.dart';
+import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
+import 'package:daily_water_tracker/data/repositories/storage_repository.dart';
 import 'package:daily_water_tracker/features/account/account_actions.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_state.dart';
@@ -19,12 +17,13 @@ import 'package:daily_water_tracker/features/account/widgets/account_menu_sectio
 import 'package:daily_water_tracker/features/account/widgets/account_user_info_section.dart';
 import 'package:daily_water_tracker/features/main_nav/cubit/main_nav_cubit.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
-import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/firebase/services/local_notifications_service.dart';
-import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
-import 'package:daily_water_tracker/data/repositories/storage_repository.dart';
 import 'package:daily_water_tracker/firebase/services/user_account_deletion_service.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -48,8 +47,6 @@ class AccountScreen extends StatelessWidget {
 
 class AccountScreenView extends StatelessWidget {
   const AccountScreenView({super.key});
-
-  static const Duration _deleteMinDisplay = Duration(seconds: 1);
 
   static bool _listenWhen(AccountState prev, AccountState next) {
     if (prev.sessionPhase != next.sessionPhase) return true;
@@ -96,13 +93,13 @@ class AccountScreenView extends StatelessWidget {
           return;
         case AccountSessionPhase.succeeded:
           unawaited(
-            AppLoader.hideWithMinimumVisibleDuration(_deleteMinDisplay),
+            AppLoader.hideWithMinimumVisibleDuration(),
           );
           goRouter.go(loginRoute);
           return;
         case AccountSessionPhase.failed:
           unawaited(
-            AppLoader.hideWithMinimumVisibleDuration(_deleteMinDisplay),
+            AppLoader.hideWithMinimumVisibleDuration(),
           );
           final message = state.sessionErrorText();
           if (message.isNotEmpty) {

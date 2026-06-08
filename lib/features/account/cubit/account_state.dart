@@ -1,7 +1,6 @@
+import 'package:daily_water_tracker/features/account/models/account_logout_ui_freeze.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
-
-import 'package:daily_water_tracker/features/account/models/account_logout_ui_freeze.dart';
 
 export 'package:daily_water_tracker/features/account/models/account_logout_ui_freeze.dart';
 

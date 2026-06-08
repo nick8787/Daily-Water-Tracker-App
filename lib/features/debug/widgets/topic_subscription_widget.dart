@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/features/debug/cubit/debug_cubit.dart';
 import 'package:daily_water_tracker/features/debug/cubit/debug_state.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TopicSubscriptionWidget extends StatelessWidget {
   const TopicSubscriptionWidget({super.key});
@@ -37,7 +36,7 @@ class TopicSubscriptionWidget extends StatelessWidget {
           ),
           title: Text(
             LocaleKeys.debug_topic_title.tr(),
-            style: TextStyle(fontWeight: FontWeight.w600),
+            style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           subtitle: Text(
             isSubscribed ? LocaleKeys.debug_topic_subscribed.tr() : LocaleKeys.debug_topic_not_subscribed.tr(),
@@ -54,7 +53,7 @@ class TopicSubscriptionWidget extends StatelessWidget {
                 )
               : CupertinoSwitch(
                   value: isSubscribed,
-                  activeColor: Colors.blueAccent,
+                  activeTrackColor: Colors.blueAccent,
                   onChanged: (value) {
                     if (value) {
                       context.read<DebugCubit>().subscribeReminder();

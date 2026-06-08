@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/features/locale/cubit/locale_cubit.dart';
 import 'package:daily_water_tracker/features/locale/cubit/locale_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Rebuilds a localized UI subtree when locale changes.
 ///

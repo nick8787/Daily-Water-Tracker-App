@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/features/statistics/cubit/statistics_state.dart';
 import 'package:daily_water_tracker/features/statistics/models/statistics_presentation.dart';
 import 'package:daily_water_tracker/firebase/models/statistics_week_data.dart';
-import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StatisticsCubit extends Cubit<StatisticsState> {
   StatisticsCubit({required FirestoreRepository firestoreRepository})

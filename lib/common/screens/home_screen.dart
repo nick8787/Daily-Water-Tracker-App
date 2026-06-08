@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/services/analytics_service.dart';
 import 'package:daily_water_tracker/common/widgets/account_signing_out_overlay.dart';
 import 'package:daily_water_tracker/common/widgets/app_bottom_nav_bar.dart';
+import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/features/account/screens/account_screen.dart';
 import 'package:daily_water_tracker/features/home/cubit/home_cubit.dart';
 import 'package:daily_water_tracker/features/home/screens/home_tab_screen.dart';
@@ -13,8 +12,9 @@ import 'package:daily_water_tracker/features/locale/widgets/locale_rebuild.dart'
 import 'package:daily_water_tracker/features/main_nav/cubit/main_nav_cubit.dart';
 import 'package:daily_water_tracker/features/statistics/cubit/statistics_cubit.dart';
 import 'package:daily_water_tracker/features/statistics/screens/statistics_screen.dart';
-import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class _AnimatedMainTabs extends StatelessWidget {
   const _AnimatedMainTabs({required this.selectedTab});

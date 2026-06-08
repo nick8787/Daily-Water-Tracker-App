@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:daily_water_tracker/features/remote_config/models/issue_disclaimer.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
+import 'package:flutter/material.dart';
 
 class IssueDisclaimerWidget extends StatelessWidget {
   const IssueDisclaimerWidget({
@@ -28,7 +28,7 @@ class IssueDisclaimerWidget extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: palette.border, width: 1),
+        border: Border.all(color: palette.border),
         color: palette.bg,
       ),
       child: Row(

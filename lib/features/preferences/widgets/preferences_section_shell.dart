@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:daily_water_tracker/common/assets.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PreferencesSectionShell extends StatelessWidget {

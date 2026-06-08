@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:daily_water_tracker/common/router.dart';
 import 'package:daily_water_tracker/features/deep_links/cubit/deep_link_cubit.dart';
 import 'package:daily_water_tracker/features/deep_links/cubit/deep_link_state.dart';
 import 'package:daily_water_tracker/features/deep_links/models/water_link_purpose.dart';
 import 'package:daily_water_tracker/features/deep_links/widgets/share_progress_sheet.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class DeepLinkListeners extends StatefulWidget {
   const DeepLinkListeners({

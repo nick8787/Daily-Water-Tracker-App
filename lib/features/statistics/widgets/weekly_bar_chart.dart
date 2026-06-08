@@ -1,14 +1,13 @@
 import 'dart:math' as math;
 
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/common/l10n/date_format_l10n.dart';
 import 'package:daily_water_tracker/features/home/widgets/water_progress_indicator.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/firebase/models/statistics_week_data.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 
 class WeeklyBarChart extends StatelessWidget {
   const WeeklyBarChart({
@@ -78,15 +77,14 @@ class WeeklyBarChart extends StatelessWidget {
         gridData: const FlGridData(show: false),
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(
-          show: true,
           topTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
+            
           ),
           leftTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
+            
           ),
           rightTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
+            
           ),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
@@ -137,7 +135,7 @@ class WeeklyBarChart extends StatelessWidget {
 
           return BarTooltipItem(
             '$ml ml\n',
-            TextStyle(
+            const TextStyle(
               color: AppPalette.white,
               fontWeight: FontWeight.w800,
               fontSize: 14,
@@ -155,7 +153,7 @@ class WeeklyBarChart extends StatelessWidget {
               if (remain == 0)
                 TextSpan(
                   text: LocaleKeys.statistics_chart_goal_reached.tr(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppPalette.chartPositive,
                     fontWeight: FontWeight.w700,
                     fontSize: 11,

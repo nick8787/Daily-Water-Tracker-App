@@ -20,6 +20,7 @@ linter:
   rules:
     always_use_package_imports: false
     avoid_dynamic_calls: false
+    avoid_classes_with_only_static_members: false
     eol_at_end_of_file: false
     sort_pub_dependencies: false
 

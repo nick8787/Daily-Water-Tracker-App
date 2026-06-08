@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/features/profile/widgets/profile_section_card.dart';
 import 'package:daily_water_tracker/features/profile/widgets/profile_text_field.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
 class ProfilePersonalDetailsSection extends StatelessWidget {
   const ProfilePersonalDetailsSection({

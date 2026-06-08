@@ -1,6 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/assets.dart';
 import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/router.dart';
@@ -9,6 +6,8 @@ import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
 import 'package:daily_water_tracker/common/widgets/app_loader.dart';
 import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/common/widgets/delayed_entrance.dart';
+import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
 import 'package:daily_water_tracker/features/auth/cubit/login_cubit.dart';
 import 'package:daily_water_tracker/features/auth/cubit/login_state.dart';
 import 'package:daily_water_tracker/features/auth/cubit/signup_cubit.dart';
@@ -17,10 +16,11 @@ import 'package:daily_water_tracker/features/auth/widgets/widgets.dart';
 import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
-import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
-import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 /// Single auth screen: fixed header, Sign In / Sign Up cards swap in place.
@@ -247,7 +247,7 @@ class _AuthGatewayScreenState extends State<AuthGatewayScreen> {
                   ),
                   child: Text(
                     LocaleKeys.auth_button_sign_in.tr(),
-                    style: TextStyle(fontWeight: FontWeight.w800),
+                    style: const TextStyle(fontWeight: FontWeight.w800),
                   ),
                 );
               },
@@ -280,7 +280,7 @@ class _AuthGatewayScreenState extends State<AuthGatewayScreen> {
                     ),
                     TextSpan(
                       text: LocaleKeys.auth_link_sign_up.tr(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: brandBlue,
                         fontWeight: FontWeight.w800,
                       ),
@@ -329,7 +329,6 @@ class _AuthGatewayScreenState extends State<AuthGatewayScreen> {
             AuthTextField(
               controller: _passwordController,
               label: LocaleKeys.auth_field_password.tr(),
-              textInputAction: TextInputAction.next,
               obscureText: !_isPasswordVisible,
               prefixIcon: const Icon(Icons.lock_outline),
               suffixIcon: IconButton(
@@ -391,7 +390,7 @@ class _AuthGatewayScreenState extends State<AuthGatewayScreen> {
                   ),
                   child: Text(
                     LocaleKeys.auth_button_create_account.tr(),
-                    style: TextStyle(fontWeight: FontWeight.w800),
+                    style: const TextStyle(fontWeight: FontWeight.w800),
                   ),
                 );
               },
@@ -425,7 +424,7 @@ class _AuthGatewayScreenState extends State<AuthGatewayScreen> {
                     ),
                     TextSpan(
                       text: LocaleKeys.auth_button_sign_in.tr(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: brandBlue,
                         fontWeight: FontWeight.w800,
                       ),
@@ -453,11 +452,11 @@ class _AuthGatewayScreenState extends State<AuthGatewayScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
             gradient: AppDecorations.authLogo,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: AppPalette.authLogoShadow,
                 blurRadius: 18,
-                offset: const Offset(0, 10),
+                offset: Offset(0, 10),
               ),
             ],
           ),

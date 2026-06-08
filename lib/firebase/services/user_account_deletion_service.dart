@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:daily_water_tracker/common/services/logger.dart';
-import 'package:daily_water_tracker/firebase/services/auth_service.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
-import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
 import 'package:daily_water_tracker/data/repositories/storage_repository.dart';
+import 'package:daily_water_tracker/firebase/services/auth_service.dart';
+import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 /// Permanently removes the signed-in user's cloud data and Firebase Auth account.
 class UserAccountDeletionService {

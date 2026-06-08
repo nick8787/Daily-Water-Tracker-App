@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/common/l10n/date_format_l10n.dart';
 import 'package:daily_water_tracker/features/statistics/models/statistics_presentation.dart';
+import 'package:daily_water_tracker/features/statistics/widgets/statistics_summary_metric_card.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
-import 'package:daily_water_tracker/features/statistics/widgets/statistics_summary_metric_card.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
 class StatisticsWeeklyInsightsCard extends StatelessWidget {
   const StatisticsWeeklyInsightsCard({

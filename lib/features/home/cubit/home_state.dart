@@ -87,7 +87,6 @@ class HomeState {
       anchoredToLiveToday: true,
       deferProgressUpdates: false,
       pendingRecords: null,
-      pendingRankCelebration: null,
     );
   }
 }

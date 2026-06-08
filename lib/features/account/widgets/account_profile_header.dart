@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/common/widgets/app_bottom_sheet.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
-import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/shadow.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
 class AccountProfileHeader extends StatelessWidget {
   const AccountProfileHeader({
@@ -110,7 +108,7 @@ class AccountProfileHeader extends StatelessWidget {
               titleColor: Theme.of(context).colorScheme.error,
               onTap: () {
                 Navigator.of(context).pop();
-                if (onRemovePhoto != null) onRemovePhoto!();
+                onRemovePhoto?.call();
               },
             ),
           ],
@@ -167,7 +165,7 @@ class _Avatar extends StatelessWidget {
                                 photoUrl!,
                                 fit: BoxFit.cover,
                                 filterQuality: FilterQuality.high,
-                                errorBuilder: (_, __, ___) =>
+                                errorBuilder: (_, _, _) =>
                                     const _AvatarPlaceholder(),
                               ),
                             )
@@ -197,7 +195,6 @@ class _Avatar extends StatelessWidget {
                 ? Material(
                     color: context.appColors.cardSurface,
                     shape: const CircleBorder(),
-                    elevation: 0,
                     child: InkWell(
                       customBorder: const CircleBorder(),
                       onTap: onEditTap,

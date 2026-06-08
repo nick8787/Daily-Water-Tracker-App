@@ -1,7 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:daily_water_tracker/common/widgets/app_screen_title.dart';
 import 'package:daily_water_tracker/features/achievements/cubit/achievements_cubit.dart';
 import 'package:daily_water_tracker/features/achievements/cubit/achievements_state.dart';
@@ -10,6 +6,9 @@ import 'package:daily_water_tracker/features/achievements/models/rank_condition.
 import 'package:daily_water_tracker/features/achievements/models/rank_condition_type.dart';
 import 'package:daily_water_tracker/features/theme/theme_info.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AchievementsScreen extends StatefulWidget {
   const AchievementsScreen({super.key});

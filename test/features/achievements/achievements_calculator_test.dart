@@ -27,7 +27,7 @@ void main() {
     }
 
     test('beginner unlocks on any entry with earliest timestamp', () {
-      final d1 = DateTime(2026, 6, 1);
+      final d1 = DateTime(2026, 6);
       final d2 = DateTime(2026, 6, 2);
       final badges = AchievementsCalculator.calculate(
         entries: [
@@ -50,7 +50,7 @@ void main() {
       final badges = AchievementsCalculator.calculate(
         entries: [
           entry(
-            day: DateTime(2026, 6, 1),
+            day: DateTime(2026, 6),
             timestamp: DateTime(2026, 6, 1, 10),
             volumeMl: 1000,
           ),
@@ -123,7 +123,7 @@ void main() {
       final badges = AchievementsCalculator.calculate(
         entries: [
           entry(
-            day: DateTime(2026, 6, 1),
+            day: DateTime(2026, 6),
             timestamp: DateTime(2026, 6, 1, 8),
             volumeMl: 50000,
           ),

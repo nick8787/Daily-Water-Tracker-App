@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:daily_water_tracker/common/router.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class PagesListScreen extends StatelessWidget {

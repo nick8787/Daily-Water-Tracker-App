@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/features/app_update/cubit/app_version_cubit.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppUpdateRequiredScreen extends StatelessWidget {
   const AppUpdateRequiredScreen({super.key});

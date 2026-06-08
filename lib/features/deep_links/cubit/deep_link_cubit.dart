@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/features/deep_links/cubit/deep_link_state.dart';
 import 'package:daily_water_tracker/features/deep_links/models/water_link_purpose.dart';
 import 'package:daily_water_tracker/features/deep_links/services/auth_deep_link_parser.dart';
 import 'package:daily_water_tracker/features/deep_links/services/water_deep_link_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeepLinkCubit extends Cubit<DeepLinkState> {
   DeepLinkCubit({

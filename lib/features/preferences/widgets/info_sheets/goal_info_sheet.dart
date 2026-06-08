@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/features/home/widgets/water_progress_indicator.dart';
 import 'package:daily_water_tracker/features/theme/theme_info.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
 class GoalInfoSheet extends StatelessWidget {
   const GoalInfoSheet({super.key});
@@ -98,7 +97,7 @@ class GoalInfoSheet extends StatelessWidget {
                     ),
                     TextSpan(
                       text: LocaleKeys.preferences_info_goal_auto_formula.tr(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w800,
                         color: brandBlue,
                       ),
@@ -132,14 +131,14 @@ class GoalInfoSheet extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: LocaleKeys.preferences_info_goal_control_bold.tr(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w800,
                         color: graphite,
                       ),
                     ),
                     TextSpan(
                       text: LocaleKeys.preferences_info_goal_control_body.tr(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: graphite,
                         fontWeight: FontWeight.w500,
                       ),

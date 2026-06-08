@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/services/analytics_service.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/common/utils/drink_presets_utils.dart';
@@ -10,6 +8,8 @@ import 'package:daily_water_tracker/data/repositories/firestore_repository.dart'
 import 'package:daily_water_tracker/features/achievements/logic/achievements_calculator.dart';
 import 'package:daily_water_tracker/features/achievements/logic/rank_celebration_logic.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../firebase/models/drink_type.dart';
 import '../../../firebase/models/user_model.dart';

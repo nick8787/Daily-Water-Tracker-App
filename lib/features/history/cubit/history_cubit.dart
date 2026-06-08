@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/features/history/cubit/history_state.dart';
 import 'package:daily_water_tracker/firebase/models/hydration_log_entry.dart';
 import 'package:daily_water_tracker/firebase/models/user_model.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HistoryCubit extends Cubit<HistoryState> {
   HistoryCubit({required FirestoreRepository firestoreRepository})

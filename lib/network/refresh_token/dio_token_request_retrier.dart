@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:dio/dio.dart';
 
 import '../../common/services/secure_cache.dart';
-import 'package:daily_water_tracker/common/services/logger.dart';
 
 const headers = <String, String>{'Content-type': 'application/json'};
 const String headerAccessToken = 'authorization';

@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:daily_water_tracker/features/theme/theme_colors.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:daily_water_tracker/features/theme/theme_colors.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class AppSnackBar {
@@ -103,11 +103,11 @@ class AppSnackBar {
     // [OverlayState], then [Overlay.maybeOf].
     final NavigatorState? nav =
         Navigator.maybeOf(context, rootNavigator: true) ??
-        Navigator.maybeOf(context, rootNavigator: false);
+        Navigator.maybeOf(context);
 
     OverlayState? overlayState = nav?.overlay;
     overlayState ??= Overlay.maybeOf(context, rootOverlay: true);
-    overlayState ??= Overlay.maybeOf(context, rootOverlay: false);
+    overlayState ??= Overlay.maybeOf(context);
 
     if (overlayState == null) {
       assert(() {
@@ -120,7 +120,7 @@ class AppSnackBar {
     final NavigatorState? navForTicker =
         nav ??
         Navigator.maybeOf(overlayState.context, rootNavigator: true) ??
-        Navigator.maybeOf(overlayState.context, rootNavigator: false);
+        Navigator.maybeOf(overlayState.context);
 
     if (navForTicker == null) {
       assert(() {

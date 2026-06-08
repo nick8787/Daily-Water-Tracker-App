@@ -1,15 +1,15 @@
+import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
+import 'package:daily_water_tracker/common/widgets/app_screen_title.dart';
+import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
+import 'package:daily_water_tracker/features/debug/cubit/debug_cubit.dart';
+import 'package:daily_water_tracker/features/locale/widgets/locale_rebuild.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:daily_water_tracker/common/widgets/app_screen_title.dart';
-import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
-import 'package:daily_water_tracker/features/debug/cubit/debug_cubit.dart';
-import 'package:daily_water_tracker/features/locale/widgets/locale_rebuild.dart';
-import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 
-import '../widgets/debug_section_card.dart';
 import '../widgets/debug_locale_switcher.dart';
+import '../widgets/debug_section_card.dart';
 import '../widgets/fcm_token_widget.dart';
 import '../widgets/reminders_debug_panel.dart';
 import '../widgets/topic_subscription_widget.dart';
@@ -57,14 +57,14 @@ class _DebugScreenContent extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               children: [
-                _SectionHeader(titleKey: LocaleKeys.debug_section_device_id),
+                const _SectionHeader(titleKey: LocaleKeys.debug_section_device_id),
                 const DebugSectionCard(child: FcmTokenWidget()),
                 const SizedBox(height: 24),
-                _SectionHeader(titleKey: LocaleKeys.debug_section_subscriptions),
+                const _SectionHeader(titleKey: LocaleKeys.debug_section_subscriptions),
                 const DebugSectionCard(child: TopicSubscriptionWidget()),
                 if (flutterFlavor.isDev) ...[
                   const SizedBox(height: 24),
-                  _SectionHeader(titleKey: LocaleKeys.debug_section_reminders),
+                  const _SectionHeader(titleKey: LocaleKeys.debug_section_reminders),
                   const DebugSectionCard(child: RemindersDebugPanel()),
                 ],
               ],

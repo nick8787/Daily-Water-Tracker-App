@@ -1,13 +1,12 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
 import 'package:daily_water_tracker/features/theme/text_styles.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/firebase/services/remote_config_service.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class WaterProgressIndicator extends StatefulWidget {
@@ -155,7 +154,6 @@ class _WaterProgressIndicatorState extends State<WaterProgressIndicator> {
 
 class _LegacyCircularWaterRing extends StatefulWidget {
   const _LegacyCircularWaterRing({
-    Key? key,
     required this.side,
     required this.currentAmount,
     required this.goalAmount,
@@ -163,7 +161,7 @@ class _LegacyCircularWaterRing extends StatefulWidget {
     required this.progressStrokeWidth,
     required this.animationDuration,
     required this.center,
-  }) : super(key: key);
+  });
 
   final double side;
   final int currentAmount;

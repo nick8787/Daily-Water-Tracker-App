@@ -1,5 +1,5 @@
-import 'package:equatable/equatable.dart';
 import 'package:daily_water_tracker/features/deep_links/models/water_link_purpose.dart';
+import 'package:equatable/equatable.dart';
 
 class DeepLinkState extends Equatable {
   const DeepLinkState({

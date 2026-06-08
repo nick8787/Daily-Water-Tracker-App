@@ -1,5 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:daily_water_tracker/common/services/logger.dart';
+import 'package:dio/dio.dart';
 
 import '../../common/services/secure_cache.dart';
 import 'dio_token_request_retrier.dart';

@@ -1,8 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
 import 'package:daily_water_tracker/features/preferences/cubit/preferences_cubit.dart';
 import 'package:daily_water_tracker/features/preferences/cubit/preferences_state.dart';
@@ -11,8 +6,11 @@ import 'package:daily_water_tracker/features/preferences/utils/quiet_hours_forma
 import 'package:daily_water_tracker/features/preferences/widgets/info_sheets/reminders_info_sheet.dart';
 import 'package:daily_water_tracker/features/preferences/widgets/preferences_info_bottom_sheet.dart';
 import 'package:daily_water_tracker/features/preferences/widgets/preferences_section_shell.dart';
-import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/theme_info.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ReminderSettingsSection extends StatelessWidget {
   const ReminderSettingsSection({super.key});
@@ -139,7 +137,6 @@ class ReminderSettingsSection extends StatelessWidget {
                     isExpanded: true,
                     items: [
                       DropdownMenuItem<int?>(
-                        value: null,
                         child: Text(LocaleKeys.preferences_reminders_off.tr()),
                       ),
                       DropdownMenuItem<int?>(

@@ -1,7 +1,8 @@
-import 'dart:io';
 import 'dart:developer' as developer;
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'dart:io';
+
 import 'package:daily_water_tracker/common/services/logger.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 const _socketException = 'SocketException';

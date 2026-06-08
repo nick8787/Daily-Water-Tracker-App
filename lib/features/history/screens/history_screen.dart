@@ -1,8 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:daily_water_tracker/common/widgets/app_screen_title.dart';
 import 'package:daily_water_tracker/features/history/cubit/history_cubit.dart';
 import 'package:daily_water_tracker/features/history/cubit/history_state.dart';
@@ -16,7 +11,10 @@ import 'package:daily_water_tracker/features/home/widgets/hydration_drink_row.da
 import 'package:daily_water_tracker/features/home/widgets/water_progress_indicator.dart';
 import 'package:daily_water_tracker/features/statistics/widgets/statistics_summary_metric_card.dart';
 import 'package:daily_water_tracker/features/theme/theme_info.dart';
-import 'package:intl/intl.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key, this.homeCubit});

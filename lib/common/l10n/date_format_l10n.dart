@@ -1,5 +1,5 @@
-import 'package:intl/intl.dart';
 import 'package:daily_water_tracker/common/services/logger.dart';
+import 'package:intl/intl.dart';
 
 /// Language code for `intl` (`uk`, `en`), not a full BCP-47 tag like `uk_UA`.
 String intlLanguageCode(String localeTag) {

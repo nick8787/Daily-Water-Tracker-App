@@ -3,10 +3,6 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:confetti/confetti.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/features/achievements/cubit/achievements_cubit.dart';
 import 'package:daily_water_tracker/features/achievements/data/achievements_registry.dart';
@@ -17,6 +13,9 @@ import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/shadow.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// Full-screen rank ascension ceremony
 abstract final class RankCelebrationDialog {
@@ -28,7 +27,6 @@ abstract final class RankCelebrationDialog {
   }) {
     return showGeneralDialog<AchievementDefinition?>(
       context: context,
-      barrierDismissible: false,
       barrierLabel: LocaleKeys.achievements_celebration_barrier_label.tr(),
       barrierColor: Colors.transparent,
       transitionDuration: const Duration(milliseconds: 420),
@@ -297,7 +295,6 @@ class _RankCelebrationOverlayState extends State<_RankCelebrationOverlay>
 
     return [
       Align(
-        alignment: Alignment.center,
         child: ConfettiWidget(
           confettiController: _confettiController,
           blastDirectionality: BlastDirectionality.explosive,
@@ -473,8 +470,6 @@ class _GradientRankTitle extends StatelessWidget {
   final TextTheme textTheme;
 
   static const _gradient = LinearGradient(
-    begin: Alignment.centerLeft,
-    end: Alignment.centerRight,
     colors: AppPalette.progressGradientColors,
   );
 

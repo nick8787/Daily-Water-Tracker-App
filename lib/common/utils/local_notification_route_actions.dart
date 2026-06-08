@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:daily_water_tracker/common/router.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> routeFromLocalNotificationTap(String? route) async {
   switch ((route ?? '').trim()) {

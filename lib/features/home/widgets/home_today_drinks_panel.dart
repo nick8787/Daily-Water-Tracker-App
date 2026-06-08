@@ -1,18 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/features/home/coefficient_format.dart';
 import 'package:daily_water_tracker/features/home/widgets/drink_type_svgs.dart';
 import 'package:daily_water_tracker/features/home/widgets/edit_water_record_sheet.dart';
+import 'package:daily_water_tracker/features/home/widgets/home_date_bar.dart';
 import 'package:daily_water_tracker/features/home/widgets/hydration_drink_row.dart';
+import 'package:daily_water_tracker/features/home/widgets/hydration_info_sheet.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
-import 'package:daily_water_tracker/features/home/widgets/hydration_info_sheet.dart';
-import 'package:daily_water_tracker/features/home/widgets/home_date_bar.dart';
 import 'package:daily_water_tracker/firebase/models/water_record_model.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 
 class HomeDrinksListDivider extends StatelessWidget {
   const HomeDrinksListDivider({super.key});
@@ -51,7 +49,7 @@ class _HorizontalTaperedDividerPainter extends CustomPainter {
       const Radius.circular(_HorizontalRulePainter.lineThickness / 2),
     );
 
-    final base = AppPalette.drinksListFade;
+    const base = AppPalette.drinksListFade;
     final shader = LinearGradient(
       colors: [
         base.withValues(alpha: 0),
@@ -62,7 +60,7 @@ class _HorizontalTaperedDividerPainter extends CustomPainter {
         base.withValues(alpha: 0.10),
         base.withValues(alpha: 0),
       ],
-      stops: [0.0, 0.10, 0.22, 0.5, 0.78, 0.90, 1.0],
+      stops: const [0.0, 0.10, 0.22, 0.5, 0.78, 0.90, 1.0],
     ).createShader(rect);
 
     canvas.drawRRect(rrect, Paint()..shader = shader);

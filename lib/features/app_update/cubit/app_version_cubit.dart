@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/features/app_update/mixin/app_version_mixin.dart';
 import 'package:daily_water_tracker/features/app_update/models/app_version.dart';
 import 'package:daily_water_tracker/features/app_update/models/app_version_status.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:pub_semver/pub_semver.dart';
-import 'package:daily_water_tracker/common/services/logger.dart';
 
 class AppVersionCubit extends Cubit<AppVersionStatus> with AppVersionMixin {
   final Version currentAppVersion;

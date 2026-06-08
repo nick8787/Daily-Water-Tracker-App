@@ -1,23 +1,21 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
+import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/common/widgets/app_primary_button.dart';
 import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
+import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/features/preferences/reminder_messages.dart';
 import 'package:daily_water_tracker/features/theme/theme_info.dart';
 import 'package:daily_water_tracker/firebase/models/user_model.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
-import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
 import 'package:daily_water_tracker/firebase/services/local_notifications_service.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
-import 'package:intl/intl.dart';
-import 'package:daily_water_tracker/common/services/logger.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RemindersDebugPanel extends StatefulWidget {
   const RemindersDebugPanel({super.key});
@@ -100,8 +98,9 @@ class _RemindersDebugPanelState extends State<RemindersDebugPanel> {
   bool get _remindersEnabled {
     final p = _profile;
     if (p == null) return false;
-    if (flutterFlavor.isDev && (p.reminderIntervalMinutes ?? 0) > 0)
+    if (flutterFlavor.isDev && (p.reminderIntervalMinutes ?? 0) > 0) {
       return true;
+    }
     return (p.reminderIntervalHours ?? 0) > 0;
   }
 

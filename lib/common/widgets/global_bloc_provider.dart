@@ -1,9 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pub_semver/pub_semver.dart';
-
 import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/services/credentials_loader.dart';
 import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
@@ -19,6 +13,11 @@ import 'package:daily_water_tracker/firebase/services/auth_service.dart';
 import 'package:daily_water_tracker/firebase/services/local_notifications_service.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
 import 'package:daily_water_tracker/firebase/services/remote_config_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 import '../../features/theme/theme.dart';
 import '../services/theme_box.dart';

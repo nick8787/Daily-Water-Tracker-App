@@ -3,9 +3,9 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
 import 'package:daily_water_tracker/common/services/logger.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -70,7 +70,6 @@ class AuthService {
     // Console Action URL controls the main link host (/__/auth/action on web.app).
     return ActionCodeSettings(
       url: 'https://$host/password-reset',
-      handleCodeInApp: false,
     );
   }
 

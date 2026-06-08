@@ -1,7 +1,7 @@
+import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/features/web_socket/models/socket_response.dart';
 import 'package:daily_water_tracker/network/web_socket/web_socket_client.dart';
 import 'package:web_socket_client/web_socket_client.dart';
-import 'package:daily_water_tracker/common/services/logger.dart';
 
 class WebSocketService {
   final WebSocketClient _webSocketClient;

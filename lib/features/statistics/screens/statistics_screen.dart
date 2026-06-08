@@ -1,16 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:daily_water_tracker/common/widgets/main_shell_tab_body.dart';
 import 'package:daily_water_tracker/common/widgets/app_loader.dart';
 import 'package:daily_water_tracker/common/widgets/app_screen_title.dart';
+import 'package:daily_water_tracker/common/widgets/main_shell_tab_body.dart';
 import 'package:daily_water_tracker/features/statistics/cubit/statistics_cubit.dart';
 import 'package:daily_water_tracker/features/statistics/cubit/statistics_state.dart';
 import 'package:daily_water_tracker/features/statistics/widgets/statistics_intake_breakdown_card.dart';
 import 'package:daily_water_tracker/features/statistics/widgets/statistics_weekly_activity_card.dart';
 import 'package:daily_water_tracker/features/statistics/widgets/statistics_weekly_insights_card.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StatisticsScreen extends StatelessWidget {
   const StatisticsScreen({super.key, this.embedInMainShell = false});

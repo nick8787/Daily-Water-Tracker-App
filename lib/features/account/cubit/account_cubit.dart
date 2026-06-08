@@ -1,24 +1,24 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:daily_water_tracker/common/services/logger.dart';
+import 'package:daily_water_tracker/common/utils/crashlytics.dart';
+import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
+import 'package:daily_water_tracker/data/repositories/storage_repository.dart';
+import 'package:daily_water_tracker/features/account/widgets/account_user_display.dart';
+import 'package:daily_water_tracker/firebase/models/user_model.dart';
+import 'package:daily_water_tracker/firebase/services/auth_service.dart';
+import 'package:daily_water_tracker/firebase/services/local_notifications_service.dart';
+import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
+import 'package:daily_water_tracker/firebase/services/user_account_deletion_service.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-import 'package:daily_water_tracker/common/utils/crashlytics.dart';
-import 'package:daily_water_tracker/firebase/models/user_model.dart';
-import 'package:daily_water_tracker/firebase/services/auth_service.dart';
-import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
-import 'package:daily_water_tracker/firebase/services/local_notifications_service.dart';
-import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
-import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
-import 'package:daily_water_tracker/data/repositories/storage_repository.dart';
-import 'package:daily_water_tracker/firebase/services/user_account_deletion_service.dart';
-import 'package:daily_water_tracker/features/account/widgets/account_user_display.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'account_state.dart';
-import 'package:daily_water_tracker/common/services/logger.dart';
 
 class AccountCubit extends Cubit<AccountState> {
   AccountCubit({

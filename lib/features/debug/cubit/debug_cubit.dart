@@ -1,8 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'debug_state.dart';
-import 'package:daily_water_tracker/common/services/logger.dart';
 
 class DebugCubit extends Cubit<DebugState> {
   DebugCubit({required MessagingRepository messaging})
@@ -28,7 +28,7 @@ class DebugCubit extends Cubit<DebugState> {
       );
     } catch (e, st) {
       logCaughtError('DebugCubit.load', e, st);
-      emit(state.copyWith(token: null));
+      emit(state.copyWith());
     } finally {
       emit(state.copyWith(loadingToken: false));
     }

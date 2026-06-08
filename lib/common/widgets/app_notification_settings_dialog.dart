@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-
 import 'package:daily_water_tracker/features/theme/theme_info.dart';
+import 'package:daily_water_tracker/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Future<void> showNotificationSettingsDialog({
@@ -44,7 +43,7 @@ Future<void> showNotificationSettingsDialog({
                       color: brandBlue.withValues(alpha: 0.12),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.notifications_off_outlined,
                       size: 28,
                       color: brandBlue,
@@ -90,7 +89,7 @@ Future<void> showNotificationSettingsDialog({
                         ),
                         child: Text(
                           LocaleKeys.notifications_dialog_not_now.tr(),
-                          style: TextStyle(fontWeight: FontWeight.w700),
+                          style: const TextStyle(fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),
@@ -111,7 +110,7 @@ Future<void> showNotificationSettingsDialog({
                         ),
                         child: Text(
                           LocaleKeys.notifications_dialog_open_settings.tr(),
-                          style: TextStyle(fontWeight: FontWeight.w800),
+                          style: const TextStyle(fontWeight: FontWeight.w800),
                         ),
                       ),
                     ),
