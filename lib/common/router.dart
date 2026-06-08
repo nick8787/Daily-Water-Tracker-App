@@ -8,6 +8,7 @@ import 'package:daily_water_tracker/common/screens/splash_screen.dart';
 import 'package:daily_water_tracker/common/services/analytics_service.dart';
 import 'package:daily_water_tracker/features/app_update/screens/app_update_required_screen.dart';
 import 'package:daily_water_tracker/features/auth/screens/auth_gateway_screen.dart';
+import 'package:daily_water_tracker/features/auth/screens/forgot_password_screen.dart';
 import 'package:daily_water_tracker/features/debug/screens/debug_screen.dart';
 import 'package:daily_water_tracker/features/history/cubit/history_cubit.dart';
 import 'package:daily_water_tracker/features/history/screens/history_screen.dart';
@@ -44,6 +45,7 @@ const String homeRoute = '/';
 const String accountRoute = '/account';
 const String splashRoute = '/splash';
 const String loginRoute = '/login';
+const String forgotPasswordRoute = '/login/forgot-password';
 const String signUpRoute = '/signup';
 const String debugRoute = '/debug';
 const String profileRoute = '/profile';
@@ -112,6 +114,14 @@ final goRouter = GoRouter(
       builder: (context, state) {
         final isSignUp = state.uri.queryParameters['mode'] == 'signup';
         return AuthGatewayScreen(initialSignUp: isSignUp);
+      },
+    ),
+    GoRoute(
+      path: forgotPasswordRoute,
+      name: 'ForgotPassword',
+      builder: (context, state) {
+        final email = state.uri.queryParameters['email'] ?? '';
+        return ForgotPasswordScreen(initialEmail: email);
       },
     ),
     GoRoute(

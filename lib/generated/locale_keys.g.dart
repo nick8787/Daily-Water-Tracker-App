@@ -28,6 +28,7 @@ abstract class  LocaleKeys {
   static const loader_deleting_account = 'loader.deleting_account';
   static const loader_updating_photo = 'loader.updating_photo';
   static const loader_updating_password = 'loader.updating_password';
+  static const loader_sending_reset_link = 'loader.sending_reset_link';
   static const loader_loading_statistics = 'loader.loading_statistics';
   static const loader = 'loader';
   static const auth_sign_in_title = 'auth.sign_in.title';
@@ -50,6 +51,17 @@ abstract class  LocaleKeys {
   static const auth_link_sign_up = 'auth.link.sign_up';
   static const auth_link_have_account = 'auth.link.have_account';
   static const auth_link = 'auth.link';
+  static const auth_forgot_password_title = 'auth.forgot_password.title';
+  static const auth_forgot_password_subtitle = 'auth.forgot_password.subtitle';
+  static const auth_forgot_password_link = 'auth.forgot_password.link';
+  static const auth_forgot_password_button_send = 'auth.forgot_password.button_send';
+  static const auth_forgot_password_button_back_to_sign_in = 'auth.forgot_password.button_back_to_sign_in';
+  static const auth_forgot_password_success_title = 'auth.forgot_password.success.title';
+  static const auth_forgot_password_success_message = 'auth.forgot_password.success.message';
+  static const auth_forgot_password_success = 'auth.forgot_password.success';
+  static const auth_forgot_password_error_generic = 'auth.forgot_password.error.generic';
+  static const auth_forgot_password_error = 'auth.forgot_password.error';
+  static const auth_forgot_password = 'auth.forgot_password';
   static const auth_social_google = 'auth.social.google';
   static const auth_social_facebook = 'auth.social.facebook';
   static const auth_social_apple = 'auth.social.apple';

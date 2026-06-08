@@ -53,6 +53,10 @@ class AuthService {
     );
   }
 
+  Future<void> sendPasswordResetEmail({required String email}) {
+    return _auth.sendPasswordResetEmail(email: email);
+  }
+
   Future<UserCredential> signInWithGoogle() async {
     // Ensure Google Sign-In has a client ID on iOS. If `GIDClientID` is missing
     // from Info.plist (or GoogleService-Info.plist is not present), the plugin

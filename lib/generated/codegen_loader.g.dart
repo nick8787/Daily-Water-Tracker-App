@@ -45,6 +45,7 @@ class CodegenLoader extends AssetLoader{
     "deleting_account": "Видалення акаунта…",
     "updating_photo": "Оновлення фото…",
     "updating_password": "Оновлення пароля…",
+    "sending_reset_link": "Надсилання посилання…",
     "loading_statistics": "Завантаження статистики…"
   },
   "auth": {
@@ -73,6 +74,20 @@ class CodegenLoader extends AssetLoader{
       "no_account": "Немає акаунта?",
       "sign_up": "Зареєструватися",
       "have_account": "Вже є акаунт?"
+    },
+    "forgot_password": {
+      "title": "Скидання пароля",
+      "subtitle": "Введіть email — ми надішлемо посилання для скидання.",
+      "link": "Забули пароль?",
+      "button_send": "Надіслати посилання",
+      "button_back_to_sign_in": "Повернутися до входу",
+      "success": {
+        "title": "Перевірте пошту",
+        "message": "Якщо акаунт для {email} існує, ми надіслали посилання для скидання пароля."
+      },
+      "error": {
+        "generic": "Не вдалося надіслати посилання. Спробуйте ще раз."
+      }
     },
     "social": {
       "google": "Увійти через Google",
@@ -709,6 +724,7 @@ static const Map<String,dynamic> _en_US = {
     "deleting_account": "Deleting account…",
     "updating_photo": "Updating profile photo…",
     "updating_password": "Updating password…",
+    "sending_reset_link": "Sending reset link…",
     "loading_statistics": "Loading statistics…"
   },
   "auth": {
@@ -737,6 +753,20 @@ static const Map<String,dynamic> _en_US = {
       "no_account": "Don't have an account?",
       "sign_up": "Sign Up",
       "have_account": "Already have an account?"
+    },
+    "forgot_password": {
+      "title": "Reset password",
+      "subtitle": "Enter your email and we will send you a reset link.",
+      "link": "Forgot password?",
+      "button_send": "Send reset link",
+      "button_back_to_sign_in": "Back to Sign In",
+      "success": {
+        "title": "Check your email",
+        "message": "If an account exists for {email}, we sent a password reset link."
+      },
+      "error": {
+        "generic": "Could not send reset link. Please try again."
+      }
     },
     "social": {
       "google": "Continue with Google",

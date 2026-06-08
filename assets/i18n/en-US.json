@@ -29,6 +29,7 @@
     "deleting_account": "Deleting account…",
     "updating_photo": "Updating profile photo…",
     "updating_password": "Updating password…",
+    "sending_reset_link": "Sending reset link…",
     "loading_statistics": "Loading statistics…"
   },
   "auth": {
@@ -57,6 +58,20 @@
       "no_account": "Don't have an account?",
       "sign_up": "Sign Up",
       "have_account": "Already have an account?"
+    },
+    "forgot_password": {
+      "title": "Reset password",
+      "subtitle": "Enter your email and we will send you a reset link.",
+      "link": "Forgot password?",
+      "button_send": "Send reset link",
+      "button_back_to_sign_in": "Back to Sign In",
+      "success": {
+        "title": "Check your email",
+        "message": "If an account exists for {email}, we sent a password reset link."
+      },
+      "error": {
+        "generic": "Could not send reset link. Please try again."
+      }
     },
     "social": {
       "google": "Continue with Google",
