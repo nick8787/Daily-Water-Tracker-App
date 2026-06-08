@@ -23,6 +23,7 @@ import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -96,19 +97,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(height: 40),
                         const Center(child: CircularProgressIndicator()),
                       ] else ...[
-                        ProfileAvatarCard(
-                          authUser: authUser,
-                          photoUrl: profileAvatarUrl(
-                            authUser: authUser,
-                            profileUrl: loaded.profile.photoUrl,
-                          ),
-                          isEditable: loaded.isPhotoEditable,
-                          isLoading: loaded.isPhotoLoading,
-                          onPickPhoto: loaded.isPhotoEditable
-                              ? () => context
-                                    .read<ProfileCubit>()
-                                    .pickAndUploadPhoto()
-                              : null,
+                        Builder(
+                          builder: (context) {
+                            final avatarPreview = profileAvatarPreview(
+                              loaded: loaded,
+                              authUser: authUser,
+                            );
+                            final cubit = context.read<ProfileCubit>();
+
+                            return ProfileAvatarCard(
+                              authUser: authUser,
+                              networkPhotoUrl: avatarPreview.networkUrl,
+                              localPhotoPath: avatarPreview.localPath,
+                              isEditable: loaded.isPhotoEditable,
+                              showRemoveAction: profileAvatarShowsRemoveAction(
+                                loaded: loaded,
+                              ),
+                              onChooseFromGallery: () => cubit.pickPhoto(
+                                ImageSource.gallery,
+                              ),
+                              onTakePhoto: () => cubit.pickPhoto(
+                                ImageSource.camera,
+                              ),
+                              onRemovePhoto: loaded.isPhotoEditable
+                                  ? cubit.stagePhotoRemoval
+                                  : null,
+                            );
+                          },
                         ),
                         const SizedBox(height: 16),
                         ProfilePersonalDetailsSection(
@@ -144,7 +159,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(height: 18),
                         AppGradientButton(
                           label: LocaleKeys.profile_button_save.tr(),
-                          enabled: !loaded.isSaving && isFormValid,
+                          enabled:
+                              !loaded.isSaving &&
+                              isFormValid &&
+                              _hasSavableChanges(loaded),
                           busy: loaded.isSaving,
                           onTap: () => _onSavePressed(context),
                         ),
@@ -240,5 +258,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (parsed <= 0 || parsed > 600) return false;
     }
     return true;
+  }
+
+  bool _hasSavableChanges(ProfileLoaded loaded) {
+    if (!_didSeedControllers) return false;
+    if (loaded.hasPendingPhotoDraft) return true;
+
+    final seededName = seedProfileFullName(
+      firstName: loaded.profile.firstName,
+      lastName: loaded.profile.lastName,
+      userName: loaded.profile.userName,
+      authDisplayName:
+          InjectorModule.locator<AuthService>().currentUser?.displayName,
+    );
+    if (_fullName.text.trim() != seededName.trim()) return true;
+
+    final seededWeight = loaded.profile.weightKg;
+    final weightText = _weight.text.trim();
+    if (weightText.isEmpty) {
+      if (seededWeight != null) return true;
+    } else {
+      final parsed = int.tryParse(weightText);
+      if (parsed != seededWeight) return true;
+    }
+
+    final seededGender = ProfileGender.fromWire(loaded.profile.gender);
+    if (_gender != seededGender) return true;
+
+    return false;
   }
 }
