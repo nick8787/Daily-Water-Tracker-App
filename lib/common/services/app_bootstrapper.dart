@@ -14,6 +14,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'localization_service.dart';
 import 'logger.dart';
 import 'theme_box.dart';
+import 'vibration_box.dart';
 
 AppFlavor flutterFlavor = AppFlavor.dev;
 
@@ -57,6 +58,7 @@ class AppBootstrapper {
     }
     await LocalizationService().initialize();
     await ThemeBox().initialize();
+    await VibrationBox().initialize();
     await LoggerBootstrapper().setupLogger();
 
     await SystemChrome.setPreferredOrientations([

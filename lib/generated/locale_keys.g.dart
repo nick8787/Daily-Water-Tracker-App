@@ -193,6 +193,7 @@ abstract class  LocaleKeys {
   static const account_menu_language = 'account.menu.language';
   static const account_menu_privacy_policy = 'account.menu.privacy_policy';
   static const account_menu_dark_theme = 'account.menu.dark_theme';
+  static const account_menu_use_vibration = 'account.menu.use_vibration';
   static const account_menu_more = 'account.menu.more';
   static const account_menu_achievements = 'account.menu.achievements';
   static const account_menu = 'account.menu';

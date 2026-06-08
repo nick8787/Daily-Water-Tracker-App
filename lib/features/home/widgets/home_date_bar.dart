@@ -1,4 +1,5 @@
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class HomeDateBar extends StatelessWidget {
                     button: true,
                     label: LocaleKeys.home_semantics_choose_date.tr(),
                     child: InkWell(
-                      onTap: onOpenCalendar,
+                      onTap: () => VibrationFeedback.run(context, onOpenCalendar),
                       borderRadius: BorderRadius.circular(18),
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(8, 3, 10, 3),
@@ -108,7 +109,7 @@ class HomeDateBar extends StatelessWidget {
                 _NavArrow(
                   pointLeft: true,
                   tooltip: LocaleKeys.home_tooltip_previous_day.tr(),
-                  onPressed: onPreviousDay,
+                  onPressed: () => VibrationFeedback.run(context, onPreviousDay),
                   enabledColor: colors.dateBarIcon,
                   disabledColor: colors.dateBarIconDisabled,
                 ),
@@ -116,7 +117,9 @@ class HomeDateBar extends StatelessWidget {
                 _NavArrow(
                   pointLeft: false,
                   tooltip: LocaleKeys.home_tooltip_next_day.tr(),
-                  onPressed: canGoNext ? onNextDay : null,
+                  onPressed: canGoNext
+                      ? () => VibrationFeedback.run(context, onNextDay)
+                      : null,
                   enabledColor: colors.dateBarIcon,
                   disabledColor: colors.dateBarIconDisabled,
                 ),

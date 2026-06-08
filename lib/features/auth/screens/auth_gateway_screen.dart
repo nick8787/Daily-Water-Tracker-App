@@ -13,6 +13,7 @@ import 'package:daily_water_tracker/features/auth/cubit/login_state.dart';
 import 'package:daily_water_tracker/features/auth/cubit/signup_cubit.dart';
 import 'package:daily_water_tracker/features/auth/cubit/signup_state.dart';
 import 'package:daily_water_tracker/features/auth/widgets/widgets.dart';
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:daily_water_tracker/features/theme/decorations.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
@@ -238,7 +239,10 @@ class _AuthGatewayScreenState extends State<AuthGatewayScreen> {
             BlocBuilder<LoginCubit, LoginState>(
               builder: (context, state) {
                 return FilledButton(
-                  onPressed: () => _onSignInPressed(context),
+                  onPressed: () => VibrationFeedback.run(
+                    context,
+                    () => _onSignInPressed(context),
+                  ),
                   style: FilledButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
@@ -381,7 +385,10 @@ class _AuthGatewayScreenState extends State<AuthGatewayScreen> {
             BlocBuilder<SignUpCubit, SignUpState>(
               builder: (context, state) {
                 return FilledButton(
-                  onPressed: () => _onSignUpPressed(context),
+                  onPressed: () => VibrationFeedback.run(
+                    context,
+                    () => _onSignUpPressed(context),
+                  ),
                   style: FilledButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(

@@ -5,6 +5,7 @@ import 'package:daily_water_tracker/features/main_nav/cubit/main_nav_cubit.dart'
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
 import 'package:daily_water_tracker/features/theme/shadow.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
+import 'package:daily_water_tracker/features/vibration/vibration_feedback.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -122,7 +123,10 @@ class AppBottomNavBar extends StatelessWidget {
                           excludeFromSemantics: true,
                           filterQuality: FilterQuality.high,
                         ),
-                        onTap: () => onSelectTab(MainTab.statistics),
+                        onTap: () => VibrationFeedback.run(
+                          context,
+                          () => onSelectTab(MainTab.statistics),
+                        ),
                       ),
                     ),
                     const SizedBox(width: _fabSize + 12),
@@ -137,7 +141,10 @@ class AppBottomNavBar extends StatelessWidget {
                           color: brandBlue,
                           filterQuality: FilterQuality.high,
                         ),
-                        onTap: () => onSelectTab(MainTab.account),
+                        onTap: () => VibrationFeedback.run(
+                          context,
+                          () => onSelectTab(MainTab.account),
+                        ),
                       ),
                     ),
                   ],
@@ -147,7 +154,7 @@ class AppBottomNavBar extends StatelessWidget {
             Positioned(
               bottom: math.max(0.0, _edgeGap - down),
               child: GestureDetector(
-                onTap: onTapAdd,
+                onTap: () => VibrationFeedback.run(context, onTapAdd),
                 onLongPress: onLongPressAdd,
                 child: _PlusButton(
                   selected: currentTab == MainTab.home,

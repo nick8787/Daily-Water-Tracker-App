@@ -5,3 +5,4 @@ export 'localization_service.dart';
 export 'logger.dart';
 export 'secure_cache.dart';
 export 'theme_box.dart';
+export 'vibration_box.dart';
