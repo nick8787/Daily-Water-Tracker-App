@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../common/widgets/app_build_info_label.dart';
 import '../../../common/widgets/app_screen_title.dart';
 import '../widgets/account_menu_divider.dart';
 
@@ -60,48 +61,55 @@ class _SettingsMoreView extends StatelessWidget {
           localeKey: LocaleKeys.account_menu_more,
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 24),
+      body: Column(
         children: [
-          AccountMenuCard(
-            children: [
-              AccountMenuItem(
-                leadingAsset: icProfileSecurity,
-                title: LocaleKeys.account_menu_login_security.tr(),
-                hapticOnTap: true,
-                onTap: () => context.push(loginSecurityRoute),
-              ),
-              const AccountMenuDivider(),
-              AccountMenuItem(
-                leadingIcon: Icons.language_rounded,
-                title: LocaleKeys.account_menu_language.tr(),
-                hapticOnTap: true,
-                onTap: () => AccountLanguageActions.onLanguageTap(context),
-              ),
-              const AccountMenuDivider(),
-              AccountMenuItem(
-                leadingIcon: Icons.vibration_rounded,
-                title: LocaleKeys.account_menu_use_vibration.tr(),
-                showChevron: false,
-                trailing: CupertinoSwitch(
-                  value: vibrationEnabled,
-                  activeTrackColor: brandBlue,
-                  onChanged: (value) =>
-                      context.read<VibrationCubit>().setEnabled(value),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
+              children: [
+                AccountMenuCard(
+                  children: [
+                    AccountMenuItem(
+                      leadingAsset: icProfileSecurity,
+                      title: LocaleKeys.account_menu_login_security.tr(),
+                      hapticOnTap: true,
+                      onTap: () => context.push(loginSecurityRoute),
+                    ),
+                    const AccountMenuDivider(),
+                    AccountMenuItem(
+                      leadingIcon: Icons.language_rounded,
+                      title: LocaleKeys.account_menu_language.tr(),
+                      hapticOnTap: true,
+                      onTap: () => AccountLanguageActions.onLanguageTap(context),
+                    ),
+                    const AccountMenuDivider(),
+                    AccountMenuItem(
+                      leadingIcon: Icons.vibration_rounded,
+                      title: LocaleKeys.account_menu_use_vibration.tr(),
+                      showChevron: false,
+                      trailing: CupertinoSwitch(
+                        value: vibrationEnabled,
+                        activeTrackColor: brandBlue,
+                        onChanged: (value) =>
+                            context.read<VibrationCubit>().setEnabled(value),
+                      ),
+                      onTap: () => context.read<VibrationCubit>().setEnabled(
+                        !vibrationEnabled,
+                      ),
+                    ),
+                  ],
                 ),
-                onTap: () => context.read<VibrationCubit>().setEnabled(
-                  !vibrationEnabled,
+                const SizedBox(height: SettingsMoreScreen._sessionActionsTopGap),
+                AccountSessionActionsFooter(
+                  actionsEnabled: !sessionBusy,
+                  onLogOutPressed: () => AccountActions.confirmAndLogOut(context),
+                  onDeleteAccountPressed: () =>
+                      AccountActions.confirmAndDeleteAccount(context),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          const SizedBox(height: SettingsMoreScreen._sessionActionsTopGap),
-          AccountSessionActionsFooter(
-            actionsEnabled: !sessionBusy,
-            onLogOutPressed: () => AccountActions.confirmAndLogOut(context),
-            onDeleteAccountPressed: () =>
-                AccountActions.confirmAndDeleteAccount(context),
-          ),
+          const AppBuildInfoLabel(),
         ],
       ),
     );

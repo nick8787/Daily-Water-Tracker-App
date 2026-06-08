@@ -1,5 +1,6 @@
 export 'analytics_service.dart';
 export 'app_bootstrapper.dart';
+export 'app_build_info.dart';
 export 'credentials_loader.dart';
 export 'localization_service.dart';
 export 'logger.dart';

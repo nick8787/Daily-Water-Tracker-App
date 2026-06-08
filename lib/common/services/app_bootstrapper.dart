@@ -8,7 +8,6 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'localization_service.dart';
@@ -71,7 +70,3 @@ class AppBootstrapper {
   }
 }
 
-Future<String?> getApplicationVersion() async {
-  final packageInfo = await PackageInfo.fromPlatform();
-  return packageInfo.version;
-}

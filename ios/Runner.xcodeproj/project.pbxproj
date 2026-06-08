@@ -47,6 +47,12 @@
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
+		A1B2C3D41CF90195004384FC /* Debug-dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Debug-dev.xcconfig"; path = "Flutter/Debug-dev.xcconfig"; sourceTree = "<group>"; };
+		A1B2C3D51CF90195004384FC /* Release-dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-dev.xcconfig"; path = "Flutter/Release-dev.xcconfig"; sourceTree = "<group>"; };
+		A1B2C3D61CF90195004384FC /* Debug-prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Debug-prod.xcconfig"; path = "Flutter/Debug-prod.xcconfig"; sourceTree = "<group>"; };
+		A1B2C3D71CF90195004384FC /* Release-prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-prod.xcconfig"; path = "Flutter/Release-prod.xcconfig"; sourceTree = "<group>"; };
+		A1B2C3D81CF90195004384FC /* Profile-dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Profile-dev.xcconfig"; path = "Flutter/Profile-dev.xcconfig"; sourceTree = "<group>"; };
+		A1B2C3D91CF90195004384FC /* Profile-prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Profile-prod.xcconfig"; path = "Flutter/Profile-prod.xcconfig"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +106,12 @@
 				3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */,
 				9740EEB21CF90195004384FC /* Debug.xcconfig */,
 				7AFA3C8E1D35360C0083082E /* Release.xcconfig */,
+				A1B2C3D41CF90195004384FC /* Debug-dev.xcconfig */,
+				A1B2C3D51CF90195004384FC /* Release-dev.xcconfig */,
+				A1B2C3D81CF90195004384FC /* Profile-dev.xcconfig */,
+				A1B2C3D61CF90195004384FC /* Debug-prod.xcconfig */,
+				A1B2C3D71CF90195004384FC /* Release-prod.xcconfig */,
+				A1B2C3D91CF90195004384FC /* Profile-prod.xcconfig */,
 				9740EEB31CF90195004384FC /* Generated.xcconfig */,
 			);
 			name = Flutter;
@@ -427,7 +439,7 @@
 		};
 		249021D4217E4FDB00AE95B9 /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = A1B2C3D91CF90195004384FC /* Profile-prod.xcconfig */;
 			buildSettings = {
 				APP_NAME = "Daily Water Tracker";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";
@@ -509,7 +521,7 @@
 		};
 		6341D69428FF0453009E8680 /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
+			baseConfigurationReference = A1B2C3D41CF90195004384FC /* Debug-dev.xcconfig */;
 			buildSettings = {
 				APP_NAME = "[DEV] Daily Water Tracker";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
@@ -587,7 +599,7 @@
 		};
 		6341D69628FF04A4009E8680 /* Release-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = A1B2C3D51CF90195004384FC /* Release-dev.xcconfig */;
 			buildSettings = {
 				APP_NAME = "[DEV] Daily Water Tracker";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
@@ -664,7 +676,7 @@
 		};
 		6341D69828FF04AA009E8680 /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = A1B2C3D81CF90195004384FC /* Profile-dev.xcconfig */;
 			buildSettings = {
 				APP_NAME = "[DEV] Daily Water Tracker";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
@@ -798,7 +810,7 @@
 		};
 		97C147061CF9000F007C117D /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
+			baseConfigurationReference = A1B2C3D61CF90195004384FC /* Debug-prod.xcconfig */;
 			buildSettings = {
 				APP_NAME = "Daily Water Tracker";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";
@@ -824,7 +836,7 @@
 		};
 		97C147071CF9000F007C117D /* Release-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = A1B2C3D71CF90195004384FC /* Release-prod.xcconfig */;
 			buildSettings = {
 				APP_NAME = "Daily Water Tracker";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";

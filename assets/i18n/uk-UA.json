@@ -256,6 +256,9 @@
       "delete": "Видалити",
       "log_out": "Вийти"
     },
+    "app_version": {
+      "label": "Версія"
+    },
     "dialog": {
       "logout": {
         "title": "Вийти?",

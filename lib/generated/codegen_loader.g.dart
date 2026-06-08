@@ -272,6 +272,9 @@ class CodegenLoader extends AssetLoader{
       "delete": "Видалити",
       "log_out": "Вийти"
     },
+    "app_version": {
+      "label": "Версія"
+    },
     "dialog": {
       "logout": {
         "title": "Вийти?",
@@ -982,6 +985,9 @@ static const Map<String,dynamic> _en_US = {
     "button": {
       "delete": "Delete",
       "log_out": "Log out"
+    },
+    "app_version": {
+      "label": "Version"
     },
     "dialog": {
       "logout": {
