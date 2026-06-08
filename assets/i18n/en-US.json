@@ -28,6 +28,7 @@
     "preparing_share": "Preparing share link…",
     "deleting_account": "Deleting account…",
     "updating_photo": "Updating profile photo…",
+    "updating_password": "Updating password…",
     "loading_statistics": "Loading statistics…"
   },
   "auth": {
@@ -246,6 +247,34 @@
     "deletion": {
       "not_signed_in": "You are not signed in.",
       "recent_login": "For security, sign in again and retry deleting your account."
+    }
+  },
+  "login_security": {
+    "title": "Login & security",
+    "change_password": "Change password",
+    "change_password_title": "Change password",
+    "field": {
+      "old_password": "Your old password",
+      "new_password": "Your new password",
+      "old_password_hint": "Enter your current password",
+      "new_password_hint": "At least 6 characters"
+    },
+    "button": {
+      "save_changes": "Save changes"
+    },
+    "success": {
+      "title": "Success",
+      "message": "Password updated successfully."
+    },
+    "snackbar": {
+      "email_only_title": "Not available",
+      "email_only": "Password change is only available for email accounts."
+    },
+    "error": {
+      "not_signed_in": "You are not signed in.",
+      "wrong_password": "Incorrect current password.",
+      "recent_login": "For security, sign in again and retry changing your password.",
+      "generic": "Could not update password. Please try again."
     }
   },
   "profile": {

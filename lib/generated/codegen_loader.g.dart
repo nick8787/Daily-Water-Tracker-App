@@ -44,6 +44,7 @@ class CodegenLoader extends AssetLoader{
     "preparing_share": "Підготовка посилання…",
     "deleting_account": "Видалення акаунта…",
     "updating_photo": "Оновлення фото…",
+    "updating_password": "Оновлення пароля…",
     "loading_statistics": "Завантаження статистики…"
   },
   "auth": {
@@ -262,6 +263,34 @@ class CodegenLoader extends AssetLoader{
     "deletion": {
       "not_signed_in": "Ви не увійшли в акаунт.",
       "recent_login": "З міркувань безпеки увійдіть знову та повторіть видалення."
+    }
+  },
+  "login_security": {
+    "title": "Вхід і безпека",
+    "change_password": "Змінити пароль",
+    "change_password_title": "Змінити пароль",
+    "field": {
+      "old_password": "Ваш старий пароль",
+      "new_password": "Ваш новий пароль",
+      "old_password_hint": "Введіть поточний пароль",
+      "new_password_hint": "Щонайменше 6 символів"
+    },
+    "button": {
+      "save_changes": "Зберегти зміни"
+    },
+    "success": {
+      "title": "Готово",
+      "message": "Пароль успішно оновлено."
+    },
+    "snackbar": {
+      "email_only_title": "Недоступно",
+      "email_only": "Зміна пароля доступна лише для email-акаунтів."
+    },
+    "error": {
+      "not_signed_in": "Ви не увійшли в акаунт.",
+      "wrong_password": "Невірний поточний пароль.",
+      "recent_login": "З міркувань безпеки увійдіть знову та повторіть зміну пароля.",
+      "generic": "Не вдалося оновити пароль. Спробуйте ще раз."
     }
   },
   "profile": {
@@ -679,6 +708,7 @@ static const Map<String,dynamic> _en_US = {
     "preparing_share": "Preparing share link…",
     "deleting_account": "Deleting account…",
     "updating_photo": "Updating profile photo…",
+    "updating_password": "Updating password…",
     "loading_statistics": "Loading statistics…"
   },
   "auth": {
@@ -897,6 +927,34 @@ static const Map<String,dynamic> _en_US = {
     "deletion": {
       "not_signed_in": "You are not signed in.",
       "recent_login": "For security, sign in again and retry deleting your account."
+    }
+  },
+  "login_security": {
+    "title": "Login & security",
+    "change_password": "Change password",
+    "change_password_title": "Change password",
+    "field": {
+      "old_password": "Your old password",
+      "new_password": "Your new password",
+      "old_password_hint": "Enter your current password",
+      "new_password_hint": "At least 6 characters"
+    },
+    "button": {
+      "save_changes": "Save changes"
+    },
+    "success": {
+      "title": "Success",
+      "message": "Password updated successfully."
+    },
+    "snackbar": {
+      "email_only_title": "Not available",
+      "email_only": "Password change is only available for email accounts."
+    },
+    "error": {
+      "not_signed_in": "You are not signed in.",
+      "wrong_password": "Incorrect current password.",
+      "recent_login": "For security, sign in again and retry changing your password.",
+      "generic": "Could not update password. Please try again."
     }
   },
   "profile": {

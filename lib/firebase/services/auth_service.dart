@@ -14,6 +14,7 @@ class AuthService {
   final FirebaseAuth _auth;
   final String googleServerClientId;
   static const _facebookProviderId = 'facebook.com';
+  static const _passwordProviderId = 'password';
 
   AuthService({
     required this.googleServerClientId,
@@ -21,6 +22,14 @@ class AuthService {
   }) : _auth = auth;
 
   User? get currentUser => _auth.currentUser;
+
+  bool get currentUserHasPasswordProvider {
+    final user = _auth.currentUser;
+    if (user == null) return false;
+    return user.providerData.any(
+      (info) => info.providerId == _passwordProviderId,
+    );
+  }
 
   Stream<User?> authStateChanges() => _auth.authStateChanges();
 
@@ -178,6 +187,30 @@ class AuthService {
     );
 
     return _auth.signInWithCredential(credential);
+  }
+
+  /// Reauthenticates with the current password, then sets a new one.
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    final user = _auth.currentUser;
+    if (user == null) {
+      throw FirebaseAuthException(code: 'no-current-user');
+    }
+
+    final email = user.email;
+    if (email == null || email.isEmpty) {
+      throw FirebaseAuthException(code: 'no-email');
+    }
+
+    final credential = EmailAuthProvider.credential(
+      email: email,
+      password: currentPassword,
+    );
+
+    await user.reauthenticateWithCredential(credential);
+    await user.updatePassword(newPassword);
   }
 
   /// Permanently deletes the Firebase Auth user. Call only after Firestore/Storage cleanup.
