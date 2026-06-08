@@ -1,3 +1,5 @@
+import 'package:daily_water_tracker/features/profile/cubit/profile_state.dart';
+import 'package:daily_water_tracker/features/profile/models/profile_photo_draft.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
@@ -53,6 +55,49 @@ String profileAvatarUrl({
   final p = (profileUrl ?? '').trim();
   if (p.isNotEmpty) return p;
   return (authUser?.photoURL ?? '').trim();
+}
+
+class ProfileAvatarPreview {
+  const ProfileAvatarPreview({
+    this.networkUrl,
+    this.localPath,
+  });
+
+  final String? networkUrl;
+  final String? localPath;
+
+  bool get hasPhoto =>
+      (localPath ?? '').trim().isNotEmpty || (networkUrl ?? '').trim().isNotEmpty;
+}
+
+ProfileAvatarPreview profileAvatarPreview({
+  required ProfileLoaded loaded,
+  required User? authUser,
+}) {
+  final draft = loaded.photoDraft;
+  if (draft is ProfilePhotoDraftPick) {
+    return ProfileAvatarPreview(localPath: draft.localPath);
+  }
+  if (draft is ProfilePhotoDraftRemove) {
+    return const ProfileAvatarPreview();
+  }
+
+  final url = profileAvatarUrl(
+    authUser: authUser,
+    profileUrl: loaded.profile.photoUrl,
+  );
+  return url.isEmpty
+      ? const ProfileAvatarPreview()
+      : ProfileAvatarPreview(networkUrl: url);
+}
+
+bool profileAvatarShowsRemoveAction({
+  required ProfileLoaded loaded,
+}) {
+  final draft = loaded.photoDraft;
+  if (draft is ProfilePhotoDraftRemove) return false;
+  if (draft is ProfilePhotoDraftPick) return true;
+  return (loaded.profile.photoId ?? '').trim().isNotEmpty;
 }
 
 String profileMemberSince(User? authUser) {

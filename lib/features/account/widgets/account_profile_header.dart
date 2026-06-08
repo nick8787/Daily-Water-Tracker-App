@@ -1,9 +1,7 @@
-import 'package:daily_water_tracker/common/widgets/app_bottom_sheet.dart';
+import 'package:daily_water_tracker/common/widgets/profile_photo_actions_sheet.dart';
 import 'package:daily_water_tracker/features/theme/app_theme_extensions.dart';
 import 'package:daily_water_tracker/features/theme/shadow.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
-import 'package:daily_water_tracker/generated/locale_keys.g.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class AccountProfileHeader extends StatelessWidget {
@@ -79,41 +77,12 @@ class AccountProfileHeader extends StatelessWidget {
   }
 
   void _showAvatarActions(BuildContext context, {required bool hasPhoto}) {
-    showAppBottomSheet<void>(
-      context: context,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AppBottomSheetTitle(LocaleKeys.account_photo_sheet_title.tr()),
-          AppBottomSheetAction(
-            icon: Icons.photo_library_outlined,
-            title: LocaleKeys.account_photo_gallery.tr(),
-            onTap: () {
-              Navigator.of(context).pop();
-              onChooseFromGallery();
-            },
-          ),
-          AppBottomSheetAction(
-            icon: Icons.photo_camera_outlined,
-            title: LocaleKeys.account_photo_camera.tr(),
-            onTap: () {
-              Navigator.of(context).pop();
-              onTakePhoto();
-            },
-          ),
-          if (hasPhoto) ...[
-            AppBottomSheetAction(
-              icon: Icons.delete_outline,
-              title: LocaleKeys.account_photo_remove.tr(),
-              titleColor: Theme.of(context).colorScheme.error,
-              onTap: () {
-                Navigator.of(context).pop();
-                onRemovePhoto?.call();
-              },
-            ),
-          ],
-        ],
-      ),
+    showProfilePhotoActionsSheet(
+      context,
+      hasPhoto: hasPhoto,
+      onChooseFromGallery: onChooseFromGallery,
+      onTakePhoto: onTakePhoto,
+      onRemovePhoto: onRemovePhoto,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:daily_water_tracker/features/profile/models/profile_gender.dart';
+import 'package:daily_water_tracker/features/profile/models/profile_photo_draft.dart';
 import 'package:daily_water_tracker/firebase/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -18,7 +19,7 @@ class ProfileLoaded extends ProfileState {
     required this.profile,
     required this.isPhotoEditable,
     required this.isSaving,
-    required this.isPhotoLoading,
+    this.photoDraft = const ProfilePhotoDraftNone(),
     this.errorMessage,
   });
 
@@ -27,17 +28,19 @@ class ProfileLoaded extends ProfileState {
   final UserModel profile;
   final bool isPhotoEditable;
   final bool isSaving;
-  final bool isPhotoLoading;
+  final ProfilePhotoDraft photoDraft;
   final String? errorMessage;
 
   ProfileGender? get gender => ProfileGender.fromWire(profile.gender);
+
+  bool get hasPendingPhotoDraft => photoDraft is! ProfilePhotoDraftNone;
 
   @override
   List<Object?> get props => [
     profile,
     isPhotoEditable,
     isSaving,
-    isPhotoLoading,
+    photoDraft,
     errorMessage,
   ];
 
@@ -45,14 +48,17 @@ class ProfileLoaded extends ProfileState {
     UserModel? profile,
     bool? isPhotoEditable,
     bool? isSaving,
-    bool? isPhotoLoading,
+    ProfilePhotoDraft? photoDraft,
     Object? errorMessage = _noChange,
+    bool clearPhotoDraft = false,
   }) {
     return ProfileLoaded(
       profile: profile ?? this.profile,
       isPhotoEditable: isPhotoEditable ?? this.isPhotoEditable,
       isSaving: isSaving ?? this.isSaving,
-      isPhotoLoading: isPhotoLoading ?? this.isPhotoLoading,
+      photoDraft: clearPhotoDraft
+          ? const ProfilePhotoDraftNone()
+          : (photoDraft ?? this.photoDraft),
       errorMessage: identical(errorMessage, _noChange)
           ? this.errorMessage
           : errorMessage as String?,
