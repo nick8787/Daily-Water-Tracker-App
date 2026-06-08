@@ -167,12 +167,14 @@ class _DeepLinkListenersState extends State<DeepLinkListeners>
 
     final cubit = context.read<DeepLinkCubit>();
     _isNavigatingPasswordReset = true;
-    const attempts = 24;
-    const baseDelay = Duration(milliseconds: 150);
+    const attempts = 32;
+    const baseDelay = Duration(milliseconds: 120);
 
     try {
       for (var i = 0; i < attempts; i++) {
-        await Future<void>.delayed(baseDelay * (i + 1));
+        if (i > 0) {
+          await Future<void>.delayed(baseDelay * i);
+        }
         if (!mounted) return;
 
         final overlayContext = rootNavigatorKey.currentContext;

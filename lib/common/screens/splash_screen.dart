@@ -86,7 +86,9 @@ class _SplashScreenState extends State<SplashScreen> {
         );
         // On Android the splash init may complete "immediately" and emit a navigation state
         // before BlocListener subscribes. Running it post-frame guarantees the listener catches it.
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          if (cubit.isClosed) return;
+          await context.read<DeepLinkCubit>().ready;
           if (cubit.isClosed) return;
           cubit.initializeApp();
         });

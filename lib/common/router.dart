@@ -26,6 +26,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/achievements/cubit/achievements_cubit.dart';
+import '../features/deep_links/services/auth_deep_link_parser.dart';
 import 'screens/screens.dart';
 import 'widgets/page_widget.dart';
 
@@ -80,6 +81,10 @@ final goRouter = GoRouter(
             ? null
             : uri.queryParameters,
       );
+      final passwordResetDestination = passwordResetRedirectLocation(normalized);
+      if (passwordResetDestination != null) {
+        return passwordResetDestination;
+      }
       return normalized.toString();
     }
     return null;
@@ -123,6 +128,27 @@ final goRouter = GoRouter(
       builder: (context, state) {
         final email = state.uri.queryParameters['email'] ?? '';
         return ForgotPasswordScreen(initialEmail: email);
+      },
+    ),
+    GoRoute(
+      path: '/password-reset',
+      name: 'PasswordResetWeb',
+      redirect: (context, state) {
+        return passwordResetRedirectLocation(state.uri) ?? splashRoute;
+      },
+    ),
+    GoRoute(
+      path: '/__/auth/action',
+      name: 'FirebaseAuthAction',
+      redirect: (context, state) {
+        return passwordResetRedirectLocation(state.uri) ?? splashRoute;
+      },
+    ),
+    GoRoute(
+      path: '/__/auth/links',
+      name: 'FirebaseAuthLinks',
+      redirect: (context, state) {
+        return passwordResetRedirectLocation(state.uri) ?? splashRoute;
       },
     ),
     GoRoute(

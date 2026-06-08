@@ -1,5 +1,18 @@
 import 'package:daily_water_tracker/features/deep_links/models/auth_password_reset_link.dart';
 
+/// Builds a go_router location for [CompletePasswordResetScreen] when [uri]
+/// contains a password-reset action code.
+String? passwordResetRedirectLocation(
+  Uri uri, {
+  String completePasswordResetRoute = '/login/complete-password-reset',
+}) {
+  final link = parseAuthPasswordResetLink(uri);
+  if (link == null) return null;
+
+  return '$completePasswordResetRoute'
+      '?oobCode=${Uri.encodeComponent(link.oobCode)}';
+}
+
 AuthPasswordResetLink? parseAuthPasswordResetLink(Uri uri) {
   final candidates = _expandLinkCandidates(uri);
   for (final candidate in candidates) {

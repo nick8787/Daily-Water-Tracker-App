@@ -66,6 +66,22 @@
     ],
     "rewrites": [
       {
+        "source": "/__/auth/action",
+        "destination": "/__/auth/action/index.html"
+      },
+      {
+        "source": "/__/auth/action/**",
+        "destination": "/__/auth/action/index.html"
+      },
+      {
+        "source": "/__/auth/links",
+        "destination": "/__/auth/links/index.html"
+      },
+      {
+        "source": "/__/auth/links/**",
+        "destination": "/__/auth/links/index.html"
+      },
+      {
         "source": "/share",
         "destination": "/share/index.html"
       },
