@@ -14,6 +14,8 @@ import 'package:daily_water_tracker/features/history/screens/history_screen.dart
 import 'package:daily_water_tracker/features/home/cubit/home_cubit.dart';
 import 'package:daily_water_tracker/features/main_nav/cubit/main_nav_cubit.dart';
 import 'package:daily_water_tracker/features/account/screens/settings_more_screen.dart';
+import 'package:daily_water_tracker/features/login_security/screens/change_password_screen.dart';
+import 'package:daily_water_tracker/features/login_security/screens/login_security_screen.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
 import 'package:daily_water_tracker/features/preferences/screens/preferences_screen.dart';
 import 'package:daily_water_tracker/features/profile/screens/profile_screen.dart';
@@ -55,6 +57,8 @@ const String appUpdateRequiredRoute = '/app-update-required-route';
 const String statisticsRoute = '/statistics';
 const String historyRoute = '/history';
 const String settingsMoreRoute = '/account/settings-more';
+const String loginSecurityRoute = '/account/login-security';
+const String changePasswordRoute = '/account/login-security/change-password';
 const String achievementsRoute = '/account/achievements';
 
 final goRouter = GoRouter(
@@ -202,6 +206,28 @@ final goRouter = GoRouter(
           curve: Curves.easeOutCubic,
         );
       },
+    ),
+    GoRoute(
+      path: loginSecurityRoute,
+      name: 'LoginSecurity',
+      pageBuilder: (context, state) => _adaptivePushedPage(
+        key: state.pageKey,
+        child: const LoginSecurityScreen(),
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOutCubic,
+      ),
+      routes: [
+        GoRoute(
+          path: 'change-password',
+          name: 'ChangePassword',
+          pageBuilder: (context, state) => _adaptivePushedPage(
+            key: state.pageKey,
+            child: const ChangePasswordScreen(),
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOutCubic,
+          ),
+        ),
+      ],
     ),
     GoRoute(
       path: achievementsRoute,

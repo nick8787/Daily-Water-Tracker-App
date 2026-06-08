@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:daily_water_tracker/common/router.dart';
 import 'package:daily_water_tracker/common/assets.dart';
 import 'package:daily_water_tracker/features/account/account_actions.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
@@ -41,10 +43,7 @@ class SettingsMoreScreen extends StatelessWidget {
               AccountMenuItem(
                 leadingAsset: icProfileSecurity,
                 title: LocaleKeys.account_menu_login_security.tr(),
-                onTap: () => AccountActions.comingSoon(
-                  context,
-                  LocaleKeys.account_menu_login_security.tr(),
-                ),
+                onTap: () => context.push(loginSecurityRoute),
               ),
             ],
           ),
