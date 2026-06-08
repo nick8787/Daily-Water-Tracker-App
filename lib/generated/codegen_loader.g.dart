@@ -291,7 +291,8 @@ class CodegenLoader extends AssetLoader{
       },
       "share_failed": "Не вдалося поділитися. Спробуйте ще раз.",
       "sign_out_failed": "Не вдалося вийти. Спробуйте ще раз.",
-      "delete_failed": "Не вдалося видалити акаунт. Спробуйте ще раз."
+      "delete_failed": "Не вдалося видалити акаунт. Спробуйте ще раз.",
+      "delete_requires_recent_login": "З міркувань безпеки увійдіть знову та повторіть видалення акаунта."
     },
     "success": {
       "title": "Готово",
@@ -1001,7 +1002,8 @@ static const Map<String,dynamic> _en_US = {
       },
       "share_failed": "Unable to share progress. Try again.",
       "sign_out_failed": "Could not sign out. Please try again.",
-      "delete_failed": "Could not delete your account. Please try again."
+      "delete_failed": "Could not delete your account. Please try again.",
+      "delete_requires_recent_login": "For security, sign in again and retry deleting your account."
     },
     "success": {
       "title": "Success",

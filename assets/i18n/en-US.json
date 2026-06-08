@@ -275,7 +275,8 @@
       },
       "share_failed": "Unable to share progress. Try again.",
       "sign_out_failed": "Could not sign out. Please try again.",
-      "delete_failed": "Could not delete your account. Please try again."
+      "delete_failed": "Could not delete your account. Please try again.",
+      "delete_requires_recent_login": "For security, sign in again and retry deleting your account."
     },
     "success": {
       "title": "Success",

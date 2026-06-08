@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AccountSigningOutOverlay extends StatelessWidget {
-  const AccountSigningOutOverlay({super.key});
+  const AccountSigningOutOverlay({
+    super.key,
+    this.message,
+  });
+
+  final String? message;
 
   static const SystemUiOverlayStyle _statusWhileSigningOut =
       SystemUiOverlayStyle(
@@ -72,7 +77,8 @@ class AccountSigningOutOverlay extends StatelessWidget {
                         ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 240),
                           child: Text(
-                            LocaleKeys.account_overlay_signing_out.tr(),
+                            message ??
+                                LocaleKeys.account_overlay_signing_out.tr(),
                             style: textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.w700,
                               color: scheme.onSurface.withValues(alpha: 0.88),

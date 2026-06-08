@@ -80,11 +80,28 @@ abstract final class AccountActions {
       intent: AppConfirmIntent.affirmative,
       icon: Icons.logout_rounded,
     );
-    if (confirmed != true || !context.mounted) return;
+    if (confirmed != true) return;
 
     await WidgetsBinding.instance.endOfFrame;
-    if (!context.mounted) return;
 
     await cubit.logOut();
+  }
+
+  static Future<void> confirmAndDeleteAccount(BuildContext context) async {
+    final cubit = context.read<AccountCubit>();
+    if (cubit.state.isSessionActionInProgress) return;
+
+    final confirmed = await showAppConfirmDialog(
+      context: context,
+      title: LocaleKeys.account_dialog_delete_title.tr(),
+      message: LocaleKeys.account_dialog_delete_message.tr(),
+      confirmText: LocaleKeys.account_dialog_delete_confirm.tr(),
+      icon: Icons.delete_forever_outlined,
+    );
+    if (confirmed != true) return;
+
+    await WidgetsBinding.instance.endOfFrame;
+
+    await cubit.deleteAccount();
   }
 }

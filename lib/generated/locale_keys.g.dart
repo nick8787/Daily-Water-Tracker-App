@@ -225,6 +225,7 @@ abstract class  LocaleKeys {
   static const account_snackbar_share_failed = 'account.snackbar.share_failed';
   static const account_snackbar_sign_out_failed = 'account.snackbar.sign_out_failed';
   static const account_snackbar_delete_failed = 'account.snackbar.delete_failed';
+  static const account_snackbar_delete_requires_recent_login = 'account.snackbar.delete_requires_recent_login';
   static const account_snackbar = 'account.snackbar';
   static const account_success_title = 'account.success.title';
   static const account_success_photo_updated = 'account.success.photo_updated';

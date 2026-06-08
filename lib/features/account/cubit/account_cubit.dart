@@ -163,10 +163,15 @@ class AccountCubit extends Cubit<AccountState> {
       );
     } on UserAccountDeletionException catch (e, st) {
       logCaughtWarning('AccountCubit.deleteAccount', e, st);
+      final requiresRecentLogin =
+          e.code == UserAccountDeletionException.requiresRecentLogin;
       emit(
         state.copyWith(
           sessionPhase: AccountSessionPhase.failed,
-          sessionErrorMessage: e.message,
+          sessionErrorMessageKey: requiresRecentLogin
+              ? LocaleKeys.account_snackbar_delete_requires_recent_login
+              : null,
+          sessionErrorMessage: requiresRecentLogin ? null : e.message,
         ),
       );
     } catch (e, st) {
