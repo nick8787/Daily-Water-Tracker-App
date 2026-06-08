@@ -3,10 +3,10 @@ import 'package:daily_water_tracker/common/router.dart';
 import 'package:daily_water_tracker/features/account/account_actions.dart';
 import 'package:daily_water_tracker/features/account/account_language_actions.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
-import 'package:daily_water_tracker/features/account/listeners/account_logout_session_listener.dart';
-import 'package:daily_water_tracker/features/account/widgets/account_logout_footer.dart';
+import 'package:daily_water_tracker/features/account/listeners/account_more_session_listener.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_menu_card.dart';
 import 'package:daily_water_tracker/features/account/widgets/account_menu_item.dart';
+import 'package:daily_water_tracker/features/account/widgets/account_session_actions_footer.dart';
 import 'package:daily_water_tracker/features/locale/widgets/locale_rebuild.dart';
 import 'package:daily_water_tracker/features/theme/theme.dart';
 import 'package:daily_water_tracker/features/vibration/cubit/vibration_cubit.dart';
@@ -23,13 +23,13 @@ import '../widgets/account_menu_divider.dart';
 class SettingsMoreScreen extends StatelessWidget {
   const SettingsMoreScreen({super.key});
 
-  static const double _logoutTopGap = 16;
+  static const double _sessionActionsTopGap = 16;
 
   @override
   Widget build(BuildContext context) {
     return LocaleRebuild(
-      builder: (context) => const AccountLogoutSessionListener(
-        child: AccountLogoutSigningOutMask(
+      builder: (context) => const AccountMoreSessionListener(
+        child: AccountMoreSessionMask(
           child: _SettingsMoreView(),
         ),
       ),
@@ -43,7 +43,7 @@ class _SettingsMoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sessionBusy = context.select<AccountCubit, bool>(
-      (c) => c.state.isSessionActionInProgress,
+      (c) => isMoreSessionBlocked(c.state),
     );
     final vibrationEnabled = context.select<VibrationCubit, bool>(
       (c) => c.state.enabled,
@@ -95,10 +95,12 @@ class _SettingsMoreView extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: SettingsMoreScreen._logoutTopGap),
-          AccountLogoutFooter(
+          const SizedBox(height: SettingsMoreScreen._sessionActionsTopGap),
+          AccountSessionActionsFooter(
             actionsEnabled: !sessionBusy,
             onLogOutPressed: () => AccountActions.confirmAndLogOut(context),
+            onDeleteAccountPressed: () =>
+                AccountActions.confirmAndDeleteAccount(context),
           ),
         ],
       ),

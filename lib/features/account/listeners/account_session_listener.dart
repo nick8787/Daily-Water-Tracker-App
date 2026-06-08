@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:daily_water_tracker/common/router.dart';
 import 'package:daily_water_tracker/common/widgets/app_loader.dart';
 import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/features/account/cubit/account_cubit.dart';
@@ -10,9 +7,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Side effects for [AccountCubit] session actions (delete account, photo, feedback).
+/// Side effects for [AccountCubit] photo uploads and feedback on the account tab.
 ///
-/// Logout from Settings → More is handled by [AccountLogoutSessionListener].
+/// Logout and delete account from Settings → More use [AccountMoreSessionListener].
 class AccountSessionListener extends StatelessWidget {
   const AccountSessionListener({super.key, required this.child});
 
@@ -31,30 +28,7 @@ class AccountSessionListener extends StatelessWidget {
   static void handleSession(BuildContext context, AccountState state) {
     final cubit = context.read<AccountCubit>();
 
-    if (state.sessionAction == AccountSessionAction.deleteAccount) {
-      switch (state.sessionPhase) {
-        case AccountSessionPhase.inProgress:
-          AppLoader.show(
-            context,
-            message: LocaleKeys.loader_deleting_account.tr(),
-          );
-          return;
-        case AccountSessionPhase.succeeded:
-          unawaited(AppLoader.hideWithMinimumVisibleDuration());
-          goRouter.go(loginRoute);
-          return;
-        case AccountSessionPhase.failed:
-          unawaited(AppLoader.hideWithMinimumVisibleDuration());
-          final message = state.sessionErrorText();
-          if (message.isNotEmpty) {
-            AppSnackBar.showError(context, message);
-          }
-          cubit.clearSession();
-          return;
-        case AccountSessionPhase.idle:
-          break;
-      }
-    }
+    if (state.sessionAction != AccountSessionAction.none) return;
 
     if (state.isSessionActionInProgress) return;
 
