@@ -30,9 +30,13 @@ class InjectorModule {
     final credentials = await loadCredentials();
     GetIt.I.registerLazySingleton<Credentials>(() => credentials);
 
-    final literalAppVersion = await getApplicationVersion();
+    final appBuildInfo = await AppBuildInfo.load();
+    GetIt.I.registerLazySingleton<AppBuildInfo>(() => appBuildInfo);
+
     final currentAppVersion = Version.parse(
-      literalAppVersion ?? AppVersionMixin.minFallbackVersion,
+      appBuildInfo.version.isNotEmpty
+          ? appBuildInfo.version
+          : AppVersionMixin.minFallbackVersion,
     );
     GetIt.I.registerLazySingleton<Version>(() => currentAppVersion);
 

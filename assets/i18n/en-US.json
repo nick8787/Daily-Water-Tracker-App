@@ -256,6 +256,9 @@
       "delete": "Delete",
       "log_out": "Log out"
     },
+    "app_version": {
+      "label": "Version"
+    },
     "dialog": {
       "logout": {
         "title": "Log out?",

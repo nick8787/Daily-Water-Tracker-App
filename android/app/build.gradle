@@ -30,6 +30,18 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+def loadFlavorVersionProperties(String flavor) {
+    def versionFile = rootProject.file("../versions/${flavor}.properties")
+    def props = new Properties()
+    if (versionFile.exists()) {
+        versionFile.withInputStream { props.load(it) }
+    }
+    return props
+}
+
+def devVersion = loadFlavorVersionProperties('dev')
+def prodVersion = loadFlavorVersionProperties('prod')
+
 android {
     namespace "com.dailywatertracker.app"
     compileSdk flutter.compileSdkVersion
@@ -93,11 +105,23 @@ android {
             dimension "env"
             applicationIdSuffix ".dev"
             resValue "string", "app_name", "[DEV] Daily Water Tracker"
+            if (devVersion.containsKey('versionName')) {
+                versionName devVersion.getProperty('versionName')
+            }
+            if (devVersion.containsKey('versionCode')) {
+                versionCode devVersion.getProperty('versionCode').toInteger()
+            }
         }
 
         prod {
             dimension "env"
             resValue "string", "app_name", "Daily Water Tracker"
+            if (prodVersion.containsKey('versionName')) {
+                versionName prodVersion.getProperty('versionName')
+            }
+            if (prodVersion.containsKey('versionCode')) {
+                versionCode prodVersion.getProperty('versionCode').toInteger()
+            }
         }
     }
 }

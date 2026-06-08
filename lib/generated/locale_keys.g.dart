@@ -210,6 +210,8 @@ abstract class  LocaleKeys {
   static const account_button_delete = 'account.button.delete';
   static const account_button_log_out = 'account.button.log_out';
   static const account_button = 'account.button';
+  static const account_app_version_label = 'account.app_version.label';
+  static const account_app_version = 'account.app_version';
   static const account_dialog_logout_title = 'account.dialog.logout.title';
   static const account_dialog_logout_message = 'account.dialog.logout.message';
   static const account_dialog_logout_confirm = 'account.dialog.logout.confirm';

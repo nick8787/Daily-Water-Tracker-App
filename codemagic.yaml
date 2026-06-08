@@ -57,6 +57,10 @@ workflows:
       - name: Set up iOS code signing (Development)
         script: bash ios/ci/setup_codemagic_signing.sh com.dailywatertracker.app.dev development
 
+      - name: Set app version (DEV)
+        script: |
+          bash scripts/ci/write_flavor_version.sh dev "0.0.$BUILD_NUMBER" "$BUILD_NUMBER"
+
       - name: Build Android Release (DEV Flavor)
         script: |
           flutter build apk --release --flavor dev --build-name=0.0.$BUILD_NUMBER --build-number=$BUILD_NUMBER
@@ -164,6 +168,12 @@ workflows:
 
       - name: Set up iOS code signing (App Store)
         script: bash ios/ci/setup_codemagic_signing.sh com.dailywatertracker.app.prod appstore
+
+      - name: Set app version (PROD)
+        script: |
+          APP_VERSION=${CM_TAG:-$(git describe --tags $(git rev-list --tags --max-count=1))}
+          APP_VERSION=${APP_VERSION#v}
+          bash scripts/ci/write_flavor_version.sh prod "$APP_VERSION" "$BUILD_NUMBER"
 
       - name: Build Android Release (Bundle & APK)
         script: |
