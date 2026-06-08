@@ -232,10 +232,18 @@
       "notifications": "Сповіщення",
       "share_progress": "Поділитися прогресом",
       "login_security": "Вхід і безпека",
+      "language": "Мова",
       "privacy_policy": "Політика конфіденційності",
       "dark_theme": "Темна тема",
       "more": "Ще",
       "achievements": "Мої досягнення"
+    },
+    "language": {
+      "option": {
+        "english": "Англійська",
+        "ukrainian": "Українська",
+        "system": "Мова системи"
+      }
     },
     "photo": {
       "sheet_title": "Фото профілю",

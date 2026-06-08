@@ -248,10 +248,18 @@ class CodegenLoader extends AssetLoader{
       "notifications": "Сповіщення",
       "share_progress": "Поділитися прогресом",
       "login_security": "Вхід і безпека",
+      "language": "Мова",
       "privacy_policy": "Політика конфіденційності",
       "dark_theme": "Темна тема",
       "more": "Ще",
       "achievements": "Мої досягнення"
+    },
+    "language": {
+      "option": {
+        "english": "Англійська",
+        "ukrainian": "Українська",
+        "system": "Мова системи"
+      }
     },
     "photo": {
       "sheet_title": "Фото профілю",
@@ -949,10 +957,18 @@ static const Map<String,dynamic> _en_US = {
       "notifications": "Notifications",
       "share_progress": "Share today's progress",
       "login_security": "Login & security",
+      "language": "Language",
       "privacy_policy": "Privacy policy",
       "dark_theme": "Use dark theme",
       "more": "More",
       "achievements": "Achievements"
+    },
+    "language": {
+      "option": {
+        "english": "English",
+        "ukrainian": "Ukrainian",
+        "system": "System language"
+      }
     },
     "photo": {
       "sheet_title": "Profile photo",

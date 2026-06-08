@@ -15,11 +15,10 @@ class LocaleCubit extends Cubit<LocaleState> {
         ),
       );
 
-  void onSystemLocaleChanged(Locale? platformLocale) {
-    if (state.preference != AppLocalePreference.system) return;
-    final next = LocaleResolver.resolve(platformLocale);
-    if (next == state.effectiveLocale) return;
-    emit(state.copyWith(effectiveLocale: next));
+  /// Called by [LocaleListener] after [EasyLocalization.setLocale] completes.
+  void syncEffectiveLocale(Locale locale) {
+    if (state.effectiveLocale == locale) return;
+    emit(state.copyWith(effectiveLocale: locale));
   }
 
   void useSystemLocale() => _applyPreference(AppLocalePreference.system);

@@ -232,10 +232,18 @@
       "notifications": "Notifications",
       "share_progress": "Share today's progress",
       "login_security": "Login & security",
+      "language": "Language",
       "privacy_policy": "Privacy policy",
       "dark_theme": "Use dark theme",
       "more": "More",
       "achievements": "Achievements"
+    },
+    "language": {
+      "option": {
+        "english": "English",
+        "ukrainian": "Ukrainian",
+        "system": "System language"
+      }
     },
     "photo": {
       "sheet_title": "Profile photo",

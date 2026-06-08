@@ -190,11 +190,17 @@ abstract class  LocaleKeys {
   static const account_menu_notifications = 'account.menu.notifications';
   static const account_menu_share_progress = 'account.menu.share_progress';
   static const account_menu_login_security = 'account.menu.login_security';
+  static const account_menu_language = 'account.menu.language';
   static const account_menu_privacy_policy = 'account.menu.privacy_policy';
   static const account_menu_dark_theme = 'account.menu.dark_theme';
   static const account_menu_more = 'account.menu.more';
   static const account_menu_achievements = 'account.menu.achievements';
   static const account_menu = 'account.menu';
+  static const account_language_option_english = 'account.language.option.english';
+  static const account_language_option_ukrainian = 'account.language.option.ukrainian';
+  static const account_language_option_system = 'account.language.option.system';
+  static const account_language_option = 'account.language.option';
+  static const account_language = 'account.language';
   static const account_photo_sheet_title = 'account.photo.sheet_title';
   static const account_photo_gallery = 'account.photo.gallery';
   static const account_photo_camera = 'account.photo.camera';

@@ -1,9 +1,6 @@
-import 'package:daily_water_tracker/features/locale/cubit/locale_cubit.dart';
-import 'package:daily_water_tracker/features/locale/cubit/locale_state.dart';
 import 'package:daily_water_tracker/features/theme/text_styles.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppScreenTitle extends StatelessWidget {
   const AppScreenTitle({
@@ -24,24 +21,24 @@ class AppScreenTitle extends StatelessWidget {
     );
   }
 
-  /// In-body title that refreshes when [LocaleCubit] changes (Statistics, Account).
+  /// In-body title (Statistics, Account sections).
   static Widget localized({
     Key? key,
     required String localeKey,
     bool centered = false,
   }) {
-    return _LocaleAwareScreenTitle(
+    return _LocalizedScreenTitle(
       key: key,
       localeKey: localeKey,
       centered: centered,
     );
   }
 
-  /// [AppBar] title matching [headerStyle], with locale refresh on switch.
+  /// [AppBar] title matching [headerStyle].
   static Widget appBarLocalized({
     required String localeKey,
   }) {
-    return _LocaleAwareAppBarTitle(localeKey: localeKey);
+    return _LocalizedAppBarTitle(localeKey: localeKey);
   }
 
   @override
@@ -60,8 +57,8 @@ class AppScreenTitle extends StatelessWidget {
   }
 }
 
-class _LocaleAwareScreenTitle extends StatelessWidget {
-  const _LocaleAwareScreenTitle({
+class _LocalizedScreenTitle extends StatelessWidget {
+  const _LocalizedScreenTitle({
     super.key,
     required this.localeKey,
     required this.centered,
@@ -72,33 +69,23 @@ class _LocaleAwareScreenTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LocaleCubit, LocaleState>(
-      buildWhen: (prev, next) => prev.effectiveLocale != next.effectiveLocale,
-      builder: (context, state) {
-        return AppScreenTitle(
-          title: context.tr(localeKey),
-          centered: centered,
-        );
-      },
+    return AppScreenTitle(
+      title: context.tr(localeKey),
+      centered: centered,
     );
   }
 }
 
-class _LocaleAwareAppBarTitle extends StatelessWidget {
-  const _LocaleAwareAppBarTitle({required this.localeKey});
+class _LocalizedAppBarTitle extends StatelessWidget {
+  const _LocalizedAppBarTitle({required this.localeKey});
 
   final String localeKey;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LocaleCubit, LocaleState>(
-      buildWhen: (prev, next) => prev.effectiveLocale != next.effectiveLocale,
-      builder: (context, state) {
-        return Text(
-          context.tr(localeKey),
-          style: AppScreenTitle.headerStyle(context),
-        );
-      },
+    return Text(
+      context.tr(localeKey),
+      style: AppScreenTitle.headerStyle(context),
     );
   }
 }
