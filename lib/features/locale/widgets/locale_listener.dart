@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:daily_water_tracker/common/l10n/locale_resolver.dart';
 import 'package:daily_water_tracker/features/locale/cubit/locale_cubit.dart';
 import 'package:daily_water_tracker/features/locale/cubit/locale_state.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -33,10 +34,35 @@ class _LocaleListenerState extends State<LocaleListener>
 
   @override
   void didChangeLocales(List<Locale>? locales) {
-    final platform = locales?.isNotEmpty == true
-        ? locales!.first
-        : WidgetsBinding.instance.platformDispatcher.locale;
-    context.read<LocaleCubit>().onSystemLocaleChanged(platform);
+    unawaited(
+      _syncPlatformLocaleIfNeeded(
+        platformLocale: locales?.isNotEmpty == true ? locales!.first : null,
+      ),
+    );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      unawaited(_syncPlatformLocaleIfNeeded());
+    }
+  }
+
+  Future<void> _syncPlatformLocaleIfNeeded({Locale? platformLocale}) async {
+    final cubit = context.read<LocaleCubit>();
+    if (cubit.state.preference != AppLocalePreference.system) return;
+
+    final resolved = LocaleResolver.resolve(
+      platformLocale ?? WidgetsBinding.instance.platformDispatcher.locale,
+    );
+
+    if (context.locale == resolved && cubit.state.effectiveLocale == resolved) {
+      return;
+    }
+
+    await _applyLocale(resolved);
+    if (!mounted) return;
+    cubit.syncEffectiveLocale(resolved);
   }
 
   Future<void> _syncFromCubit() async {
