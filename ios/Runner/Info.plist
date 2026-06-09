@@ -120,5 +120,9 @@
 		<!-- Export compliance: skip manual "encryption" questionnaire in App Store Connect / unblock CI TestFlight submit -->
 		<key>ITSAppUsesNonExemptEncryption</key>
 		<false/>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>remote-notification</string>
+		</array>
 	</dict>
 </plist>

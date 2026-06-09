@@ -36,7 +36,7 @@ class PushSessionCubit extends Cubit<PushSessionState> {
   bool _started = false;
   bool _coldStartInitialized = false;
 
-  static const Duration _signInSetupDelay = Duration(milliseconds: 200);
+  static const Duration _signInSetupDelay = Duration(milliseconds: 600);
   static const Duration _coldStartDelay = Duration(milliseconds: 400);
 
   /// Wire FCM and auth streams. Call once after construction.
@@ -59,10 +59,9 @@ class PushSessionCubit extends Cubit<PushSessionState> {
     await Future<void>.delayed(_coldStartDelay);
     await ReminderSchedulerService.ensureTimeZonesInitialized();
     await _localNotifications.ensureAndroidSchedulingPermissions();
-    await _localNotifications.requestOsNotificationPermissions();
 
     if (_auth.currentUser != null) {
-      await _messaging.ensureBroadcastRegistration();
+      await _messaging.setupPushNotificationsForSignedInUser();
       await _reminderScheduler.rescheduleReminders();
     }
 
@@ -140,10 +139,10 @@ class PushSessionCubit extends Cubit<PushSessionState> {
     await _reminderScheduler.rescheduleReminders();
   }
 
-  /// Re-sync FCM token and broadcast topic when the app returns to foreground.
+  /// Re-sync permissions, FCM token and broadcast topic when returning from background
   Future<void> onAppResumed() async {
     if (_auth.currentUser == null) return;
-    await _messaging.ensureBroadcastRegistration();
+    await _messaging.setupPushNotificationsForSignedInUser();
   }
 
   @override

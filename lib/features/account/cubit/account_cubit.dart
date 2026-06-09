@@ -205,7 +205,7 @@ class AccountCubit extends Cubit<AccountState> {
         isNotificationPermissionBusy: false,
       ),
     );
-    unawaited(_messagingRepository.ensureBroadcastRegistration());
+    unawaited(_messagingRepository.setupPushNotificationsForSignedInUser());
   }
 
   Future<void> refreshOsNotificationSync() async {
@@ -239,9 +239,8 @@ class AccountCubit extends Cubit<AccountState> {
 
       if (osGranted) {
         await _firestoreRepository.updateUserProfile(notificationsEnabled: true);
-        await _messagingRepository.syncTokenNow();
+        await _messagingRepository.setupPushNotificationsForSignedInUser();
         await _reminderScheduler.rescheduleReminders();
-        await _messagingRepository.ensureBroadcastRegistration();
         await _recomputeNotifications(null);
         return false;
       }

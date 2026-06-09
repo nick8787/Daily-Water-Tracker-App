@@ -11,7 +11,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-/// FCM token, topic subscription and deep-link route coordination for push
+/// FCM token, topic subscription and deep-link route coordination for push.
 class MessagingRepository {
   MessagingRepository({
     required FirebaseMessaging messaging,
@@ -34,17 +34,24 @@ class MessagingRepository {
   bool _platformConfigured = false;
   bool _broadcastTopicSubscribed = false;
   String? _pendingRoute;
+  int _deferredRetryIndex = 0;
   Future<void>? _coldStartHydration;
 
   static const String dataRouteKey = 'route';
-  static const Duration _deferredRegistrationDelay = Duration(seconds: 15);
-  static const Duration _tokenResolveTimeout = Duration(seconds: 30);
+  static const Duration _tokenResolveTimeout = Duration(seconds: 45);
+  static const List<Duration> _deferredRetryDelays = <Duration>[
+    Duration(seconds: 5),
+    Duration(seconds: 15),
+    Duration(seconds: 30),
+    Duration(seconds: 60),
+  ];
 
   /// One-time FCM platform setup (safe to call multiple times).
   Future<void> configurePlatformMessaging() async {
     if (_platformConfigured || kIsWeb) return;
     _platformConfigured = true;
     try {
+      await _messaging.setAutoInitEnabled(true);
       await _messaging.setForegroundNotificationPresentationOptions(
         alert: true,
         badge: true,
@@ -72,12 +79,16 @@ class MessagingRepository {
     return _messaging.requestPermission();
   }
 
-  /// Full push registration for a signed-in user
+  /// Full push registration for a signed-in user: permissions, token sync,
+  /// Firestore profile flags, and broadcast-topic subscription.
   Future<void> setupPushNotificationsForSignedInUser() async {
     if (_authService.currentUser == null) return;
     try {
       await configurePlatformMessaging();
-      await _requestPermissionsBestEffort();
+      final settings = await _requestPermissionsBestEffort();
+      if (await _osNotificationsGranted(settings)) {
+        await _syncNotificationsEnabledPreference(true);
+      }
       await startTokenSync();
       await ensureBroadcastRegistration();
       _scheduleDeferredRegistrationRetry();
@@ -86,7 +97,7 @@ class MessagingRepository {
     }
   }
 
-  /// Idempotent token persist + broadcast topic subscribe (safe on every resume)
+  /// Idempotent token persist + broadcast topic subscribe. Safe on every resume.
   Future<void> ensureBroadcastRegistration() async {
     if (_authService.currentUser == null) return;
     try {
@@ -142,6 +153,8 @@ class MessagingRepository {
     await _persistToken(token);
     if ((token ?? '').trim().isEmpty) {
       _scheduleDeferredRegistrationRetry();
+    } else {
+      _cancelDeferredRegistrationRetry();
     }
   }
 
@@ -153,9 +166,16 @@ class MessagingRepository {
     final deadline = DateTime.now().add(timeout);
 
     while (DateTime.now().isBefore(deadline)) {
+      if (_authService.currentUser == null) return null;
+
       if (!kIsWeb && Platform.isIOS) {
         final apns = await _messaging.getAPNSToken();
         if (apns == null) {
+          final settings = await _messaging.getNotificationSettings();
+          if (await _osNotificationsGranted(settings)) {
+            // Permission granted but APNs not ready yet — nudge registration.
+            await requestPermission();
+          }
           await Future<void>.delayed(pollInterval);
           continue;
         }
@@ -178,16 +198,31 @@ class MessagingRepository {
     final trimmed = (token ?? '').trim();
     if (trimmed.isEmpty) return;
 
-    try {
-      await _firestoreRepository.updateUserProfile(fcmToken: trimmed);
-    } catch (e, st) {
-      logCaughtError('MessagingRepository._persistToken', e, st);
+    for (var attempt = 0; attempt < 3; attempt++) {
+      try {
+        await _firestoreRepository.updateUserProfile(fcmToken: trimmed);
+        return;
+      } catch (e, st) {
+        if (attempt == 2) {
+          logCaughtError('MessagingRepository._persistToken', e, st);
+        } else {
+          await Future<void>.delayed(Duration(milliseconds: 400 * (attempt + 1)));
+        }
+      }
     }
   }
 
   Future<void> _ensureBroadcastTopicSubscribed() async {
     if (_authService.currentUser == null) return;
     await subscribeToTopic(FcmTopics.broadcast);
+  }
+
+  Future<void> _syncNotificationsEnabledPreference(bool enabled) async {
+    try {
+      await _firestoreRepository.updateUserProfile(notificationsEnabled: enabled);
+    } catch (e, st) {
+      logCaughtWarning('MessagingRepository._syncNotificationsEnabledPreference', e, st);
+    }
   }
 
   /// Whether FCM reminder pushes should be surfaced (foreground mirror / UI).
@@ -246,20 +281,43 @@ class MessagingRepository {
 
   User? get currentUser => _authService.currentUser;
 
-  Future<void> _requestPermissionsBestEffort() async {
-    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+  /// Requests OS + FCM permissions
+  Future<NotificationSettings> _requestPermissionsBestEffort() async {
+    if (kIsWeb) {
+      return _messaging.getNotificationSettings();
+    }
+
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      final settings = await requestPermission();
+      if (await _osNotificationsGranted(settings)) {
+        await _localNotifications.requestIosNotificationPermissions();
+      }
+      return settings;
+    }
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
       await Permission.notification.request();
     }
-    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
-      await _localNotifications.requestOsNotificationPermissions();
+    return requestPermission();
+  }
+
+  Future<bool> _osNotificationsGranted(NotificationSettings settings) {
+    if (settings.authorizationStatus == AuthorizationStatus.authorized ||
+        settings.authorizationStatus == AuthorizationStatus.provisional) {
+      return Future<bool>.value(true);
     }
-    await requestPermission();
+    return _localNotifications.areOsNotificationsEnabled();
   }
 
   void _scheduleDeferredRegistrationRetry() {
     if (_authService.currentUser == null) return;
+    if (_deferredRetryIndex >= _deferredRetryDelays.length) return;
+
     _deferredRegistrationTimer?.cancel();
-    _deferredRegistrationTimer = Timer(_deferredRegistrationDelay, () {
+    final delay = _deferredRetryDelays[_deferredRetryIndex];
+    _deferredRetryIndex++;
+
+    _deferredRegistrationTimer = Timer(delay, () {
       unawaited(_runDeferredRegistrationRetry());
     });
   }
@@ -267,14 +325,20 @@ class MessagingRepository {
   void _cancelDeferredRegistrationRetry() {
     _deferredRegistrationTimer?.cancel();
     _deferredRegistrationTimer = null;
+    _deferredRetryIndex = 0;
   }
 
   Future<void> _runDeferredRegistrationRetry() async {
     if (_authService.currentUser == null) return;
     try {
-      await ensureBroadcastRegistration();
+      await setupPushNotificationsForSignedInUser();
+      final token = await _messaging.getToken();
+      if ((token ?? '').trim().isEmpty) {
+        _scheduleDeferredRegistrationRetry();
+      }
     } catch (e, st) {
       logCaughtWarning('MessagingRepository._runDeferredRegistrationRetry', e, st);
+      _scheduleDeferredRegistrationRetry();
     }
   }
 }
