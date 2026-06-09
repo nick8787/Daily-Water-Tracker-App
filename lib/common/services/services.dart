@@ -1,4 +1,5 @@
 export 'analytics_service.dart';
+export 'crashlytics_bootstrapper.dart';
 export 'app_bootstrapper.dart';
 export 'app_build_info.dart';
 export 'credentials_loader.dart';

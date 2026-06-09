@@ -1,4 +1,5 @@
 import 'package:daily_water_tracker/common/di/injector_module.dart';
+import 'package:daily_water_tracker/common/services/crashlytics_bootstrapper.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/common/utils/utils.dart';
 import 'package:daily_water_tracker/features/deep_links/services/water_deep_link_service.dart';
@@ -26,6 +27,8 @@ class AppBootstrapper {
       options: flutterFlavor.getFirebaseOptions,
     );
 
+    await CrashlyticsBootstrapper.initialize();
+
     try {
       await FirebaseAppCheck.instance.activate(
         providerAndroid: kDebugMode
@@ -44,6 +47,7 @@ class AppBootstrapper {
     }
 
     await InjectorModule.inject();
+    await CrashlyticsBootstrapper.attachBuildContext();
     await InjectorModule.locator<AuthService>().ensureGoogleSignInInitialized();
     await InjectorModule.locator<WaterDeepLinkService>().captureInitialUriEarly();
 
