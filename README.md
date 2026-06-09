@@ -11,18 +11,24 @@ A Flutter app for tracking daily water intake. Backed by Firebase, with real-tim
 ## 🚀 Features
 
 - Sign in with email/password, Google, Apple or Facebook (Facebook is dev-only)
-- Real-time hydration log on Firestore, with hydration coefficients per drink type (water, tea, coffee, milk)
-- Daily goal: either calculated from weight or set manually
-- Push reminders via FCM with quiet hours and topic subscription
+- Forgot password - reset link lands on a Firebase Hosting page, then back into the app
+- Change password for email accounts (Login & security)
+- Real-time hydration log on Firestore, with coefficients per drink type (water, tea, coffee, milk)
+- History - past days and what you drank / edit records
+- Statistics - weekly chart and summary
+- Ranks / achievements - hydration evolution tiers (Beginner → Poseidon), unlock by logging, goal days, volume; popup when you rank up, optional share from there
+- Share today's progress from Account - link with ml count; opens the app if installed, otherwise a hosting landing page (dev + prod)
+- Daily goal from weight or set manually in Preferences
+- Push reminders (FCM), quiet hours, topic subscription
 - Local scheduled reminders, timezone-aware
-- Remote Config for switching the progress indicator style (circular / linear) and showing an emergency banner without shipping a new build
-- Shareable "today" link that opens straight into the app (App Links via Firebase Hosting, dev + prod)
-- Profile + avatar upload to Firebase Storage
-- Account deletion flow with reauthentication
-- EN / UK localisation
+- Remote Config - switch progress ring style (circular / linear) or show an emergency banner without a new build
+- My Profile - name, weight, gender, avatar 
+- Account header - avatar with gallery / camera / remove, saves straight away
+- More - language (EN / UK), vibration on/off, log out, delete account (clears Firestore data, Storage files)
 - Light / dark theme
 - Firebase Analytics screen tracking and Crashlytics non-fatal reporting
-- Offline banner when the device loses connectivity
+- Offline banner when connectivity drops
+- EN / UK localisation
 
 ## 🛠 Tech Stack
 
@@ -43,21 +49,26 @@ A Flutter app for tracking daily water intake. Backed by Firebase, with real-tim
 ├── android/                  Android platform code, Gradle config
 ├── ios/                      iOS platform code, CocoaPods
 ├── assets/                   Fonts, images, SVGs, i18n JSON, runtime config
+├── public/                   Firebase Hosting — share page, password reset, app links
 ├── docs/                     Internal notes (flavors etc.)
 ├── lib/
 │   ├── common/               App-wide widgets, services, utils, DI, router
 │   ├── data/repositories/    Firestore / Storage / Messaging repositories
 │   ├── features/             Feature-first modules (cubit + screens + widgets)
 │   │   ├── account/
+│   │   ├── achievements/
 │   │   ├── auth/
+│   │   ├── deep_links/
 │   │   ├── home/
 │   │   ├── history/
+│   │   ├── login_security/
 │   │   ├── statistics/
 │   │   ├── preferences/
 │   │   ├── profile/
 │   │   ├── notifications/
 │   │   ├── locale/
 │   │   ├── theme/
+│   │   ├── vibration/
 │   │   └── ...
 │   ├── firebase/             Firebase services and models
 │   ├── network/              Dio client, interceptors, WebSocket
@@ -139,7 +150,20 @@ sh ./scripts/generate_l10n.sh
 sh ./scripts/generate_android_icons.sh
 ```
 
-### Deploy `.well-known/assetlinks.json` (App Links)
+### Regenerate hosting icons (share landing pages)
+
+```shell
+sh ./scripts/sync_hosting_app_icons.sh
+```
+
+### Deploy Firebase Hosting (share links, password reset, app links)
+
+```shell
+firebase deploy --only hosting -P prod
+firebase deploy --only hosting -P dev
+```
+
+Or the older helper (uses default project from `.firebaserc`):
 
 ```shell
 sh ./scripts/firebase_hosting_deploy.sh
