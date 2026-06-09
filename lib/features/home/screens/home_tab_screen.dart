@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:daily_water_tracker/common/l10n/date_format_l10n.dart';
 import 'package:daily_water_tracker/common/widgets/app_bottom_nav_bar.dart';
 import 'package:daily_water_tracker/common/widgets/app_snackbar.dart';
 import 'package:daily_water_tracker/common/widgets/main_shell_tab_body.dart';
@@ -215,10 +216,7 @@ class _TopDateBar extends StatelessWidget {
           'EEEE',
           locale,
         ).format(state.selectedDate);
-        final dateLine = DateFormat(
-          'd MMMM, y',
-          locale,
-        ).format(state.selectedDate);
+        final dateLine = formatCalendarDateLine(state.selectedDate, locale);
         final cubit = context.read<HomeCubit>();
 
         return HomeDateBar(
