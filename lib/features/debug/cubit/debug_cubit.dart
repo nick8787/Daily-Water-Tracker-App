@@ -1,5 +1,6 @@
 import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/data/repositories/messaging_repository.dart';
+import 'package:daily_water_tracker/firebase/fcm_topics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'debug_state.dart';
@@ -38,7 +39,7 @@ class DebugCubit extends Cubit<DebugState> {
     if (state.topicBusy) return;
     emit(state.copyWith(topicBusy: true));
     try {
-      await _messaging.subscribeToTopic('reminder');
+      await _messaging.subscribeToTopic(FcmTopics.broadcast);
       emit(state.copyWith(reminderSubscribed: true));
     } finally {
       emit(state.copyWith(topicBusy: false));
@@ -49,7 +50,7 @@ class DebugCubit extends Cubit<DebugState> {
     if (state.topicBusy) return;
     emit(state.copyWith(topicBusy: true));
     try {
-      await _messaging.unsubscribeFromTopic('reminder');
+      await _messaging.unsubscribeFromTopic(FcmTopics.broadcast);
       emit(state.copyWith(reminderSubscribed: false));
     } finally {
       emit(state.copyWith(topicBusy: false));

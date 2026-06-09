@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:daily_water_tracker/data/repositories/firestore_repository.dart';
+import 'package:daily_water_tracker/firebase/fcm_topics.dart';
 import 'package:daily_water_tracker/firebase/services/auth_service.dart';
 import 'package:daily_water_tracker/firebase/services/local_notifications_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,15 +29,33 @@ class MessagingRepository {
   final LocalNotificationsService _localNotifications;
 
   StreamSubscription<String>? _tokenRefreshSub;
+  Timer? _deferredRegistrationTimer;
   bool _started = false;
-  bool _reminderTopicSubscribed = false;
+  bool _platformConfigured = false;
+  bool _broadcastTopicSubscribed = false;
   String? _pendingRoute;
-  bool? _lastSyncedReminderTopicSubscribed;
   Future<void>? _coldStartHydration;
 
   static const String dataRouteKey = 'route';
+  static const Duration _deferredRegistrationDelay = Duration(seconds: 15);
+  static const Duration _tokenResolveTimeout = Duration(seconds: 30);
 
-  /// Reads the FCM message that launched the app from terminated state (if any)
+  /// One-time FCM platform setup (safe to call multiple times).
+  Future<void> configurePlatformMessaging() async {
+    if (_platformConfigured || kIsWeb) return;
+    _platformConfigured = true;
+    try {
+      await _messaging.setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    } catch (e, st) {
+      logCaughtWarning('MessagingRepository.configurePlatformMessaging', e, st);
+    }
+  }
+
+  /// Reads the FCM message that launched the app from terminated state (if any).
   Future<void> hydratePendingRouteFromColdStart() {
     return _coldStartHydration ??= () async {
       try {
@@ -53,30 +72,40 @@ class MessagingRepository {
     return _messaging.requestPermission();
   }
 
-  /// Runtime POST_NOTIFICATIONS (Android 13+) + FCM/APNs prompt. Call only when user is signed in.
+  /// Full push registration for a signed-in user
   Future<void> setupPushNotificationsForSignedInUser() async {
     if (_authService.currentUser == null) return;
     try {
-      if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-        await Permission.notification.request();
-      }
-      if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
-        await _localNotifications.requestOsNotificationPermissions();
-      }
-      await requestPermission();
+      await configurePlatformMessaging();
+      await _requestPermissionsBestEffort();
       await startTokenSync();
-      await syncTokenNow();
-      await syncReminderTopicWithPreferences();
+      await ensureBroadcastRegistration();
+      _scheduleDeferredRegistrationRetry();
     } catch (e, st) {
       logCaughtError('MessagingRepository.setupPushNotificationsForSignedInUser', e, st);
     }
   }
 
-  Future<void> teardownPushForSignedOutUser() async {
+  /// Idempotent token persist + broadcast topic subscribe (safe on every resume)
+  Future<void> ensureBroadcastRegistration() async {
+    if (_authService.currentUser == null) return;
     try {
-      _lastSyncedReminderTopicSubscribed = null;
-      if (_reminderTopicSubscribed) {
-        await unsubscribeFromTopic('reminder');
+      await configurePlatformMessaging();
+      if (!_started) {
+        await startTokenSync();
+      }
+      await syncTokenNow();
+      await _ensureBroadcastTopicSubscribed();
+    } catch (e, st) {
+      logCaughtError('MessagingRepository.ensureBroadcastRegistration', e, st);
+    }
+  }
+
+  Future<void> teardownPushForSignedOutUser() async {
+    _cancelDeferredRegistrationRetry();
+    try {
+      if (_broadcastTopicSubscribed) {
+        await unsubscribeFromTopic(FcmTopics.broadcast);
       }
     } catch (e, st) {
       logCaughtWarning('MessagingRepository.teardownPushForSignedOutUser: unsubscribe', e, st);
@@ -95,6 +124,7 @@ class MessagingRepository {
 
     _tokenRefreshSub = _messaging.onTokenRefresh.listen((token) async {
       await _persistToken(token);
+      await _ensureBroadcastTopicSubscribed();
     });
   }
 
@@ -110,12 +140,14 @@ class MessagingRepository {
     if (user == null) return;
     final token = await _resolveFcmToken();
     await _persistToken(token);
+    if ((token ?? '').trim().isEmpty) {
+      _scheduleDeferredRegistrationRetry();
+    }
   }
 
   /// On iOS, FCM [getToken] returns null until APNs registration completes.
-  /// Auth provider (Apple / email / Google) does not matter — only timing does.
   Future<String?> _resolveFcmToken({
-    Duration timeout = const Duration(seconds: 15),
+    Duration timeout = _tokenResolveTimeout,
     Duration pollInterval = const Duration(milliseconds: 500),
   }) async {
     final deadline = DateTime.now().add(timeout);
@@ -153,29 +185,9 @@ class MessagingRepository {
     }
   }
 
-  /// Subscribes to `reminder` when Firestore allows reminders and OS permission is granted.
-  Future<void> syncReminderTopicWithPreferences() async {
-    if (_authService.currentUser == null) {
-      _lastSyncedReminderTopicSubscribed = null;
-      return;
-    }
-    try {
-      final profile = await _firestoreRepository.getUserProfile();
-      final os = await _localNotifications.areOsNotificationsEnabled();
-      final pref = profile?.notificationsEnabled ?? true;
-      final shouldSubscribe = pref && os;
-
-      if (!shouldSubscribe) {
-        await unsubscribeFromTopic('reminder');
-        _lastSyncedReminderTopicSubscribed = false;
-        return;
-      }
-      if (_lastSyncedReminderTopicSubscribed == true) return;
-      await subscribeToTopic('reminder');
-      _lastSyncedReminderTopicSubscribed = true;
-    } catch (e, st) {
-      logCaughtError('MessagingRepository.syncReminderTopicWithPreferences', e, st);
-    }
+  Future<void> _ensureBroadcastTopicSubscribed() async {
+    if (_authService.currentUser == null) return;
+    await subscribeToTopic(FcmTopics.broadcast);
   }
 
   /// Whether FCM reminder pushes should be surfaced (foreground mirror / UI).
@@ -217,26 +229,52 @@ class MessagingRepository {
   }
 
   Future<void> subscribeToTopic(String topic) async {
-    if (topic == 'reminder') {
-      _lastSyncedReminderTopicSubscribed = null;
-    }
     await _messaging.subscribeToTopic(topic);
-    if (topic == 'reminder') {
-      _reminderTopicSubscribed = true;
+    if (topic == FcmTopics.broadcast) {
+      _broadcastTopicSubscribed = true;
     }
   }
 
   Future<void> unsubscribeFromTopic(String topic) async {
-    if (topic == 'reminder') {
-      _lastSyncedReminderTopicSubscribed = null;
-    }
     await _messaging.unsubscribeFromTopic(topic);
-    if (topic == 'reminder') {
-      _reminderTopicSubscribed = false;
+    if (topic == FcmTopics.broadcast) {
+      _broadcastTopicSubscribed = false;
     }
   }
 
-  bool get isReminderTopicSubscribed => _reminderTopicSubscribed;
+  bool get isReminderTopicSubscribed => _broadcastTopicSubscribed;
 
   User? get currentUser => _authService.currentUser;
+
+  Future<void> _requestPermissionsBestEffort() async {
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+      await Permission.notification.request();
+    }
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
+      await _localNotifications.requestOsNotificationPermissions();
+    }
+    await requestPermission();
+  }
+
+  void _scheduleDeferredRegistrationRetry() {
+    if (_authService.currentUser == null) return;
+    _deferredRegistrationTimer?.cancel();
+    _deferredRegistrationTimer = Timer(_deferredRegistrationDelay, () {
+      unawaited(_runDeferredRegistrationRetry());
+    });
+  }
+
+  void _cancelDeferredRegistrationRetry() {
+    _deferredRegistrationTimer?.cancel();
+    _deferredRegistrationTimer = null;
+  }
+
+  Future<void> _runDeferredRegistrationRetry() async {
+    if (_authService.currentUser == null) return;
+    try {
+      await ensureBroadcastRegistration();
+    } catch (e, st) {
+      logCaughtWarning('MessagingRepository._runDeferredRegistrationRetry', e, st);
+    }
+  }
 }

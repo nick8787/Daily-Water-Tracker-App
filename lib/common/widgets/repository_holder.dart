@@ -53,6 +53,7 @@ class RepositoriesHolder extends StatelessWidget {
               localNotifications:
                   InjectorModule.locator<LocalNotificationsService>(),
             );
+            unawaited(repository.configurePlatformMessaging());
             // Hydrate the cold-start pending route before Splash consumes it.
             unawaited(repository.hydratePendingRouteFromColdStart());
             return repository;
@@ -68,8 +69,7 @@ class RepositoriesHolder extends StatelessWidget {
               localNotifications:
                   InjectorModule.locator<LocalNotificationsService>(),
               isDevBuild: () => flutterFlavor.isDev,
-              onAfterReminderPipeline:
-                  messaging.syncReminderTopicWithPreferences,
+              onAfterReminderPipeline: messaging.ensureBroadcastRegistration,
             );
           },
         ),
