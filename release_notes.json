@@ -1,6 +1,7 @@
 [
   {
     "language": "en-US",
-    "text": "v1.0.1 - first production release.\n- Daily water intake tracking\n- Firebase auth and sync\n- CI/CD via Codemagic"
+    "text": "- Fix google sign in on Android.\n- Fix FCM tokens in iOS\n- Another minor improvements"
   }
 ]
+
