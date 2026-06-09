@@ -1,7 +1,7 @@
+import 'package:daily_water_tracker/common/l10n/date_format_l10n.dart';
 import 'package:daily_water_tracker/features/profile/cubit/profile_state.dart';
 import 'package:daily_water_tracker/features/profile/models/profile_photo_draft.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
 
 String seedProfileFullName({
   required String? firstName,
@@ -100,10 +100,10 @@ bool profileAvatarShowsRemoveAction({
   return (loaded.profile.photoId ?? '').trim().isNotEmpty;
 }
 
-String profileMemberSince(User? authUser) {
+String profileMemberSince(User? authUser, String localeTag) {
   final created = authUser?.metadata.creationTime;
   if (created == null) return '-';
-  return DateFormat('d MMM, y').format(created);
+  return formatCalendarDateLine(created, localeTag);
 }
 
 int profileTotalDays(User? authUser) {

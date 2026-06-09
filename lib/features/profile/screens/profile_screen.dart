@@ -152,7 +152,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ProfileSectionCard(
                           title: LocaleKeys.profile_section_stats.tr(),
                           child: ProfileStatTiles(
-                            memberSince: profileMemberSince(authUser),
+                            memberSince: profileMemberSince(
+                              authUser,
+                              Localizations.localeOf(context).toString(),
+                            ),
                             totalDays: profileTotalDays(authUser).toString(),
                           ),
                         ),

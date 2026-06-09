@@ -1,7 +1,7 @@
 import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:intl/intl.dart';
 
-/// Language code for `intl` (`uk`, `en`), not a full BCP-47 tag like `uk_UA`.
+/// Language code for `intl` (`uk`, `en`)
 String intlLanguageCode(String localeTag) {
   final tag = localeTag.trim();
   if (tag.isEmpty) return 'en';
@@ -30,10 +30,16 @@ String formatWeekdayChartLetter(DateTime date, String localeTag) {
   return '?';
 }
 
-/// Full weekday name (e.g. Thursday / четвер).
+/// Full weekday name
 String formatWeekdayLong(DateTime date, String localeTag) {
   final lang = intlLanguageCode(localeTag);
   return DateFormat('EEEE', lang).format(date);
+}
+
+/// Calendar date
+String formatCalendarDateLine(DateTime date, String localeTag) {
+  final locale = localeTag.trim().isEmpty ? 'en' : localeTag.trim();
+  return DateFormat('d MMMM, y', locale).format(date);
 }
 
 String _firstLetterUpper(String value) {
