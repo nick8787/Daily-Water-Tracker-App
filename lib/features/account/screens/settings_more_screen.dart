@@ -61,53 +61,47 @@ class _SettingsMoreView extends StatelessWidget {
           localeKey: LocaleKeys.account_menu_more,
         ),
       ),
-      body: Column(
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
         children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
-              children: [
-                AccountMenuCard(
-                  children: [
-                    AccountMenuItem(
-                      leadingAsset: icProfileSecurity,
-                      title: LocaleKeys.account_menu_login_security.tr(),
-                      hapticOnTap: true,
-                      onTap: () => context.push(loginSecurityRoute),
-                    ),
-                    const AccountMenuDivider(),
-                    AccountMenuItem(
-                      leadingIcon: Icons.language_rounded,
-                      title: LocaleKeys.account_menu_language.tr(),
-                      hapticOnTap: true,
-                      onTap: () => AccountLanguageActions.onLanguageTap(context),
-                    ),
-                    const AccountMenuDivider(),
-                    AccountMenuItem(
-                      leadingIcon: Icons.vibration_rounded,
-                      title: LocaleKeys.account_menu_use_vibration.tr(),
-                      showChevron: false,
-                      trailing: CupertinoSwitch(
-                        value: vibrationEnabled,
-                        activeTrackColor: brandBlue,
-                        onChanged: (value) =>
-                            context.read<VibrationCubit>().setEnabled(value),
-                      ),
-                      onTap: () => context.read<VibrationCubit>().setEnabled(
-                        !vibrationEnabled,
-                      ),
-                    ),
-                  ],
+          AccountMenuCard(
+            children: [
+              AccountMenuItem(
+                leadingAsset: icProfileSecurity,
+                title: LocaleKeys.account_menu_login_security.tr(),
+                hapticOnTap: true,
+                onTap: () => context.push(loginSecurityRoute),
+              ),
+              const AccountMenuDivider(),
+              AccountMenuItem(
+                leadingIcon: Icons.language_rounded,
+                title: LocaleKeys.account_menu_language.tr(),
+                hapticOnTap: true,
+                onTap: () => AccountLanguageActions.onLanguageTap(context),
+              ),
+              const AccountMenuDivider(),
+              AccountMenuItem(
+                leadingIcon: Icons.vibration_rounded,
+                title: LocaleKeys.account_menu_use_vibration.tr(),
+                showChevron: false,
+                trailing: CupertinoSwitch(
+                  value: vibrationEnabled,
+                  activeTrackColor: brandBlue,
+                  onChanged: (value) =>
+                      context.read<VibrationCubit>().setEnabled(value),
                 ),
-                const SizedBox(height: SettingsMoreScreen._sessionActionsTopGap),
-                AccountSessionActionsFooter(
-                  actionsEnabled: !sessionBusy,
-                  onLogOutPressed: () => AccountActions.confirmAndLogOut(context),
-                  onDeleteAccountPressed: () =>
-                      AccountActions.confirmAndDeleteAccount(context),
+                onTap: () => context.read<VibrationCubit>().setEnabled(
+                  !vibrationEnabled,
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
+          const SizedBox(height: SettingsMoreScreen._sessionActionsTopGap),
+          AccountSessionActionsFooter(
+            actionsEnabled: !sessionBusy,
+            onLogOutPressed: () => AccountActions.confirmAndLogOut(context),
+            onDeleteAccountPressed: () =>
+                AccountActions.confirmAndDeleteAccount(context),
           ),
           const AppBuildInfoLabel(),
         ],

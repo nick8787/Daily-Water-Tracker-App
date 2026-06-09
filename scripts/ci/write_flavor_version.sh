@@ -22,4 +22,9 @@ FLUTTER_BUILD_NAME=${VERSION_NAME}
 FLUTTER_BUILD_NUMBER=${BUILD_NUMBER}
 EOF
 
+# Keep pubspec aligned with dev so `flutter run` / Generated.xcconfig match flavor files.
+if [ "$FLAVOR" = "dev" ] && [ -f "$ROOT/pubspec.yaml" ]; then
+  perl -i -pe "s/^version: .*/version: ${VERSION_NAME}+${BUILD_NUMBER}/" "$ROOT/pubspec.yaml"
+fi
+
 echo "Set ${FLAVOR} version to ${VERSION_NAME} (${BUILD_NUMBER})"
