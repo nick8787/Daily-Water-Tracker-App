@@ -45,7 +45,8 @@ class SplashCubit extends Cubit<SplashState> {
               _networkOpTimeout,
               onTimeout: () => null,
             );
-        unawaited(_messagingRepository.syncTokenNow());
+        // Full FCM registration can take longer on iOS (APNs); deferred retry covers edge cases.
+        unawaited(_messagingRepository.setupPushNotificationsForSignedInUser());
       }
 
       final elapsed = DateTime.now().difference(start);

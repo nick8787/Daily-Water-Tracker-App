@@ -62,6 +62,7 @@ class PushSessionCubit extends Cubit<PushSessionState> {
     await _localNotifications.requestOsNotificationPermissions();
 
     if (_auth.currentUser != null) {
+      await _messaging.ensureBroadcastRegistration();
       await _reminderScheduler.rescheduleReminders();
     }
 
@@ -137,6 +138,12 @@ class PushSessionCubit extends Cubit<PushSessionState> {
     await Future<void>.delayed(_signInSetupDelay);
     await _messaging.setupPushNotificationsForSignedInUser();
     await _reminderScheduler.rescheduleReminders();
+  }
+
+  /// Re-sync FCM token and broadcast topic when the app returns to foreground.
+  Future<void> onAppResumed() async {
+    if (_auth.currentUser == null) return;
+    await _messaging.ensureBroadcastRegistration();
   }
 
   @override

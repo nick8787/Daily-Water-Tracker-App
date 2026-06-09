@@ -17,14 +17,28 @@ class PushSessionListener extends StatefulWidget {
   State<PushSessionListener> createState() => _PushSessionListenerState();
 }
 
-class _PushSessionListenerState extends State<PushSessionListener> {
+class _PushSessionListenerState extends State<PushSessionListener>
+    with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<PushSessionCubit>().initializeColdStart();
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed || !mounted) return;
+    context.read<PushSessionCubit>().onAppResumed();
   }
 
   static bool _listenWhen(PushSessionState prev, PushSessionState next) {
