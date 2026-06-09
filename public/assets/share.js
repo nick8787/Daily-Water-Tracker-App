@@ -77,11 +77,35 @@
     return env === "dev" ? "/assets/app-icon-dev.png" : "/assets/app-icon-prod.png";
   }
 
-  function applyAppIcons(env) {
-    var path = appIconPath(env);
+  function faviconPath(env) {
+    return env === "dev" ? "/assets/favicon-dev.png" : "/assets/favicon-prod.png";
+  }
+
+  function appleTouchIconPath(env) {
+    return env === "dev"
+      ? "/assets/apple-touch-icon-dev.png"
+      : "/assets/apple-touch-icon-prod.png";
+  }
+
+  function ogShareImagePath(env) {
+    return env === "dev" ? "/assets/og-share-dev.png" : "/assets/og-share-prod.png";
+  }
+
+  function applyBrandAssets(env) {
+    var iconPath = appIconPath(env);
     var nodes = document.querySelectorAll("[data-app-icon]");
     for (var i = 0; i < nodes.length; i += 1) {
-      nodes[i].setAttribute("src", path);
+      nodes[i].setAttribute("src", iconPath);
+    }
+
+    var favicon = document.querySelector('link[rel="icon"]');
+    if (favicon) {
+      favicon.setAttribute("href", faviconPath(env));
+    }
+
+    var appleTouch = document.querySelector('link[rel="apple-touch-icon"]');
+    if (appleTouch) {
+      appleTouch.setAttribute("href", appleTouchIconPath(env));
     }
   }
 
@@ -195,7 +219,7 @@
     if (el) el.setAttribute("href", value);
   }
 
-  function syncSocialMeta(lang, ml) {
+  function syncSocialMeta(lang, ml, env) {
     var origin = window.location.origin;
     var search = window.location.search || "";
     var pageUrl = origin + "/share" + search;
@@ -206,14 +230,17 @@
     var description = ml
       ? formatMl(ml, lang) + " ml — " + t(lang, "drankToday")
       : t(lang, "genericMessage");
+    var ogImage = origin + ogShareImagePath(env);
 
     document.title = title;
     setMetaContent('meta[name="description"]', description);
     setMetaContent('meta[property="og:title"]', title);
     setMetaContent('meta[property="og:description"]', description);
     setMetaContent('meta[property="og:url"]', pageUrl);
+    setMetaContent('meta[property="og:image"]', ogImage);
     setMetaContent('meta[name="twitter:title"]', title);
     setMetaContent('meta[name="twitter:description"]', description);
+    setMetaContent('meta[name="twitter:image"]', ogImage);
     setLinkHref('link[rel="canonical"]', pageUrl);
   }
 
@@ -226,8 +253,8 @@
 
     document.documentElement.lang = lang === "uk" ? "uk" : "en";
     document.body.dataset.lang = lang;
-    syncSocialMeta(lang, ml);
-    applyAppIcons(env);
+    syncSocialMeta(lang, ml, env);
+    applyBrandAssets(env);
 
     setText("brand-title", t(lang, "appName"));
     setText("card-eyebrow", t(lang, "sharedProgress"));
@@ -273,7 +300,7 @@
     document.documentElement.lang = lang === "uk" ? "uk" : "en";
     document.body.dataset.lang = lang;
     document.title = t(lang, "appName");
-    applyAppIcons(env);
+    applyBrandAssets(env);
 
     setText("brand-title", t(lang, "appName"));
     setText("hero-title", t(lang, "appName"));
