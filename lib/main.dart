@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,28 +25,9 @@ Future<void> main() async {
 
     await AppBootstrapper().bootstrap();
 
+    CrashlyticsBootstrapper.wireGlobalFatalHandlers();
+
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-
-    FlutterError.onError = (details) {
-      recordCrashlyticsError(
-        details.exception,
-        StackTrace.current,
-        details.stack,
-        reason: 'FlutterError.onError',
-        message: details.exceptionAsString(),
-      );
-    };
-
-    PlatformDispatcher.instance.onError = (error, stack) {
-      recordCrashlyticsError(
-        error,
-        StackTrace.current,
-        stack,
-        reason: 'PlatformDispatcher.instance.onError',
-        message: error.toString(),
-      );
-      return true;
-    };
 
     final startLocale = LocaleResolver.resolveFromPlatform();
 
@@ -69,6 +51,10 @@ Future<void> main() async {
       ),
     );
   }, (e, st) {
+    if (!kIsWeb) {
+      FirebaseCrashlytics.instance.recordError(e, st, fatal: true);
+      return;
+    }
     basicRecordCrashlyticsError(e, st, reason: 'runZonedGuarded');
   });
 }

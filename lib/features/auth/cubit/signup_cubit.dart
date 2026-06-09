@@ -224,6 +224,12 @@ recordCrashlyticsError(
         return LocaleKeys.auth_error_too_many_requests;
       case 'missing-google-id-token':
         return LocaleKeys.auth_error_google_misconfigured;
+      case 'google-sign-in-incomplete':
+        return LocaleKeys.auth_error_google_api_10;
+      case 'google-sign-in-interrupted':
+      case 'google-sign-in-unavailable':
+      case 'google-sign-in-failed':
+        return LocaleKeys.auth_error_google_failed;
       case 'facebook-login-failed':
         return LocaleKeys.auth_error_facebook_failed;
       case 'missing-apple-identity-token':
