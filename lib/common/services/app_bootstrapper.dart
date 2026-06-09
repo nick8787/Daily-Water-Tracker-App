@@ -2,6 +2,7 @@ import 'package:daily_water_tracker/common/di/injector_module.dart';
 import 'package:daily_water_tracker/common/utils/crashlytics.dart';
 import 'package:daily_water_tracker/common/utils/utils.dart';
 import 'package:daily_water_tracker/features/deep_links/services/water_deep_link_service.dart';
+import 'package:daily_water_tracker/firebase/services/auth_service.dart';
 import 'package:daily_water_tracker/firebase/services/local_notifications_service.dart';
 import 'package:daily_water_tracker/firebase/services/reminder_scheduler_service.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -43,6 +44,7 @@ class AppBootstrapper {
     }
 
     await InjectorModule.inject();
+    await InjectorModule.locator<AuthService>().ensureGoogleSignInInitialized();
     await InjectorModule.locator<WaterDeepLinkService>().captureInitialUriEarly();
 
     await ReminderSchedulerService.ensureTimeZonesInitialized();

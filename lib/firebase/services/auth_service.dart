@@ -7,6 +7,7 @@ import 'package:daily_water_tracker/common/services/app_bootstrapper.dart';
 import 'package:daily_water_tracker/common/services/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -21,6 +22,9 @@ class AuthService {
     required this.googleServerClientId,
     required FirebaseAuth auth,
   }) : _auth = auth;
+
+  bool _googleSignInInitialized = false;
+  Future<void>? _googleSignInInitFuture;
 
   User? get currentUser => _auth.currentUser;
 
@@ -91,29 +95,45 @@ class AuthService {
     return _auth.confirmPasswordReset(code: code, newPassword: newPassword);
   }
 
-  Future<UserCredential> signInWithGoogle() async {
-    // Ensure Google Sign-In has a client ID on iOS. If `GIDClientID` is missing
-    // from Info.plist (or GoogleService-Info.plist is not present), the plugin
-    // throws "No active configuration".
-    if (Platform.isIOS || Platform.isMacOS) {
-      final clientId = Firebase.app().options.iosClientId;
-      if (clientId != null && clientId.isNotEmpty) {
-        await GoogleSignIn.instance.initialize(clientId: clientId);
+  /// One-time Google Sign-In SDK setup. Safe to call multiple times.
+  Future<void> ensureGoogleSignInInitialized() {
+    return _googleSignInInitFuture ??= _initializeGoogleSignIn();
+  }
+
+  Future<void> _initializeGoogleSignIn() async {
+    if (_googleSignInInitialized || kIsWeb) return;
+
+    try {
+      if (Platform.isIOS || Platform.isMacOS) {
+        final clientId = Firebase.app().options.iosClientId;
+        if (clientId != null && clientId.isNotEmpty) {
+          await GoogleSignIn.instance.initialize(clientId: clientId);
+        }
+      } else if (Platform.isAndroid) {
+        // Web OAuth client ID is required for Credential Manager + Firebase Auth.
+        await GoogleSignIn.instance.initialize(
+          serverClientId: googleServerClientId,
+        );
       }
-    } else if (Platform.isAndroid) {
-      await GoogleSignIn.instance.initialize(serverClientId: googleServerClientId);
+      _googleSignInInitialized = true;
+    } catch (e, st) {
+      _googleSignInInitFuture = null;
+      logCaughtError('AuthService._initializeGoogleSignIn', e, st);
+      rethrow;
     }
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    await ensureGoogleSignInInitialized();
 
     late final GoogleSignInAccount googleUser;
     try {
       googleUser = await GoogleSignIn.instance.authenticate();
     } on GoogleSignInException catch (e, st) {
-      if (e.code == GoogleSignInExceptionCode.canceled) {
-        throw FirebaseAuthException(code: 'sign-in-cancelled');
-      }
       logCaughtError('AuthService.signInWithGoogle: GoogleSignInException', e, st);
-      rethrow;
+      throw _mapGoogleSignInException(e);
     }
+
     final googleAuth = googleUser.authentication;
 
     if (googleAuth.idToken == null) {
@@ -128,7 +148,56 @@ class AuthService {
       idToken: googleAuth.idToken,
     );
 
-    return _auth.signInWithCredential(credential);
+    try {
+      return await _auth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e, st) {
+      logCaughtError('AuthService.signInWithGoogle: FirebaseAuthException', e, st);
+      rethrow;
+    }
+  }
+
+  FirebaseAuthException _mapGoogleSignInException(GoogleSignInException e) {
+    switch (e.code) {
+      case GoogleSignInExceptionCode.canceled:
+        // On Android, Credential Manager often reports SHA/config errors as
+        // "canceled" after the user picks an account — do not swallow silently.
+        if (Platform.isAndroid) {
+          return FirebaseAuthException(
+            code: 'google-sign-in-incomplete',
+            message:
+                'Google sign-in did not finish. If you selected an account, verify release SHA-1/SHA-256 in Firebase and google-services.json.',
+          );
+        }
+        return FirebaseAuthException(code: 'sign-in-cancelled');
+      case GoogleSignInExceptionCode.interrupted:
+        return FirebaseAuthException(
+          code: 'google-sign-in-interrupted',
+          message: 'Google sign-in was interrupted. Please try again.',
+        );
+      case GoogleSignInExceptionCode.clientConfigurationError:
+      case GoogleSignInExceptionCode.providerConfigurationError:
+        return FirebaseAuthException(
+          code: 'missing-google-id-token',
+          message: e.description ??
+              'Google Sign-In is misconfigured for this build.',
+        );
+      case GoogleSignInExceptionCode.uiUnavailable:
+        return FirebaseAuthException(
+          code: 'google-sign-in-unavailable',
+          message: 'Google sign-in UI is unavailable on this device.',
+        );
+      case GoogleSignInExceptionCode.unknownError:
+        return FirebaseAuthException(
+          code: 'google-sign-in-failed',
+          message: e.description ?? 'Google sign-in failed.',
+        );
+      // ignore: no_default_cases
+      default:
+        return FirebaseAuthException(
+          code: 'google-sign-in-failed',
+          message: e.description ?? 'Google sign-in failed.',
+        );
+    }
   }
 
   static const _nonceChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
