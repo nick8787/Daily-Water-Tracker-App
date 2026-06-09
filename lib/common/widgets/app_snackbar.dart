@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:daily_water_tracker/features/theme/shadow.dart';
 import 'package:daily_water_tracker/features/theme/theme_colors.dart';
 import 'package:daily_water_tracker/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -8,6 +9,15 @@ import 'package:flutter/services.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class AppSnackBar {
+  static const double _horizontalInset = 16;
+  static const double _topInset = 14;
+  static const double _contentPaddingH = 16;
+  static const double _contentPaddingV = 14;
+  static const double _minHeight = 66;
+  static const double _radius = 18;
+  static const double _iconBoxSize = 40;
+  static const double _iconSize = 23;
+
   static OverlayEntry? _currentOverlay;
   static AnimationController? _animationController;
   static Timer? _dismissTimer;
@@ -44,7 +54,7 @@ class AppSnackBar {
     );
   }
 
-  /// Success toast stays visible a bit longer so users can read the hydration math.
+  /// Success toast stays visible a bit longer so users can read the hydration math
   static bool showSuccess(
     BuildContext context, {
     required String title,
@@ -63,7 +73,7 @@ class AppSnackBar {
     );
   }
 
-  /// Rank ascension retention teaser — same top slide-in as other app toasts.
+  /// Rank ascension retention teaser
   static bool showRankRetentionTeaser(
     BuildContext context, {
     required String title,
@@ -98,9 +108,6 @@ class AppSnackBar {
 
     _removeCurrentOverlay(immediate: true);
 
-    // Do not use [Overlay.of] alone: if [context] is the Overlay's own element,
-    // ancestor lookup fails ("No Overlay widget found"). Prefer the Navigator's
-    // [OverlayState], then [Overlay.maybeOf].
     final NavigatorState? nav =
         Navigator.maybeOf(context, rootNavigator: true) ??
         Navigator.maybeOf(context);
@@ -157,9 +164,9 @@ class AppSnackBar {
         final scheme = Theme.of(context).colorScheme;
 
         return Positioned(
-          top: topPadding + 12,
-          left: 16,
-          right: 16,
+          top: topPadding + _topInset,
+          left: _horizontalInset,
+          right: _horizontalInset,
           child: Material(
             color: Colors.transparent,
             child: SlideTransition(
@@ -172,55 +179,80 @@ class AppSnackBar {
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: background,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: borderColor),
+                    borderRadius: BorderRadius.circular(_radius),
+                    border: Border.all(
+                      color: borderColor,
+                      width: 1.2,
+                    ),
                     boxShadow: [
+                      ...AppShadows.softElevation(alpha: 0.10),
                       BoxShadow(
-                        color: scheme.shadow.withValues(alpha: 0.10),
-                        blurRadius: 24,
-                        offset: const Offset(0, 10),
+                        color: scheme.shadow.withValues(alpha: 0.14),
+                        blurRadius: 28,
+                        offset: const Offset(0, 12),
                       ),
                     ],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 12,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 2, right: 12),
-                          child: Icon(icon, color: iconColor, size: 22),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                title,
-                                style: Theme.of(context).textTheme.titleSmall
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w800,
-                                    ),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: _minHeight),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: _contentPaddingH,
+                        vertical: _contentPaddingV,
+                      ),
+                      child: Row(
+                        children: [
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: iconColor.withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(13),
+                            ),
+                            child: SizedBox(
+                              width: _iconBoxSize,
+                              height: _iconBoxSize,
+                              child: Icon(
+                                icon,
+                                color: iconColor,
+                                size: _iconSize,
                               ),
-                              const SizedBox(height: 3),
-                              Text(
-                                message,
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      color: scheme.onSurface.withValues(
-                                        alpha: 0.80,
-                                      ),
-                                      height: 1.15,
-                                    ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  title,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w800,
+                                        letterSpacing: -0.2,
+                                        height: 1.2,
+                                      ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  message,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: scheme.onSurface.withValues(
+                                          alpha: 0.74,
+                                        ),
+                                        height: 1.35,
+                                        letterSpacing: -0.1,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
