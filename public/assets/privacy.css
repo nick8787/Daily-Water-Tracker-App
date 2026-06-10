@@ -1,0 +1,135 @@
+@import url("/assets/share.css");
+
+.page__inner--legal {
+  max-width: 520px;
+}
+
+.legal-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 28px 24px 32px;
+  text-align: left;
+}
+
+.legal-card__header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.legal-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: rgba(18, 160, 230, 0.12);
+  color: var(--brand-blue);
+}
+
+.legal-card__icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.legal-card__title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-secondary);
+}
+
+.legal-card__updated {
+  margin: 10px 0 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.legal-card__updated strong {
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+
+.legal-card__intro {
+  margin: 0 0 24px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  white-space: pre-line;
+}
+
+.legal-section + .legal-section {
+  margin-top: 22px;
+}
+
+.legal-section__title {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+}
+
+.legal-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legal-list li {
+  position: relative;
+  margin: 0 0 10px;
+  padding-left: 18px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.legal-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-blue);
+}
+
+.legal-contact {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.legal-contact a {
+  color: var(--brand-blue);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.legal-contact a:hover {
+  text-decoration: underline;
+}
+
+.legal-footer {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.legal-footer a {
+  color: var(--brand-blue);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.legal-footer a:hover {
+  text-decoration: underline;
+}
