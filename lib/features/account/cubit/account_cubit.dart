@@ -205,12 +205,19 @@ class AccountCubit extends Cubit<AccountState> {
         isNotificationPermissionBusy: false,
       ),
     );
-    unawaited(_messagingRepository.setupPushNotificationsForSignedInUser());
   }
 
   Future<void> refreshOsNotificationSync() async {
     emit(state.copyWith(isNotificationPermissionBusy: true));
-    await _recomputeNotifications(null);
+    final profile = await _firestoreRepository.getUserProfile();
+    await _recomputeNotifications(profile);
+
+    final pref = profile?.notificationsEnabled ?? true;
+    final os = await _localNotifications.areOsNotificationsEnabled();
+    if (pref && os) {
+      await _messagingRepository.setupPushNotificationsForSignedInUser();
+      await _reminderScheduler.rescheduleReminders();
+    }
   }
 
   Future<bool> setAppNotificationsEnabled(bool enable) async {
@@ -220,11 +227,18 @@ class AccountCubit extends Cubit<AccountState> {
       if (!enable) {
         await _firestoreRepository.updateUserProfile(notificationsEnabled: false);
         await _reminderScheduler.cancelAllReminders();
+        await _messagingRepository.pausePushDeliveryForUser();
         await _recomputeNotifications(null);
         return false;
       }
 
       var osGranted = await _localNotifications.areOsNotificationsEnabled();
+      if (!osGranted &&
+          !await _localNotifications.canRequestOsNotificationPermission()) {
+        await _recomputeNotifications(null);
+        return true;
+      }
+
       if (!osGranted) {
         osGranted = await _localNotifications.requestOsNotificationPermissions();
       }
@@ -255,7 +269,7 @@ class AccountCubit extends Cubit<AccountState> {
         reason: 'setAppNotificationsEnabled',
       );
       await _recomputeNotifications(null);
-      return true;
+      return false;
     }
   }
 

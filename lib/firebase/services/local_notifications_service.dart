@@ -141,6 +141,20 @@ class LocalNotificationsService {
     }
   }
 
+  /// Whether the OS prompt can still be shown (false → open system Settings)
+  Future<bool> canRequestOsNotificationPermission() async {
+    if (kIsWeb) return false;
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      try {
+        return !(await Permission.notification.status).isPermanentlyDenied;
+      } catch (e, s) {
+        _err(e, s);
+        return false;
+      }
+    }
+    return true;
+  }
+
   /// Requests OS notification permission. Returns whether alerts are allowed afterward.
   Future<bool> requestOsNotificationPermissions() async {
     if (kIsWeb) return false;

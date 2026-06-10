@@ -46,7 +46,11 @@ class SplashCubit extends Cubit<SplashState> {
               onTimeout: () => null,
             );
         // Full FCM registration can take longer on iOS (APNs); deferred retry covers edge cases.
-        unawaited(_messagingRepository.setupPushNotificationsForSignedInUser());
+        unawaited(
+          _messagingRepository.setupPushNotificationsForSignedInUser(
+            requestOsPermission: true,
+          ),
+        );
       }
 
       final elapsed = DateTime.now().difference(start);

@@ -442,7 +442,6 @@ abstract class  LocaleKeys {
   static const debug = 'debug';
   static const notifications_dialog_title = 'notifications.dialog.title';
   static const notifications_dialog_body = 'notifications.dialog.body';
-  static const notifications_dialog_not_now = 'notifications.dialog.not_now';
   static const notifications_dialog_open_settings = 'notifications.dialog.open_settings';
   static const notifications_dialog = 'notifications.dialog';
   static const notifications = 'notifications';
