@@ -651,7 +651,7 @@ class CodegenLoader extends AssetLoader{
     "privacy_policy": {
       "title": "Політика конфіденційності",
       "last_updated_label": "Останнє оновлення:",
-      "last_updated_date": "6 січня 2026 р.",
+      "last_updated_date": "6 січня 2025 р.",
       "intro": "Ця Політика конфіденційності описує, як ми збираємо, використовуємо та захищаємо вашу інформацію під час користування Daily Water Tracker і пов’язаними сервісами.\n\nМи використовуємо ваші дані для обліку гідратації, синхронізації прогресу між пристроями, необов’язкових нагадувань і покращення стабільності застосунку — не для сторонньої реклами.",
       "section_collect": "Що ми збираємо",
       "collect_account": "Дані облікового запису, які ви надаєте (наприклад, email, ім’я та фото профілю) під час входу або редагування профілю.",
@@ -1365,7 +1365,7 @@ static const Map<String,dynamic> _en_US = {
     "privacy_policy": {
       "title": "Privacy policy",
       "last_updated_label": "Last updated:",
-      "last_updated_date": "January 6, 2026",
+      "last_updated_date": "January 6, 2025",
       "intro": "This Privacy Policy describes how we collect, use, and protect your information when you use Daily Water Tracker and related services.\n\nWe use your data to provide hydration tracking, sync your progress across devices, send optional reminders, and improve app reliability — not for unrelated advertising.",
       "section_collect": "What we collect",
       "collect_account": "Account details you provide (such as email, display name, and profile photo) when you sign in or edit your profile.",
