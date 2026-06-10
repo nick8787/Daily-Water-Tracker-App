@@ -570,9 +570,8 @@ class CodegenLoader extends AssetLoader{
   },
   "notifications": {
     "dialog": {
-      "title": "Увімкніть сповіщення",
-      "body": "Нагадування потребують дозволу на сповіщення. Увімкніть у системних налаштуваннях.",
-      "not_now": "Не зараз",
+      "title": "Дозвіл на сповіщення",
+      "body": "Щоб показувати сповіщення, нам потрібен ваш дозвіл.",
       "open_settings": "Відкрити налаштування"
     }
   },
@@ -1284,9 +1283,8 @@ static const Map<String,dynamic> _en_US = {
   },
   "notifications": {
     "dialog": {
-      "title": "Turn on notifications",
-      "body": "Hydration reminders need notification permission. You can enable it in system settings.",
-      "not_now": "Not now",
+      "title": "Notification permissions",
+      "body": "To show notifications we need your permission.",
       "open_settings": "Open Settings"
     }
   },

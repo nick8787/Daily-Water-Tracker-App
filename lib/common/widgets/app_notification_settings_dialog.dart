@@ -72,49 +72,23 @@ Future<void> showNotificationSettingsDialog({
                   ),
                 ),
                 const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.of(dialogContext).pop(),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: cs.onSurface.withValues(alpha: 0.75),
-                          side: BorderSide(
-                            color: cs.outline.withValues(alpha: 0.35),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(btnRadius),
-                          ),
-                        ),
-                        child: Text(
-                          LocaleKeys.notifications_dialog_not_now.tr(),
-                          style: const TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                      ),
+                FilledButton(
+                  onPressed: () async {
+                    Navigator.of(dialogContext).pop();
+                    await openAppSettings();
+                  },
+                  style: FilledButton.styleFrom(
+                    backgroundColor: brandBlue,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(btnRadius),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: FilledButton(
-                        onPressed: () async {
-                          Navigator.of(dialogContext).pop();
-                          await openAppSettings();
-                        },
-                        style: FilledButton.styleFrom(
-                          backgroundColor: brandBlue,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(btnRadius),
-                          ),
-                        ),
-                        child: Text(
-                          LocaleKeys.notifications_dialog_open_settings.tr(),
-                          style: const TextStyle(fontWeight: FontWeight.w800),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
+                  child: Text(
+                    LocaleKeys.notifications_dialog_open_settings.tr(),
+                    style: const TextStyle(fontWeight: FontWeight.w800),
+                  ),
                 ),
               ],
             ),

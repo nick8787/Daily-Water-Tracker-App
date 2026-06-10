@@ -61,7 +61,9 @@ class PushSessionCubit extends Cubit<PushSessionState> {
     await _localNotifications.ensureAndroidSchedulingPermissions();
 
     if (_auth.currentUser != null) {
-      await _messaging.setupPushNotificationsForSignedInUser();
+      await _messaging.setupPushNotificationsForSignedInUser(
+        requestOsPermission: true,
+      );
       await _reminderScheduler.rescheduleReminders();
     }
 
@@ -135,7 +137,9 @@ class PushSessionCubit extends Cubit<PushSessionState> {
 
   Future<void> _onSignedIn() async {
     await Future<void>.delayed(_signInSetupDelay);
-    await _messaging.setupPushNotificationsForSignedInUser();
+    await _messaging.setupPushNotificationsForSignedInUser(
+      requestOsPermission: true,
+    );
     await _reminderScheduler.rescheduleReminders();
   }
 

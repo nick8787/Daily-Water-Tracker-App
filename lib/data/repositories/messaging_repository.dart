@@ -79,21 +79,44 @@ class MessagingRepository {
     return _messaging.requestPermission();
   }
 
-  /// Full push registration for a signed-in user: permissions, token sync,
-  /// Firestore profile flags, and broadcast-topic subscription.
-  Future<void> setupPushNotificationsForSignedInUser() async {
+  /// Full push registration for a signed-in user: token sync and broadcast topic
+  Future<void> setupPushNotificationsForSignedInUser({
+    bool requestOsPermission = false,
+  }) async {
     if (_authService.currentUser == null) return;
     try {
       await configurePlatformMessaging();
-      final settings = await _requestPermissionsBestEffort();
-      if (await _osNotificationsGranted(settings)) {
-        await _syncNotificationsEnabledPreference(true);
+
+      final profile = await _firestoreRepository.getUserProfile();
+      if (profile != null && !profile.notificationsEnabled) {
+        return;
       }
+
+      if (requestOsPermission) {
+        await _requestPermissionsBestEffort();
+      }
+
+      if (!await _localNotifications.areOsNotificationsEnabled()) {
+        return;
+      }
+
       await startTokenSync();
       await ensureBroadcastRegistration();
       _scheduleDeferredRegistrationRetry();
     } catch (e, st) {
       logCaughtError('MessagingRepository.setupPushNotificationsForSignedInUser', e, st);
+    }
+  }
+
+  /// Stops broadcast topic delivery when the user turns notifications off in-app.
+  Future<void> pausePushDeliveryForUser() async {
+    _cancelDeferredRegistrationRetry();
+    try {
+      if (_broadcastTopicSubscribed) {
+        await unsubscribeFromTopic(FcmTopics.broadcast);
+      }
+    } catch (e, st) {
+      logCaughtWarning('MessagingRepository.pausePushDeliveryForUser', e, st);
     }
   }
 
@@ -215,14 +238,6 @@ class MessagingRepository {
   Future<void> _ensureBroadcastTopicSubscribed() async {
     if (_authService.currentUser == null) return;
     await subscribeToTopic(FcmTopics.broadcast);
-  }
-
-  Future<void> _syncNotificationsEnabledPreference(bool enabled) async {
-    try {
-      await _firestoreRepository.updateUserProfile(notificationsEnabled: enabled);
-    } catch (e, st) {
-      logCaughtWarning('MessagingRepository._syncNotificationsEnabledPreference', e, st);
-    }
   }
 
   /// Whether FCM reminder pushes should be surfaced (foreground mirror / UI).

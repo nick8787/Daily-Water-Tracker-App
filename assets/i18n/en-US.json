@@ -554,9 +554,8 @@
   },
   "notifications": {
     "dialog": {
-      "title": "Turn on notifications",
-      "body": "Hydration reminders need notification permission. You can enable it in system settings.",
-      "not_now": "Not now",
+      "title": "Notification permissions",
+      "body": "To show notifications we need your permission.",
       "open_settings": "Open Settings"
     }
   },
