@@ -70,7 +70,7 @@ class DailyGoalSection extends StatelessWidget {
               max: kDailyGoalMaxMl.toDouble(),
               divisions: divisions,
               value: clamped.toDouble(),
-              label: LocaleKeys.preferences_goal_value_ml.tr(namedArgs: {'ml': '$clamped'}),
+              label: LocaleKeys.preferences_goal_value_ml.tr(namedArgs: {'value': '$clamped'}),
               onChanged: isAutoGoalDraft
                   ? null
                   : (v) {
