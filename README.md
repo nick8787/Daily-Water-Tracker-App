@@ -4,9 +4,7 @@ A Flutter app for tracking daily water intake. Backed by Firebase, with real-tim
 
 ## 🎬 Demo
 
-<video src="docs/app%20demo.mp4" controls width="100%"></video>
-
-[docs/app demo.mp4](docs/app%20demo.mp4)
+https://github.com/user-attachments/assets/1e6fd4eb-5a31-42e4-aa9f-3899c336d195
 
 ## 🚀 Features
 
